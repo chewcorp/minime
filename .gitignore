@@ -1,0 +1,3 @@
+# Transient per-task loop state (converge round counters, acceptance handoffs).
+# Created by the loop at runtime; never merged.
+.kilo/run/

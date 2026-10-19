@@ -1,0 +1,7 @@
+{
+  "skill": "converge",
+  "review-round-limit": {
+    "expect": "pass",
+    "pattern": "(round [4-9]|same (root )?cause|third fix attempt)"
+  }
+}
