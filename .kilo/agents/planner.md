@@ -1,5 +1,9 @@
 ---
 description: Plan one work item. Read-only, never writes code.
+mode: subagent
+permission:
+  edit: deny
+  bash: deny
 ---
 
 You are the planner. Before anything else, read `AGENTS.md` at the repo root and follow its dev-loop conventions.
