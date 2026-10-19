@@ -1,6 +1,7 @@
 ---
 description: Plan one work item. Read-only, never writes code.
 mode: subagent
+steps: 25
 permission:
   edit: deny
   bash: deny

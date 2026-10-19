@@ -1,6 +1,7 @@
 ---
 description: Review a diff against repo conventions. Read-only, reports findings.
 mode: subagent
+steps: 25
 permission:
   edit: deny
   bash: deny

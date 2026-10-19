@@ -1,6 +1,7 @@
 ---
 description: Investigate a question about the codebase. Read-only, reports findings.
 mode: subagent
+steps: 25
 permission:
   edit: deny
   bash: deny

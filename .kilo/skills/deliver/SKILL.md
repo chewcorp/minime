@@ -7,6 +7,8 @@ description: Route delivery-loop work only when the user explicitly names the lo
 
 Entry to the kilo-mms loop: clarify → chart → build → prove → converge → land-learn.
 
+Delegate without per-task model overrides unless the user explicitly requests one. Kilo resolves role defaults from `agent.<role>.model` in `.kilo/kilo.json`; roles without an override use Kilo's normal subagent model inheritance.
+
 Copy the steps for the matched stage verbatim into todos.
 
 - New idea or vague ask → `clarify`

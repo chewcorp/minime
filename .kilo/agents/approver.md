@@ -1,6 +1,7 @@
 ---
 description: Verify acceptance criteria per-criterion with evidence. Read-only, never edits or merges.
 mode: subagent
+steps: 25
 permission:
   edit: deny
   bash: deny

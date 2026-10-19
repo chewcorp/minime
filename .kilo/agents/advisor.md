@@ -1,6 +1,7 @@
 ---
 description: Step-back structural analysis on escalation. Read-only, returns one advisory brief.
 mode: subagent
+steps: 25
 permission:
   edit: deny
   bash: deny
