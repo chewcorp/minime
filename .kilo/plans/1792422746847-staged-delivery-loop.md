@@ -57,6 +57,23 @@ Ship: rebase small ordered commits → babysit (conflicts/threads/CI one batched
 Learn: compact handoff to `$TMPDIR` (reference don't duplicate, suggested-skills, redact secrets) + retro on environment not product (Navigation/Checks/Standards/AGENTS/Tool-economy/No-ops/Info-access; mechanical→linter/hook/CI, judgement→CODING_STANDARDS).
 Router `deliver` (user-invoked, `disable-model-invocation: true`): names the five above so human remembers one name; copies steps verbatim into todos; never calls another user-invoked skill.
 
+#### 6a. `babysit` (gap added 2026-10-20 after PR #4 pilot exposed it)
+
+Inspired by cursor pstack `playbooks/babysit.md` + `autopilot-full.md` (github.com/cursor/plugins) and cursor's built-in `/autopilot` (monitors a PR, addresses feedback, conflicts, failing checks). Rewritten in our words per house rules; sources are inspiration with links, never pasted. The single babysit sentence in §6 was the whole spec — the PR #4 pilot ran babysitting ad hoc and external-review triage had no home at all. Gap: no named stage owns diff-ready → merge-ready.
+
+Does:
+- **Declare the mode in the first line** (pstack): `drive` = run to merge-ready; `check` = one status pass + report (small/docs-only PRs); `threads-only` = answer review comments, touch nothing else. Undeclared → `check`, NOT drive — pstack default-drive stalled parent agents; we invert it.
+- **Merge frontier only**: the lowest unmerged PR is the only one that matters until it merges; nothing upstack while the frontier is red. One watcher per stack; fixes land on the owning branch only.
+- **Order: conflicts → review threads → CI**, batched into ONE push wave (each restarts checks; earlier CI work is thrown away otherwise). Fix-forward; one writer per branch.
+- **Compass check at every tick**: re-read the task's destination (acceptance.md / armed goal) before acting on findings; loop-vs-goal drift is a blocker, not a nit.
+- **Conflict resolution rules**: trunk merges/rebases INTO the branch, never force-push of shared branches; `--force-with-lease` pinned to last-pushed SHA when force is genuinely needed (own branch only). Ambiguous conflict (both sides changed logic) → report, don't guess. A defect trunk shows without the PR is trunk's; a defect the PR introduces or newly reaches is the PR's.
+- **External review triage** (bugbot/Kilo Code Review/human): every finding classified fix / decline-with-reason / escalate; decline requires the `converge` pertinence test (name the core claim it would undermine). External findings use the shared `.kilo/run/<task>/review-round` counter: never reset it, increment it per fix round, and route to the round-3 advisor shape when the two-round cap is reached.
+- **Stop conditions**: green checks + threads triaged + conflict-free + fresh-agent approval re-derived at the final head after every base update (trunk move, rebase, conflict resolution) = merge-ready → human merge gate; patch-id may detect an unchanged diff to skip duplicate *review*, but never substitutes for re-approval at the head that will actually merge; babysit never merges. 3 fix-push-check cycles without resolution → report what still fails. Fix needing a design decision → human. A push on the branch you did not make → stop and report.
+
+Does NOT: merge (human gate, §6); restart CI on speculative fixes; touch upstack PRs; own defects trunk already has.
+
+Completion: merge-ready report — final head SHA + checks green + per-finding triage + approve table valid at that SHA.
+
 ## Two tracks: plugin workshop (us) vs consumer loop (them)
 
 Workshop-only (develop the plugin; never shipped as consumer requirements):
@@ -89,6 +106,7 @@ Consumer loop (what a user runs): `clarify → chart → build → prove → con
 4. Pilot: 1 consumer end-to-end (proof artifacts + approve table + human merge gate) + 1 workshop admission run.
 5. First ablation pass; delete losers; tighten `AGENTS.md` to build/test/gotchas only.
 6. Maintenance eval wired to config-change trigger (workshop side).
+7. `babysit` skill (§6a) as its own stage, once PR #4's external-review triage lands as evidence: shape the skill from what the ad hoc run actually needed; keep the caps and one-push-wave discipline; decide then whether babysit stays inside `land-learn` or splits out (split likely — it has its own completion check and its own stop conditions).
 
 ## Risks
 - Workshop stricture leaks into consumer UX → mitigate: separate dirs/prompts; grep CI for eval/ablation terms in consumer skills.
@@ -98,8 +116,9 @@ Consumer loop (what a user runs): `clarify → chart → build → prove → con
 - Prompt-level gates erode (`[[propose-and-gate]]`) → prefer hook/CI enforcement; persona prompts only as eval baseline.
 
 ## Open
-- MVP-first (clarify/prove/build/converge) vs full six upfront? Recommendation: MVP-first per lean-MVP maxim + hill-climb method.
-- Where does workshop live (`.kilo/workshop/` vs separate repo)? Recommendation: `.kilo/workshop/` for now, excluded from consumer install.
+- MVP-first (clarify/prove/build/converge) vs full six upfront? Recommendation: MVP-first per lean-MVP maxim + hill-climb method. (2026-10-20: resolved, MVP-first.)
+- Where does workshop live (`.kilo/workshop/` vs separate repo)? Recommendation: `.kilo/workshop/` for now, excluded from consumer install. (2026-10-20: resolved by pilot payload definition.)
 - Maintenance eval trigger location (`.kilo/evals/` vs CI job)?
+- Babysit placement (§6a): inside `land-learn` vs standalone skill — decide at step 7 from PR #4 evidence.
 
 Validation: consumer pilot shows proof artifacts + approve table + human merge gate with zero workshop terminology visible; workshop admission numbers decide each graduation; anything without measured with>without gain is removed.

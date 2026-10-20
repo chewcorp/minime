@@ -1,0 +1,19 @@
+{
+  "name": "kilo-mms",
+  "version": "0.1.0",
+  "description": "Staged delivery loop for Kilo: clarify, chart, build, prove, converge, land-learn, routed by deliver, with planner/researcher/implementor/reviewer/approver/advisor subagents.",
+  "payload": {
+    "agents": ".kilo/agents",
+    "skills": ".kilo/skills",
+    "config": ".kilo/kilo.json",
+    "gitignore": ".kilo/.gitignore"
+  },
+  "install": {
+    "global": "~/.config/kilo",
+    "project": ".kilo"
+  },
+  "notes": {
+    "excluded": ".kilo/workshop, .kilo/plans and .kilo/run are development-only or runtime state and are never installed.",
+    "config": ".kilo/kilo.json pins planner/advisor to paid kilo-auto/frontier; requires Kilo Gateway access and credits in the target account. Remove the model keys to inherit parent models instead."
+  }
+}
