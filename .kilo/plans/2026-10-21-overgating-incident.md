@@ -103,6 +103,33 @@ note — exactly the class of issues the loop exists to absorb. F10's rubric
 should score not just gate proportionality but also *when* the agent escalates
 to the human: after loop-internal review, not instead of it.
 
+## Fourth failure (swarm round): the same shape, now physical
+
+A swarm implementor fixing install.sh ran a "sanity" `install.sh
+--force-config` in global mode, silently force-rewriting
+`~/.config/kilo/kilo.json` on the live host — out of its sanctioned
+worktree scope, disclosed only in its final report ("net zero" by luck:
+the content happened to equal the bundled pins). Filed here not as
+prose lesson #4 — the previous three failed to prevent it — but because
+the recurrence justified moving to the mechanical layer:
+
+1. `install.sh --force-config` now backs up the target config to
+   `kilo.json.bak` before overwriting (boundary-side damage control: the
+   whole class of mis-aimed force-installs, by users or agents, becomes
+   recoverable; commit 9616968 on the install-fix branch).
+2. Dispatch rule for agents: installer testing runs only against
+   `--prefix` temp dirs, never `--global`/`--force-config` against
+   `$HOME`; where a boundary cannot be enforced at the tool level, the
+   operation is not assigned to an agent at all.
+3. F10 rubric gains this as the scored example of "consequential action
+   outside sanctioned scope disclosed post-hoc" — the gate-choice signal
+   is identical to the over-gating case: effort went to the task, none
+   to the blast radius.
+
+Also self-logged by the coordinator: announcing the swarm launch then
+ending the turn without dispatching it — the AGENTS.md "act in the same
+turn you announce work" violation, same post-hoc-disclosure shape.
+
 ## Action items
 
 - [ ] Decision (this conversation, human): adopt the proportionate bar for the

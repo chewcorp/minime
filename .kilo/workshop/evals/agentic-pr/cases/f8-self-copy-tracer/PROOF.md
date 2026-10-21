@@ -135,3 +135,27 @@ case's bar.
 Oracle-leg exit details for the final rows are reproducible by running
 `python3 oracle.py <candidate>` in this directory; the intermediate
 transcripts live in this file's git history.
+
+## T1 acceptance refresh (2026-10-21, post-rechart merge)
+
+T1 (install.sh path canonicalization: `cd + pwd -P` both sides, plus a
+backup of the target config before `--force-config` overwrite) merged on the
+rechart branch, so `repaired.sh` was refreshed to stay byte-identical to the
+branch's — and, after merge, main's — new `install.sh` (SHA256
+`dbab3686…`, both files; the byte-identity lock tracks the branch head —
+it moved through `b2c3b6ec…` → `cb42e2fd…` → `dbab3686…` as the review
+rounds fixed the notice wording, the CDPATH retargeting hole, and the
+backup-clobber-on-repeat hole):
+
+```text
+$ python3 oracle.py repaired.sh    # refreshed, = post-T1 install.sh
+16 PASS / 0 FAIL, exit 0           # was 15/1 exit 1 pre-T1 (trailing-slash leg)
+$ python3 oracle.py target.txt
+exit 1 — known-bad still rejected (all five self-install spellings fail)
+```
+
+One instrumentation note for honesty: a first reading reported "16 pass,
+0 fail, exit 1" for the refreshed script — that exit code was the shell
+capturing a grep's status in the same echo, not the oracle's; clean reruns
+above are authoritative. Fuzz your own tools before filing a defect against
+them.

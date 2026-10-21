@@ -47,6 +47,13 @@ src="$(cd "$(dirname "$0")" && pwd)"
 src_root="$src/.kilo"
 [ -d "$src_root" ] || { echo "no payload dir .kilo at $src" >&2; exit 66; }
 
+# T1/F8: canonicalize the source side of the self-install equality guards
+# below — a $0 reached through a symlinked directory (macOS-style /tmp)
+# spells src_root differently from dest and the string compare misses it.
+# `cd ... && pwd -P` is the POSIX-portable canonicalization (no GNU
+# readlink -f on macOS).
+src_root="$(CDPATH= cd "$src_root" && pwd -P)"
+
 # shortcut: sed-based JSON version read, upgrade to jq if plugin.json grows
 # free-form string fields containing colons adjacent to "version".
 version="$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$src/plugin.json")"
@@ -66,6 +73,21 @@ case "$mode" in
     ;;
 esac
 
+# T1/F8: canonicalize dest the same way, so alias spellings of the same
+# directory (trailing-slash/dot like .kilo/., symlinked paths) hit the
+# self-install equality guards in install_config and the copy block instead
+# of evading them and aborting on cp "are the same file".
+if [ -d "$dest" ]; then
+  # CDPATH= : a relative --prefix must not be retargeted through the
+  # user's CDPATH (cd prefers a CDPATH match for bare relative names).
+  dest="$(CDPATH= cd "$dest" && pwd -P)"
+elif [ -d "$(dirname "$dest")" ]; then
+  # Dest not there yet: resolve the spelled parent, keep the final component
+  # (a dir ending in /. or / /.. would be -d exactly when its parent is, so
+  # the final component here is always a plain missing name).
+  dest="$(CDPATH= cd "$(dirname "$dest")" && pwd -P)/$(basename "$dest")"
+fi
+
 # Config conflict policy (D5): preserve an existing target kilo.json unless
 # --force-config is passed. When source and destination are the same file
 # (self-install, E3), there is nothing to write even under --force-config:
@@ -78,8 +100,20 @@ install_config() {
     echo "note: $dest/kilo.json exists; skipping (use --force-config to overwrite)" >&2
     return
   fi
+  if [ "$force_config" = "1" ] && [ -f "$dest/kilo.json" ]; then
+    # Force overwrite discards the target's config policy file (a real user
+    # choice), so keep one recoverable copy next to it — a mis-aimed
+    # --force-config (e.g. a test run against $HOME) must never be silent
+    # data loss. Refresh the backup only when the current config is NOT the
+    # one this installer would write anyway: otherwise a repeated force-run
+    # would clobber the user's original backup with our own output.
+    if ! cmp -s "$dest/kilo.json" "$src_root/kilo.json"; then
+      cp "$dest/kilo.json" "$dest/kilo.json.bak"
+      echo "note: previous config kept as $dest/kilo.json.bak" >&2
+    fi
+  fi
   cp "$src_root/kilo.json" "$dest/kilo.json"
-  echo "wrote $dest/kilo.json (pins planner/advisor to kilo-auto/frontier; needs Kilo Gateway)"
+  echo "wrote $dest/kilo.json (default model + planner/advisor pins; see the file)"
 }
 
 # A4: one stderr notice when an existing target is about to be overwritten.
@@ -91,7 +125,7 @@ if [ "$dest" = "$src_root" ]; then
   echo "note: source is destination; copy skipped" >&2
   skip_copy="1"
 elif [ -d "$dest" ]; then
-  echo "note: $dest exists; payload paths (agents/, skills/, kilo.json, .gitignore) will be overwritten, unrelated files untouched" >&2
+  echo "note: $dest exists; payload paths (agents/, skills/, .gitignore) will be overwritten, unrelated files untouched (kilo.json only with --force-config; then kept as kilo.json.bak)" >&2
 fi
 
 if [ -z "$skip_copy" ]; then
