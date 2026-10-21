@@ -14,7 +14,10 @@ Each case dir holds:
 
 `expect` is the check's expected verdict against this target: `pass` means the
 pattern must be absent (clean artifact), `fail` means the pattern must be
-present (violation found). Matching uses `grep -qiP -e <pattern> target.txt`.
+present (violation found). Matching uses case-insensitive Python 3 `re`,
+line-local by default; optional `scope: "document"` searches the whole target.
+See `../../SCHEMA.md` for scope, validation and error contracts; PCRE-only
+patterns are not supported.
 A named `"skill": "<name>"` in `checks.json` gates the whole check file to
 that skill's arm; skill-less checks apply to every arm.
 

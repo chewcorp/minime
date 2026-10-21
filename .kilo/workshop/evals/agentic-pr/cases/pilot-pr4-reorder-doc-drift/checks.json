@@ -1,0 +1,12 @@
+{
+  "stale-order-phrase": {
+    "scope": "document",
+    "pattern": "release\\s+before\\s+push|creates?\\s+(?:the\\s+)?GitHub\\s+release(?:\\s+via\\s+`gh`)?[,\\s]+then\\s+push(?:es)?",
+    "expect": "pass"
+  },
+  "fixed-order-phrase": {
+    "scope": "document",
+    "pattern": "push\\s+first|push(?:es)?(?:,\\s*|\\s+)then\\s+creates?\\s+the\\s+GitHub\\s+release",
+    "expect": "fail"
+  }
+}
