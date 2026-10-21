@@ -307,3 +307,23 @@ testable acceptance. S01a validates the repair-ticket sizing after source triage
 if that boundary cannot fit one context, split and recheck the chart before work.
 No ticket requires another ticket's future output to count its own proof as
 passed. Traceability orphans: zero.
+
+## Addendum 2026-10-21 (second): proportionate evidence bar adopted
+
+Incident `.kilo/plans/2026-10-21-overgating-incident.md` records that this
+chart gated a reversible one-sentence instruction decision behind
+beyond-reasonable-doubt apparatus — the failure mode the corpus exists to
+catch. Human decision 2026-10-21: evidence effort is gated on cost of being
+wrong, not on topic.
+
+Accordingly, for the reversible-edit decision tier only, S02's acceptance is
+revised to: one runnable session per arm on a chosen supported model, a
+demonstrably visible instruction difference between arms, and durable audit
+capture (session export JSON with tokens/cost, runtime permission-deny logs,
+oracle verdicts). Attributable-identity proof and exact resolved-instruction
+byte capture are demoted to logged best-effort gaps, covered by
+arm-discrimination probes, not blocking gates. Sealed holdouts and
+precommitted thresholds remain required only for hard-to-reverse instruction
+adoption/retirement and publication-grade quantified claims (S10/S11 tier);
+their apparatus is unchanged there. The recovery execution gate stands for
+claims made under the original standard.
