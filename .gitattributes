@@ -1,2 +1,6 @@
-# Collapse eval run records in PR diffs and keep them out of language stats.
-.kilo/workshop/**/runs/** linguist-generated -diff
+# Collapse leftover raw eval output in PR diffs and keep it out of language stats.
+# Scoped by file name so result.json score changes stay reviewable.
+.kilo/workshop/**/runs/**/export.json linguist-generated -diff
+.kilo/workshop/**/runs/**/session*.txt linguist-generated -diff
+.kilo/workshop/**/runs/**/diff.patch linguist-generated -diff
+.kilo/workshop/**/runs/**/install*.sh linguist-generated -diff
