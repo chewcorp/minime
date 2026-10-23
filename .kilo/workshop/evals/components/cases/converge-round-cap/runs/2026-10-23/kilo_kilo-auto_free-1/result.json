@@ -1,0 +1,13 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 1,
+  "secs": 15,
+  "run_rc": 0,
+  "time": "2026-10-23T12:24:21Z",
+  "component": "converge",
+  "case": "converge-round-cap",
+  "passed": 3,
+  "total": 3,
+  "verdict": "pass",
+  "failed": []
+}

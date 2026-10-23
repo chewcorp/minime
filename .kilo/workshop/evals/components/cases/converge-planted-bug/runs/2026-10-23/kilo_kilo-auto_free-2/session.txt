@@ -1,0 +1,21 @@
+[0m
+> code · kilo-auto/free
+[0m
+[0m→ [0mRead DIFF.patch
+[0m→ [0mRead AGENTS.md
+[0m→ [0mRead calc.py
+[0m→ [0mSkill "converge"
+[0m✱ [0mGlob "**/*test*"[90m 1 match[0m
+[0m✱ [0mGlob "**/*.py"[90m 3 matches[0m
+[0m→ [0mRead test_calc.py
+[0m
+[0m← [0mWrite REVIEW.md
+Wrote file successfully.
+[0m
+Review complete. Findings written to `REVIEW.md`.
+
+**Blocking:** `clamp` has a logic bug — `min(x, lo)` caps at the lower bound instead of `hi`, so the upper bound is ignored (e.g., `clamp(100, 0, 10)` returns `0`).
+
+**Advisory:** No tests added for the new `clamp` function.
+
+Verdict: do not merge until the blocking bug is fixed.

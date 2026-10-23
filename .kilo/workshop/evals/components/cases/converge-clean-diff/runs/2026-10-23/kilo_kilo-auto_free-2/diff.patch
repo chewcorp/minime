@@ -1,0 +1,14 @@
+diff --git a/REVIEW.md b/REVIEW.md
+new file mode 100644
+index 0000000..ac3dd1c
+--- /dev/null
++++ b/REVIEW.md
+@@ -0,0 +1,8 @@
++# Review: DIFF.patch (converge)
++
++No blocking findings.
++
++Advisory:
++- Extra blank lines: diff inserts two blank lines between `parse_date` and `square`, resulting in three blank lines; repo uses two. (calc.py)
++- `square` is not exposed in the CLI (`cli.py`), unlike `add`; if the CLI is part of the public surface this is incomplete, otherwise ignore.
++- Test coverage for `square` only checks `-3`; consider `0` and a positive value for completeness.

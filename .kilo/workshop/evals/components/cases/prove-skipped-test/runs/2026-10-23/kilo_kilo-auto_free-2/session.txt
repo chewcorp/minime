@@ -1,0 +1,40 @@
+[0m
+> code · kilo-auto/free
+[0m
+[0m✱ [0mGrep "def normalize"[90m 1 match[0m
+[0m✱ [0mGlob "**/calc.py"[90m 1 match[0m
+[0m→ [0mRead calc.py
+[0m✱ [0mGrep "normalize"[90m in . · 3 matches[0m
+[0m→ [0mRead test_calc.py
+[0m
+[0m← [0mEdit calc.py
+Index: /tmp/comp-work-hZMzWW/calc.py
+===================================================================
+--- /tmp/comp-work-hZMzWW/calc.py
++++ /tmp/comp-work-hZMzWW/calc.py
+@@ -9,9 +9,9 @@
+     return sum(xs) / len(xs)
+ 
+ 
+ def normalize(s):
+-    return s.lower()
++    return s.strip().lower()
+ 
+ 
+ def parse_date(s):
+     return datetime.date.fromisoformat(s)
+
+[0m
+[0m$ [0mcd /tmp/comp-work-hZMzWW && python3 -c "import calc; print(repr(calc.normalize('  ABC  ')))"
+'abc'
+[0m
+[0m$ [0mcd /tmp/comp-work-hZMzWW && python3 -m unittest -q 2>&1 | tail -20
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK (skipped=1)
+[0m
+[0m← [0mWrite PROOF.md
+Wrote file successfully.
+[0m
+Done.

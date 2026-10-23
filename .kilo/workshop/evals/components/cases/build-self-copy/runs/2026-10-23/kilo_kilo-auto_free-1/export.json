@@ -1,0 +1,441 @@
+{
+  "info": {
+    "id": "ses_e97542384ffelnzBt0I2D0LW5z",
+    "slug": "witty-wizard",
+    "projectID": "d931d596ac1f0e80fb996d195429a61e96f9775b",
+    "directory": "/tmp/comp-work-xP1N8j",
+    "path": "",
+    "title": "comp-build-self-copy-1",
+    "agent": "code",
+    "model": {
+      "id": "kilo-auto/free",
+      "providerID": "kilo",
+      "variant": "default"
+    },
+    "version": "7.8.15",
+    "summary": {
+      "additions": 7,
+      "deletions": 0,
+      "files": 1
+    },
+    "cost": 0,
+    "tokens": {
+      "input": 15930,
+      "output": 379,
+      "reasoning": 893,
+      "cache": {
+        "read": 29982,
+        "write": 0
+      }
+    },
+    "permission": [
+      {
+        "permission": "question",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "suggest",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "plan_enter",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "plan_exit",
+        "pattern": "*",
+        "action": "deny"
+      }
+    ],
+    "time": {
+      "created": 1792757455995,
+      "updated": 1792757806319
+    }
+  },
+  "messages": [
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1792757459111
+        },
+        "agent": "code",
+        "model": {
+          "providerID": "kilo",
+          "modelID": "kilo-auto/free"
+        },
+        "summary": {
+          "diffs": [
+            {
+              "file": "install.sh",
+              "patch": "diff --git a/install.sh b/install.sh\nindex 9bcd36f..d79f552 100755\n--- a/install.sh\n+++ b/install.sh\n@@ -60,6 +60,13 @@ case \"$mode\" in\n     ;;\n esac\n \n+# Self-installation is a clean no-op\n+src_root_real=\"$(cd \"$src_root\" 2>/dev/null && pwd -P)\"\n+dest_real=\"$(mkdir -p \"$dest\" 2>/dev/null && cd \"$dest\" && pwd -P)\"\n+if [ -n \"$src_root_real\" ] && [ -n \"$dest_real\" ] && [ \"$src_root_real\" = \"$dest_real\" ]; then\n+  exit 0\n+fi\n+\n # Config conflict policy (D5): preserve an existing target kilo.json unless\n # --force-config is passed.\n install_config() {\n",
+              "additions": 7,
+              "deletions": 0,
+              "status": "modified"
+            }
+          ]
+        },
+        "id": "msg_168abe8a70016zqA539QTOnnSD",
+        "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "\"Repair install.sh in the current directory (a plugin repo): running ./install.sh --project from inside the plugin repo itself aborts with 'cp: ... are the same file'. Make self-installation a clean no-op without breaking installs into a different destination and without removing copying that legitimate installs need. Edit install.sh directly; do not install packages or use the network.\"",
+          "id": "prt_168abe8d5001qM9NXbnUoZuMvL",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168abe8a70016zqA539QTOnnSD"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_168abe8a70016zqA539QTOnnSD",
+        "role": "assistant",
+        "mode": "code",
+        "agent": "code",
+        "path": {
+          "cwd": "/tmp/comp-work-xP1N8j",
+          "root": "/tmp/comp-work-xP1N8j"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 14354,
+          "input": 14184,
+          "output": 32,
+          "reasoning": 68,
+          "cache": {
+            "write": 0,
+            "read": 70
+          }
+        },
+        "modelID": "kilo-auto/free",
+        "providerID": "kilo",
+        "time": {
+          "created": 1792757460152,
+          "completed": 1792757472628
+        },
+        "finish": "tool-calls",
+        "id": "msg_168abecb8001gK7meQ3OgUFjR6",
+        "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z"
+      },
+      "parts": [
+        {
+          "snapshot": "79ee75eec155701ef470c489799f5ac2e08f05d8",
+          "type": "step-start",
+          "time": {
+            "start": 1792757469206
+          },
+          "id": "prt_168ac1016001zDlBdXhEe0gKol",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168abecb8001gK7meQ3OgUFjR6"
+        },
+        {
+          "type": "tool",
+          "tool": "read",
+          "callID": "call_544400e6be7a4279b1630949ce2c9c81",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/tmp/comp-work-xP1N8j/install.sh"
+            },
+            "output": "<path>/tmp/comp-work-xP1N8j/install.sh</path>\n<type>file</type>\n<content>\n1: #!/usr/bin/env bash\n2: # install.sh — install the kilo-mms delivery loop into an account or repo.\n3: set -euo pipefail\n4: \n5: usage() {\n6:   cat <<'EOF'\n7: Usage:\n8:   ./install.sh              # install globally to ~/.config/kilo (default)\n9:   ./install.sh --global     # same as above, explicit\n10:   ./install.sh --project    # install into the current repo's .kilo/\n11:   ./install.sh --prefix DIR # install into DIR (advanced; expects the kilo\n12:                             # config dir layout: agents/ skills/ kilo.json)\n13:   --force-config            # overwrite an existing target kilo.json\n14: \n15: Run from the plugin root (the directory containing plugin.json) or an\n16: unpacked release tarball root. Existing payload files are overwritten;\n17: unrelated files in the target are left untouched. Workshop, plans, and\n18: runtime state are never installed.\n19: EOF\n20: }\n21: \n22: mode=\"global\"\n23: prefix=\"\"\n24: force_config=\"\"\n25: \n26: while [ $# -gt 0 ]; do\n27:   case \"$1\" in\n28:     --global)  mode=\"global\" ;;\n29:     --project)  mode=\"project\" ;;\n30:     --prefix)  mode=\"prefix\"; prefix=\"${2:?--prefix requires a directory}\"; shift ;;\n31:     --force-config) force_config=\"1\" ;;\n32:     -h|--help) usage; exit 0 ;;\n33:     *) echo \"unknown flag: $1\" >&2; usage >&2; exit 64 ;;\n34:   esac\n35:   shift\n36: done\n37: \n38: src=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\n39: [ -f \"$src/plugin.json\" ] || { echo \"run from the plugin root (no plugin.json at $src)\" >&2; exit 66; }\n40: \n41: src_root=\"$src/.kilo\"\n42: [ -d \"$src_root\" ] || { echo \"no payload dir .kilo at $src\" >&2; exit 66; }\n43: \n44: # shortcut: sed-based JSON version read, upgrade to jq if plugin.json grows\n45: # free-form string fields containing colons adjacent to \"version\".\n46: version=\"$(sed -n 's/.*\"version\"[[:space:]]*:[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p' \"$src/plugin.json\")\"\n47: [ -n \"$version\" ] || { echo \"no version in $src/plugin.json\" >&2; exit 65; }\n48: \n49: case \"$mode\" in\n50:   global)\n51:     dest=\"${XDG_CONFIG_HOME:-$HOME/.config}/kilo\"\n52:     ;;\n53:   project)\n54:     git -C . rev-parse --is-inside-work-tree >/dev/null 2>&1 || {\n55:       echo \"--project must run inside a git repo\" >&2; exit 65; }\n56:     dest=\"$(git rev-parse --show-toplevel)/.kilo\"\n57:     ;;\n58:   prefix)\n59:     dest=\"$prefix\"\n60:     ;;\n61: esac\n62: \n63: # Config conflict policy (D5): preserve an existing target kilo.json unless\n64: # --force-config is passed.\n65: install_config() {\n66:   if [ -f \"$dest/kilo.json\" ] && [ -z \"$force_config\" ]; then\n67:     echo \"note: $dest/kilo.json exists; skipping (use --force-config to overwrite)\" >&2\n68:     return\n69:   fi\n70:   cp \"$src_root/kilo.json\" \"$dest/kilo.json\"\n71:   echo \"wrote $dest/kilo.json (pins planner/advisor to kilo-auto/frontier; needs Kilo Gateway)\"\n72: }\n73: \n74: # A4: one stderr notice when an existing target is about to be overwritten.\n75: if [ -d \"$dest\" ]; then\n76:   echo \"note: $dest exists; payload paths (agents/, skills/, kilo.json, .gitignore) will be overwritten, unrelated files untouched\" >&2\n77: fi\n78: \n79: mkdir -p \"$dest/agents\" \"$dest/skills\"\n80: cp -R \"$src_root/agents/.\" \"$dest/agents/\"\n81: cp -R \"$src_root/skills/.\" \"$dest/skills/\"\n82: install_config\n83: \n84: # B1: .kilo/.gitignore is one of the 4 payload members (plugin.json, D3) —\n85: # copy it unconditionally so --global/--prefix/--project install the same set.\n86: cp \"$src_root/.gitignore\" \"$dest/.gitignore\"\n87: \n88: # Project installs additionally keep .kilo/run/ (transient loop state) out of\n89: # git via the TARGET repo's root .gitignore: a pattern \".kilo/run/\" in\n90: # .kilo/.gitignore cannot match that path relative to the repo root.\n91: # A5: tolerate a root .gitignore missing its trailing newline.\n92: if [ \"$mode\" = \"project\" ]; then\n93:   root_gitignore=\"$(git rev-parse --show-toplevel)/.gitignore\"\n94:   if ! grep -qxF '.kilo/run/' \"$root_gitignore\" 2>/dev/null; then\n95:     if [ -s \"$root_gitignore\" ] && [ -n \"$(tail -c1 \"$root_gitignore\")\" ]; then\n96:       printf '\\n' >> \"$root_gitignore\"\n97:     fi\n98:     printf '.kilo/run/\\n' >> \"$root_gitignore\"\n99:   fi\n100: fi\n101: \n102: echo \"installed kilo-mms $version -> $dest\"\n103: echo \"verify: restart kilo, then /status should list agents (planner, researcher, ...) and the deliver skill\"\n\n(End of file - total 103 lines)\n</content>",
+            "metadata": {
+              "preview": "#!/usr/bin/env bash\n# install.sh — install the kilo-mms delivery loop into an account or repo.\nset -euo pipefail\n\nusage() {\n  cat <<'EOF'\nUsage:\n  ./install.sh              # install globally to ~/.config/kilo (default)\n  ./install.sh --global     # same as above, explicit\n  ./install.sh --project    # install into the current repo's .kilo/\n  ./install.sh --prefix DIR # install into DIR (advanced; expects the kilo\n                            # config dir layout: agents/ skills/ kilo.json)\n  --force-config            # overwrite an existing target kilo.json\n\nRun from the plugin root (the directory containing plugin.json) or an\nunpacked release tarball root. Existing payload files are overwritten;\nunrelated files in the target are left untouched. Workshop, plans, and\nruntime state are never installed.\nEOF\n}",
+              "truncated": false,
+              "loaded": [],
+              "display": {
+                "type": "file",
+                "path": "/tmp/comp-work-xP1N8j/install.sh",
+                "text": "#!/usr/bin/env bash\n# install.sh — install the kilo-mms delivery loop into an account or repo.\nset -euo pipefail\n\nusage() {\n  cat <<'EOF'\nUsage:\n  ./install.sh              # install globally to ~/.config/kilo (default)\n  ./install.sh --global     # same as above, explicit\n  ./install.sh --project    # install into the current repo's .kilo/\n  ./install.sh --prefix DIR # install into DIR (advanced; expects the kilo\n                            # config dir layout: agents/ skills/ kilo.json)\n  --force-config            # overwrite an existing target kilo.json\n\nRun from the plugin root (the directory containing plugin.json) or an\nunpacked release tarball root. Existing payload files are overwritten;\nunrelated files in the target are left untouched. Workshop, plans, and\nruntime state are never installed.\nEOF\n}\n\nmode=\"global\"\nprefix=\"\"\nforce_config=\"\"\n\nwhile [ $# -gt 0 ]; do\n  case \"$1\" in\n    --global)  mode=\"global\" ;;\n    --project)  mode=\"project\" ;;\n    --prefix)  mode=\"prefix\"; prefix=\"${2:?--prefix requires a directory}\"; shift ;;\n    --force-config) force_config=\"1\" ;;\n    -h|--help) usage; exit 0 ;;\n    *) echo \"unknown flag: $1\" >&2; usage >&2; exit 64 ;;\n  esac\n  shift\ndone\n\nsrc=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\n[ -f \"$src/plugin.json\" ] || { echo \"run from the plugin root (no plugin.json at $src)\" >&2; exit 66; }\n\nsrc_root=\"$src/.kilo\"\n[ -d \"$src_root\" ] || { echo \"no payload dir .kilo at $src\" >&2; exit 66; }\n\n# shortcut: sed-based JSON version read, upgrade to jq if plugin.json grows\n# free-form string fields containing colons adjacent to \"version\".\nversion=\"$(sed -n 's/.*\"version\"[[:space:]]*:[[:space:]]*\"\\([^\"]*\\)\".*/\\1/p' \"$src/plugin.json\")\"\n[ -n \"$version\" ] || { echo \"no version in $src/plugin.json\" >&2; exit 65; }\n\ncase \"$mode\" in\n  global)\n    dest=\"${XDG_CONFIG_HOME:-$HOME/.config}/kilo\"\n    ;;\n  project)\n    git -C . rev-parse --is-inside-work-tree >/dev/null 2>&1 || {\n      echo \"--project must run inside a git repo\" >&2; exit 65; }\n    dest=\"$(git rev-parse --show-toplevel)/.kilo\"\n    ;;\n  prefix)\n    dest=\"$prefix\"\n    ;;\nesac\n\n# Config conflict policy (D5): preserve an existing target kilo.json unless\n# --force-config is passed.\ninstall_config() {\n  if [ -f \"$dest/kilo.json\" ] && [ -z \"$force_config\" ]; then\n    echo \"note: $dest/kilo.json exists; skipping (use --force-config to overwrite)\" >&2\n    return\n  fi\n  cp \"$src_root/kilo.json\" \"$dest/kilo.json\"\n  echo \"wrote $dest/kilo.json (pins planner/advisor to kilo-auto/frontier; needs Kilo Gateway)\"\n}\n\n# A4: one stderr notice when an existing target is about to be overwritten.\nif [ -d \"$dest\" ]; then\n  echo \"note: $dest exists; payload paths (agents/, skills/, kilo.json, .gitignore) will be overwritten, unrelated files untouched\" >&2\nfi\n\nmkdir -p \"$dest/agents\" \"$dest/skills\"\ncp -R \"$src_root/agents/.\" \"$dest/agents/\"\ncp -R \"$src_root/skills/.\" \"$dest/skills/\"\ninstall_config\n\n# B1: .kilo/.gitignore is one of the 4 payload members (plugin.json, D3) —\n# copy it unconditionally so --global/--prefix/--project install the same set.\ncp \"$src_root/.gitignore\" \"$dest/.gitignore\"\n\n# Project installs additionally keep .kilo/run/ (transient loop state) out of\n# git via the TARGET repo's root .gitignore: a pattern \".kilo/run/\" in\n# .kilo/.gitignore cannot match that path relative to the repo root.\n# A5: tolerate a root .gitignore missing its trailing newline.\nif [ \"$mode\" = \"project\" ]; then\n  root_gitignore=\"$(git rev-parse --show-toplevel)/.gitignore\"\n  if ! grep -qxF '.kilo/run/' \"$root_gitignore\" 2>/dev/null; then\n    if [ -s \"$root_gitignore\" ] && [ -n \"$(tail -c1 \"$root_gitignore\")\" ]; then\n      printf '\\n' >> \"$root_gitignore\"\n    fi\n    printf '.kilo/run/\\n' >> \"$root_gitignore\"\n  fi\nfi\n\necho \"installed kilo-mms $version -> $dest\"\necho \"verify: restart kilo, then /status should list agents (planner, researcher, ...) and the deliver skill\"",
+                "lineStart": 1,
+                "lineEnd": 103,
+                "totalLines": 103,
+                "truncated": false
+              },
+              "approval": {
+                "source": "agent",
+                "agent": "code",
+                "rule": {
+                  "permission": "read",
+                  "pattern": "*",
+                  "action": "allow"
+                }
+              }
+            },
+            "title": "install.sh",
+            "time": {
+              "start": 1792757472544,
+              "end": 1792757472578
+            }
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": []
+            }
+          },
+          "id": "prt_168ac1d16001RYRdnxhX3Os8xa",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168abecb8001gK7meQ3OgUFjR6"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "79ee75eec155701ef470c489799f5ac2e08f05d8",
+          "type": "step-finish",
+          "time": {
+            "start": 1792757469206,
+            "end": 1792757472602,
+            "elapsed": 3396
+          },
+          "model": {
+            "providerID": "kilo",
+            "modelID": "stealth/glyph-cluster"
+          },
+          "vercelID": "lhr1::fra1::rd9wg-1792757460334-eadbbca524b4",
+          "metrics": {
+            "generation": 29.44640753828033,
+            "source": "computed"
+          },
+          "tokens": {
+            "total": 14354,
+            "input": 14184,
+            "output": 32,
+            "reasoning": 68,
+            "cache": {
+              "write": 0,
+              "read": 70
+            }
+          },
+          "cost": 0,
+          "id": "prt_168ac1d5b001DgpNGlNBL1A2kL",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168abecb8001gK7meQ3OgUFjR6"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_168abe8a70016zqA539QTOnnSD",
+        "role": "assistant",
+        "mode": "code",
+        "agent": "code",
+        "path": {
+          "cwd": "/tmp/comp-work-xP1N8j",
+          "root": "/tmp/comp-work-xP1N8j"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 16772,
+          "input": 1401,
+          "output": 338,
+          "reasoning": 777,
+          "cache": {
+            "write": 0,
+            "read": 14256
+          }
+        },
+        "modelID": "kilo-auto/free",
+        "providerID": "kilo",
+        "time": {
+          "created": 1792757472634,
+          "completed": 1792757803271
+        },
+        "finish": "tool-calls",
+        "id": "msg_168ac1d7a001NJmIzPjSg3mhti",
+        "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z"
+      },
+      "parts": [
+        {
+          "snapshot": "79ee75eec155701ef470c489799f5ac2e08f05d8",
+          "type": "step-start",
+          "time": {
+            "start": 1792757779906
+          },
+          "id": "prt_168b0cdc2001fmFLlPsSnbJhzP",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168ac1d7a001NJmIzPjSg3mhti"
+        },
+        {
+          "type": "tool",
+          "tool": "edit",
+          "callID": "call_45d8cefbe7e444c2ac7f56bc4b191e5c",
+          "state": {
+            "status": "completed",
+            "input": {
+              "filePath": "/tmp/comp-work-xP1N8j/install.sh",
+              "oldString": "case \"$mode\" in\n  global)\n    dest=\"${XDG_CONFIG_HOME:-$HOME/.config}/kilo\"\n    ;;\n  project)\n    git -C . rev-parse --is-inside-work-tree >/dev/null 2>&1 || {\n      echo \"--project must run inside a git repo\" >&2; exit 65; }\n    dest=\"$(git rev-parse --show-toplevel)/.kilo\"\n    ;;\n  prefix)\n    dest=\"$prefix\"\n    ;;\nesac",
+              "newString": "case \"$mode\" in\n  global)\n    dest=\"${XDG_CONFIG_HOME:-$HOME/.config}/kilo\"\n    ;;\n  project)\n    git -C . rev-parse --is-inside-work-tree >/dev/null 2>&1 || {\n      echo \"--project must run inside a git repo\" >&2; exit 65; }\n    dest=\"$(git rev-parse --show-toplevel)/.kilo\"\n    ;;\n  prefix)\n    dest=\"$prefix\"\n    ;;\nesac\n\n# Self-installation is a clean no-op\nsrc_root_real=\"$(cd \"$src_root\" 2>/dev/null && pwd -P)\"\ndest_real=\"$(mkdir -p \"$dest\" 2>/dev/null && cd \"$dest\" && pwd -P)\"\nif [ -n \"$src_root_real\" ] && [ -n \"$dest_real\" ] && [ \"$src_root_real\" = \"$dest_real\" ]; then\n  exit 0\nfi"
+            },
+            "output": "Edit applied successfully.",
+            "metadata": {
+              "diagnostics": {},
+              "filediff": {
+                "file": "/tmp/comp-work-xP1N8j/install.sh",
+                "additions": 7,
+                "deletions": 0,
+                "patch": "Index: /tmp/comp-work-xP1N8j/install.sh\n===================================================================\n--- /tmp/comp-work-xP1N8j/install.sh\n+++ /tmp/comp-work-xP1N8j/install.sh\n@@ -59,8 +59,15 @@\n     dest=\"$prefix\"\n     ;;\n esac\n \n+# Self-installation is a clean no-op\n+src_root_real=\"$(cd \"$src_root\" 2>/dev/null && pwd -P)\"\n+dest_real=\"$(mkdir -p \"$dest\" 2>/dev/null && cd \"$dest\" && pwd -P)\"\n+if [ -n \"$src_root_real\" ] && [ -n \"$dest_real\" ] && [ \"$src_root_real\" = \"$dest_real\" ]; then\n+  exit 0\n+fi\n+\n # Config conflict policy (D5): preserve an existing target kilo.json unless\n # --force-config is passed.\n install_config() {\n   if [ -f \"$dest/kilo.json\" ] && [ -z \"$force_config\" ]; then\n"
+              },
+              "truncated": false,
+              "approval": {
+                "source": "agent",
+                "agent": "code",
+                "rule": {
+                  "permission": "*",
+                  "pattern": "*",
+                  "action": "allow"
+                }
+              }
+            },
+            "title": "install.sh",
+            "time": {
+              "start": 1792757803136,
+              "end": 1792757803190
+            }
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": []
+            }
+          },
+          "id": "prt_168b12873001rP5anELMoHg66C",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168ac1d7a001NJmIzPjSg3mhti"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "9f4644e8e4ece379fc8ae6af83ecd3e063be3e2b",
+          "type": "step-finish",
+          "time": {
+            "start": 1792757779906,
+            "end": 1792757803236,
+            "elapsed": 23330
+          },
+          "model": {
+            "providerID": "kilo",
+            "modelID": "stealth/glyph-cluster"
+          },
+          "vercelID": "lhr1::fra1::n4v7q-1792757777733-1f3b875a6d10",
+          "metrics": {
+            "generation": 47.79254179168453,
+            "source": "computed"
+          },
+          "tokens": {
+            "total": 16772,
+            "input": 1401,
+            "output": 338,
+            "reasoning": 777,
+            "cache": {
+              "write": 0,
+              "read": 14256
+            }
+          },
+          "cost": 0,
+          "id": "prt_168b128e5001GUQYKf5xHHubqZ",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168ac1d7a001NJmIzPjSg3mhti"
+        },
+        {
+          "type": "patch",
+          "hash": "79ee75eec155701ef470c489799f5ac2e08f05d8",
+          "files": [
+            "/tmp/comp-work-xP1N8j/install.sh"
+          ],
+          "id": "prt_168b12901001zm3kVIBC17GFxo",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168ac1d7a001NJmIzPjSg3mhti"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_168abe8a70016zqA539QTOnnSD",
+        "role": "assistant",
+        "mode": "code",
+        "agent": "code",
+        "path": {
+          "cwd": "/tmp/comp-work-xP1N8j",
+          "root": "/tmp/comp-work-xP1N8j"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 16058,
+          "input": 345,
+          "output": 9,
+          "reasoning": 48,
+          "cache": {
+            "write": 0,
+            "read": 15656
+          }
+        },
+        "modelID": "kilo-auto/free",
+        "providerID": "kilo",
+        "time": {
+          "created": 1792757803279,
+          "completed": 1792757806132
+        },
+        "finish": "stop",
+        "id": "msg_168b1290f001MLgivSmf4VEoGy",
+        "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z"
+      },
+      "parts": [
+        {
+          "snapshot": "9f4644e8e4ece379fc8ae6af83ecd3e063be3e2b",
+          "type": "step-start",
+          "time": {
+            "start": 1792757805233
+          },
+          "id": "prt_168b130b1001yTr0YIket7Gu2s",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168b1290f001MLgivSmf4VEoGy"
+        },
+        {
+          "type": "text",
+          "text": "Done\n",
+          "time": {
+            "start": 1792757806034,
+            "end": 1792757806086
+          },
+          "id": "prt_168b133d20012p6G8fDF66F6tE",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168b1290f001MLgivSmf4VEoGy"
+        },
+        {
+          "reason": "stop",
+          "snapshot": "9f4644e8e4ece379fc8ae6af83ecd3e063be3e2b",
+          "type": "step-finish",
+          "time": {
+            "start": 1792757805233,
+            "end": 1792757806110,
+            "elapsed": 877
+          },
+          "model": {
+            "providerID": "kilo",
+            "modelID": "stealth/glyph-cluster"
+          },
+          "vercelID": "lhr1::fra1::jwckv-1792757803350-551603e31ffc",
+          "metrics": {
+            "generation": 64.99429874572407,
+            "source": "computed"
+          },
+          "tokens": {
+            "total": 16058,
+            "input": 345,
+            "output": 9,
+            "reasoning": 48,
+            "cache": {
+              "write": 0,
+              "read": 15656
+            }
+          },
+          "cost": 0,
+          "id": "prt_168b1341f001ZR2FQr9Rk5oWSh",
+          "sessionID": "ses_e97542384ffelnzBt0I2D0LW5z",
+          "messageID": "msg_168b1290f001MLgivSmf4VEoGy"
+        }
+      ]
+    }
+  ]
+}

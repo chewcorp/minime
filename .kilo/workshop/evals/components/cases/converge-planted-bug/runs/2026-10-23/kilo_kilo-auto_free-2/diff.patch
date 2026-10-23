@@ -1,0 +1,53 @@
+diff --git a/REVIEW.md b/REVIEW.md
+new file mode 100644
+index 0000000..8be9acc
+--- /dev/null
++++ b/REVIEW.md
+@@ -0,0 +1,46 @@
++# Review: clamp addition (DIFF.patch)
++
++## BLOCKING
++
++### 1. `clamp` upper bound uses `lo` instead of `hi`
++
++**Location:** `calc.py` (new function `clamp`, line 9 of DIFF.patch)
++
++**Finding:**
++
++```python
++def clamp(x, lo, hi):
++    return max(lo, min(x, lo))
++```
++
++The inner `min(x, lo)` caps `x` at `lo`, the lower bound, instead of `hi`, the upper bound. The function will never return a value greater than `lo`, so the upper bound is effectively ignored. For example, `clamp(100, 0, 10)` returns `0` instead of `10`.
++
++**Core claim undermined:** The function does not perform clamping; it silently misbehaves for any input above the lower bound.
++
++**Severity:** Blocking. This is a logic bug that breaks the intended behavior of the new function.
++
++**Fix:** Change `min(x, lo)` to `min(x, hi)`:
++
++```python
++def clamp(x, lo, hi):
++    return max(lo, min(x, hi))
++```
++
++## ADVISORY
++
++### 2. No tests added for `clamp`
++
++**Location:** `test_calc.py` (unchanged by DIFF.patch)
++
++**Finding:** The new `clamp` function has no corresponding test. While not breaking, it leaves the behavior unverified and the blocking bug above would have been caught immediately.
++
++**Severity:** Advisory. Add tests covering below-lower-bound, within-range, and above-upper-bound cases.
++
++## Summary
++
++| # | Finding | Severity |
++|---|---------|----------|
++| 1 | `clamp` upper bound bug (`min(x, lo)` should be `min(x, hi)`) | Blocking |
++| 2 | No tests for `clamp` | Advisory |
++
++**Verdict:** Do not merge. Fix the blocking bug (finding 1) before proceeding.
+\ No newline at end of file

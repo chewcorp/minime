@@ -1,0 +1,13 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 1,
+  "secs": 40,
+  "run_rc": 0,
+  "time": "2026-10-23T12:18:10Z",
+  "component": "build",
+  "case": "build-subtract",
+  "passed": 5,
+  "total": 5,
+  "verdict": "pass",
+  "failed": []
+}

@@ -1,0 +1,7 @@
+diff --git a/NEXT.md b/NEXT.md
+new file mode 100644
+index 0000000..dc96c9e
+--- /dev/null
++++ b/NEXT.md
+@@ -0,0 +1 @@
++Escalate to human: same root cause (mean([]) ZeroDivisionError) flagged 3+ times; converge rule says same cause 3+ → human. Do not implement another caller guard; fix root in mean() or narrow scope with human decision.

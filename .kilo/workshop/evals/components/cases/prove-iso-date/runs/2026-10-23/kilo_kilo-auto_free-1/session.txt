@@ -1,0 +1,71 @@
+[0m
+> code · kilo-auto/free
+[0m
+[0m→ [0mRead calc.py
+[0m✱ [0mGlob "**/*.py"[90m 3 matches[0m
+[0m→ [0mRead test_calc.py
+[0m✱ [0mGlob "PROOF.md"[90m 0 matches[0m
+[0m
+[0m← [0mEdit calc.py
+Index: /tmp/comp-work-2FdH4e/calc.py
+===================================================================
+--- /tmp/comp-work-2FdH4e/calc.py
++++ /tmp/comp-work-2FdH4e/calc.py
+@@ -13,5 +13,13 @@
+     return s.lower()
+ 
+ 
+ def parse_date(s):
+-    return datetime.date.fromisoformat(s)
++    # Strip the trailing 'Z' (UTC) and any timezone offset so we can parse the date part.
++    if s.endswith("Z"):
++        s = s[:-1]
++    # Handle timezone offset like +00:00
++    if len(s) >= 6 and s[-6] in "+-":
++        s = s[:-6]
++    elif len(s) >= 5 and s[-5] in "+-":
++        s = s[:-5]
++    return datetime.date.fromisoformat(s[:10])
+
+[0m
+[0m← [0mEdit calc.py
+Index: /tmp/comp-work-2FdH4e/calc.py
+===================================================================
+--- /tmp/comp-work-2FdH4e/calc.py
++++ /tmp/comp-work-2FdH4e/calc.py
+@@ -13,13 +13,7 @@
+     return s.lower()
+ 
+ 
+ def parse_date(s):
+-    # Strip the trailing 'Z' (UTC) and any timezone offset so we can parse the date part.
+     if s.endswith("Z"):
+         s = s[:-1]
+-    # Handle timezone offset like +00:00
+-    if len(s) >= 6 and s[-6] in "+-":
+-        s = s[:-6]
+-    elif len(s) >= 5 and s[-5] in "+-":
+-        s = s[:-5]
+     return datetime.date.fromisoformat(s[:10])
+
+[0m
+Let me simplify the implementation:
+[0m$ [0mpython3 -m unittest -v
+test_add (test_calc.CalcTest.test_add) ... ok
+test_mean (test_calc.CalcTest.test_mean) ... ok
+test_normalize (test_calc.CalcTest.test_normalize) ... ok
+test_parse_date (test_calc.CalcTest.test_parse_date) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK
+[0m
+[0m$ [0mpython3 -c "import calc; print(calc.parse_date('2026-01-02T03:04:05Z')); print(calc.parse_date('2026-01-02'))"
+2026-01-02
+2026-01-02
+[0m
+[0m← [0mWrite PROOF.md
+Wrote file successfully.
+[0m
+Implemented `parse_date` in `calc.py:16` to strip the trailing `Z` and parse the date portion. Both `parse_date('2026-01-02T03:04:05Z')` and `parse_date('2026-01-02')` return `datetime.date(2026, 1, 2)`. All 4 tests pass. Proof written to `PROOF.md`.

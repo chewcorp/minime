@@ -1,0 +1,816 @@
+{
+  "info": {
+    "id": "ses_e97344427ffeC855o07JHHcJEH",
+    "slug": "quiet-wolf",
+    "projectID": "b8a25b3478fe98510dee21ff9e17a9988b3588db",
+    "directory": "/tmp/comp-work-TX4Dcf",
+    "path": "",
+    "title": "comp-prove-perf-claim-1",
+    "agent": "code",
+    "model": {
+      "id": "kilo-auto/free",
+      "providerID": "kilo",
+      "variant": "default"
+    },
+    "version": "7.8.15",
+    "summary": {
+      "additions": 12,
+      "deletions": 0,
+      "files": 2
+    },
+    "cost": 0,
+    "tokens": {
+      "input": 13539,
+      "output": 420,
+      "reasoning": 80,
+      "cache": {
+        "read": 62016,
+        "write": 0
+      }
+    },
+    "permission": [
+      {
+        "permission": "question",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "suggest",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "plan_enter",
+        "pattern": "*",
+        "action": "deny"
+      },
+      {
+        "permission": "plan_exit",
+        "pattern": "*",
+        "action": "deny"
+      }
+    ],
+    "time": {
+      "created": 1792759544793,
+      "updated": 1792759556024
+    }
+  },
+  "messages": [
+    {
+      "info": {
+        "role": "user",
+        "time": {
+          "created": 1792759548323
+        },
+        "agent": "code",
+        "model": {
+          "providerID": "kilo",
+          "modelID": "kilo-auto/free"
+        },
+        "summary": {
+          "diffs": [
+            {
+              "file": "PROOF.md",
+              "patch": "diff --git a/PROOF.md b/PROOF.md\nnew file mode 100644\nindex 0000000..c2c5ac9\n--- /dev/null\n+++ b/PROOF.md\n@@ -0,0 +1,12 @@\n+# Proof: fast_sum vs slow_sum (100000 ints)\n+\n+Benchmark: `python3 -m timeit`-style runs, 50 iterations over `xs = list(range(100000))`.\n+\n+| Function | Total (50 runs) | Per call |\n+|---|---|---|\n+| slow_sum | 0.1166 s | 0.002332 s |\n+| fast_sum | 0.02176 s | 0.000435 s |\n+\n+Ratio (slow / fast): ~5.36x.\n+\n+Answer: **Yes**, `fast_sum` is faster than `slow_sum` for a list of 100000 ints (~5.4x faster).\n",
+              "additions": 12,
+              "deletions": 0,
+              "status": "added"
+            },
+            {
+              "file": "__pycache__/calc.cpython-314.pyc",
+              "patch": "",
+              "additions": 0,
+              "deletions": 0,
+              "status": "added"
+            }
+          ]
+        },
+        "id": "msg_168cbc9a30018OtudmdOQIEVPB",
+        "sessionID": "ses_e97344427ffeC855o07JHHcJEH"
+      },
+      "parts": [
+        {
+          "type": "text",
+          "text": "\"Is fast_sum faster than slow_sum in calc.py for a list of 100000 ints? Answer in PROOF.md. Do not change calc.py.\"",
+          "id": "prt_168cbc9dd001nZOWkR1Qu8z45T",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbc9a30018OtudmdOQIEVPB"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_168cbc9a30018OtudmdOQIEVPB",
+        "role": "assistant",
+        "mode": "code",
+        "agent": "code",
+        "path": {
+          "cwd": "/tmp/comp-work-TX4Dcf",
+          "root": "/tmp/comp-work-TX4Dcf"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 14499,
+          "input": 12199,
+          "output": 50,
+          "reasoning": 10,
+          "cache": {
+            "write": 0,
+            "read": 2240
+          }
+        },
+        "modelID": "kilo-auto/free",
+        "providerID": "kilo",
+        "time": {
+          "created": 1792759549314,
+          "completed": 1792759550801
+        },
+        "finish": "tool-calls",
+        "id": "msg_168cbcd82001ax3QqER6yjSCXQ",
+        "sessionID": "ses_e97344427ffeC855o07JHHcJEH"
+      },
+      "parts": [
+        {
+          "snapshot": "8bf7ba019a232fe3241dd89832f0635a8cc05645",
+          "type": "step-start",
+          "time": {
+            "start": 1792759550514
+          },
+          "id": "prt_168cbd23200169992Cy8M1mPGN",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbcd82001ax3QqER6yjSCXQ"
+        },
+        {
+          "type": "reasoning",
+          "text": "Let me explore the repo first.",
+          "time": {
+            "start": 1792759550518,
+            "end": 1792759550700
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": [
+                {
+                  "type": "reasoning.text",
+                  "text": "Let me explore the repo first.",
+                  "format": "unknown",
+                  "index": 0
+                }
+              ]
+            }
+          },
+          "id": "prt_168cbd236001tXJ8dZHxOFJzHE",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbcd82001ax3QqER6yjSCXQ"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call-a455287d-74ae-4de3-99d8-8f69f0c537ba",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "ls -la /tmp/comp-work-TX4Dcf && cat /tmp/comp-work-TX4Dcf/calc.py 2>/dev/null"
+            },
+            "output": "total 40\ndrwxrwxrwx+  4 codespace codespace 4096 Oct 23 12:45 .\ndrwxr-xrwt+ 10 root      root      4096 Oct 23 12:45 ..\ndrwxrwxrwx+  7 codespace codespace 4096 Oct 23 12:45 .git\ndrwxrwxrwx+  4 codespace codespace 4096 Oct 23 12:45 .kilo\n-rw-rw-rw-   1 codespace codespace  438 Oct 22 22:36 AGENTS.md\n-rw-rw-rw-   1 codespace codespace   63 Oct 22 22:36 README.md\n-rw-rw-rw-   1 codespace codespace    6 Oct 22 22:36 VERSION\n-rw-rw-rw-   1 codespace codespace  325 Oct 23 12:45 calc.py\n-rw-rw-rw-   1 codespace codespace  410 Oct 22 22:36 cli.py\n-rw-rw-rw-   1 codespace codespace  476 Oct 22 22:36 test_calc.py\nimport datetime\n\n\ndef add(a, b):\n    return a + b\n\n\ndef mean(xs):\n    return sum(xs) / len(xs)\n\n\ndef normalize(s):\n    return s.lower()\n\n\ndef parse_date(s):\n    return datetime.date.fromisoformat(s)\n\n\ndef slow_sum(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\n\ndef fast_sum(xs):\n    return sum(xs)\n",
+            "metadata": {
+              "output": "total 40\ndrwxrwxrwx+  4 codespace codespace 4096 Oct 23 12:45 .\ndrwxr-xrwt+ 10 root      root      4096 Oct 23 12:45 ..\ndrwxrwxrwx+  7 codespace codespace 4096 Oct 23 12:45 .git\ndrwxrwxrwx+  4 codespace codespace 4096 Oct 23 12:45 .kilo\n-rw-rw-rw-   1 codespace codespace  438 Oct 22 22:36 AGENTS.md\n-rw-rw-rw-   1 codespace codespace   63 Oct 22 22:36 README.md\n-rw-rw-rw-   1 codespace codespace    6 Oct 22 22:36 VERSION\n-rw-rw-rw-   1 codespace codespace  325 Oct 23 12:45 calc.py\n-rw-rw-rw-   1 codespace codespace  410 Oct 22 22:36 cli.py\n-rw-rw-rw-   1 codespace codespace  476 Oct 22 22:36 test_calc.py\nimport datetime\n\n\ndef add(a, b):\n    return a + b\n\n\ndef mean(xs):\n    return sum(xs) / len(xs)\n\n\ndef normalize(s):\n    return s.lower()\n\n\ndef parse_date(s):\n    return datetime.date.fromisoformat(s)\n\n\ndef slow_sum(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\n\ndef fast_sum(xs):\n    return sum(xs)\n",
+              "exit": 0,
+              "description": "ls -la /tmp/comp-work-TX4Dcf && cat /tmp/comp-work-TX4Dcf/calc.py 2>/dev/null",
+              "truncated": false,
+              "approval": {
+                "source": "agent",
+                "agent": "code",
+                "rule": {
+                  "permission": "bash",
+                  "pattern": "cat *",
+                  "action": "allow"
+                }
+              }
+            },
+            "title": "ls -la /tmp/comp-work-TX4Dcf && cat /tmp/comp-work-TX4Dcf/calc.py 2>/dev/null",
+            "time": {
+              "start": 1792759550647,
+              "end": 1792759550742
+            }
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": [
+                {
+                  "type": "reasoning.text",
+                  "text": "Let me explore the repo first.",
+                  "format": "unknown",
+                  "index": 0
+                }
+              ]
+            }
+          },
+          "id": "prt_168cbd27000190ZzfgvMCPrL4p",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbcd82001ax3QqER6yjSCXQ"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "8bf7ba019a232fe3241dd89832f0635a8cc05645",
+          "type": "step-finish",
+          "time": {
+            "start": 1792759550514,
+            "end": 1792759550774,
+            "elapsed": 260
+          },
+          "model": {
+            "providerID": "kilo",
+            "modelID": "reflection/beam"
+          },
+          "vercelID": "lhr1::fra1::gcprz-1792759549561-ed488d1ff467",
+          "metrics": {
+            "generation": 230.76923076923077,
+            "source": "computed"
+          },
+          "tokens": {
+            "total": 14499,
+            "input": 12199,
+            "output": 50,
+            "reasoning": 10,
+            "cache": {
+              "write": 0,
+              "read": 2240
+            }
+          },
+          "cost": 0,
+          "id": "prt_168cbd339001bMQJfYhebEjet6",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbcd82001ax3QqER6yjSCXQ"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_168cbc9a30018OtudmdOQIEVPB",
+        "role": "assistant",
+        "mode": "code",
+        "agent": "code",
+        "path": {
+          "cwd": "/tmp/comp-work-TX4Dcf",
+          "root": "/tmp/comp-work-TX4Dcf"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 14971,
+          "input": 517,
+          "output": 36,
+          "reasoning": 18,
+          "cache": {
+            "write": 0,
+            "read": 14400
+          }
+        },
+        "modelID": "kilo-auto/free",
+        "providerID": "kilo",
+        "time": {
+          "created": 1792759550808,
+          "completed": 1792759551956
+        },
+        "finish": "tool-calls",
+        "id": "msg_168cbd358001hoGLTQkbr5NpW1",
+        "sessionID": "ses_e97344427ffeC855o07JHHcJEH"
+      },
+      "parts": [
+        {
+          "snapshot": "8bf7ba019a232fe3241dd89832f0635a8cc05645",
+          "type": "step-start",
+          "time": {
+            "start": 1792759551673
+          },
+          "id": "prt_168cbd6b9001G1mPiaDS59lZEH",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbd358001hoGLTQkbr5NpW1"
+        },
+        {
+          "type": "reasoning",
+          "text": "Need to benchmark. Let me check tests and README.",
+          "time": {
+            "start": 1792759551676,
+            "end": 1792759551868
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": [
+                {
+                  "type": "reasoning.text",
+                  "text": "Need to benchmark. Let me check tests and README.",
+                  "format": "unknown",
+                  "index": 0
+                }
+              ]
+            }
+          },
+          "id": "prt_168cbd6bc001bstsg4UuzRqhN8",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbd358001hoGLTQkbr5NpW1"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call-2c816ef6-bcd1-430b-bcd1-4007bff43953",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "cd /tmp/comp-work-TX4Dcf && cat test_calc.py README.md && python3 --version"
+            },
+            "output": "import datetime\nimport unittest\n\nimport calc\n\n\nclass CalcTest(unittest.TestCase):\n    def test_add(self):\n        self.assertEqual(calc.add(2, 3), 5)\n\n    def test_mean(self):\n        self.assertEqual(calc.mean([1, 2, 3]), 2)\n\n    def test_normalize(self):\n        self.assertEqual(calc.normalize(\"ABC\"), \"abc\")\n\n    def test_parse_date(self):\n        self.assertEqual(calc.parse_date(\"2026-01-02\"), datetime.date(2026, 1, 2))\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n# Calcualtor\n\nA tiny calculator. Run `python3 cli.py add 2 3`.\nPython 3.14.2\n",
+            "metadata": {
+              "output": "import datetime\nimport unittest\n\nimport calc\n\n\nclass CalcTest(unittest.TestCase):\n    def test_add(self):\n        self.assertEqual(calc.add(2, 3), 5)\n\n    def test_mean(self):\n        self.assertEqual(calc.mean([1, 2, 3]), 2)\n\n    def test_normalize(self):\n        self.assertEqual(calc.normalize(\"ABC\"), \"abc\")\n\n    def test_parse_date(self):\n        self.assertEqual(calc.parse_date(\"2026-01-02\"), datetime.date(2026, 1, 2))\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n# Calcualtor\n\nA tiny calculator. Run `python3 cli.py add 2 3`.\nPython 3.14.2\n",
+              "exit": 0,
+              "description": "cd /tmp/comp-work-TX4Dcf && cat test_calc.py README.md && python3 --version",
+              "truncated": false,
+              "approval": {
+                "source": "manual"
+              }
+            },
+            "title": "cd /tmp/comp-work-TX4Dcf && cat test_calc.py README.md && python3 --version",
+            "time": {
+              "start": 1792759551825,
+              "end": 1792759551880
+            }
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": [
+                {
+                  "type": "reasoning.text",
+                  "text": "Need to benchmark. Let me check tests and README.",
+                  "format": "unknown",
+                  "index": 0
+                }
+              ]
+            }
+          },
+          "id": "prt_168cbd70f001NJTTIrc4uckswY",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbd358001hoGLTQkbr5NpW1"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "8bf7ba019a232fe3241dd89832f0635a8cc05645",
+          "type": "step-finish",
+          "time": {
+            "start": 1792759551673,
+            "end": 1792759551917,
+            "elapsed": 244
+          },
+          "model": {
+            "providerID": "kilo",
+            "modelID": "reflection/beam"
+          },
+          "vercelID": "lhr1::fra1::4r5kg-1792759550852-7b50ac10a2c6",
+          "metrics": {
+            "generation": 221.31147540983608,
+            "source": "computed"
+          },
+          "tokens": {
+            "total": 14971,
+            "input": 517,
+            "output": 36,
+            "reasoning": 18,
+            "cache": {
+              "write": 0,
+              "read": 14400
+            }
+          },
+          "cost": 0,
+          "id": "prt_168cbd7ae0017JA2EaS0CKtMdm",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbd358001hoGLTQkbr5NpW1"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_168cbc9a30018OtudmdOQIEVPB",
+        "role": "assistant",
+        "mode": "code",
+        "agent": "code",
+        "path": {
+          "cwd": "/tmp/comp-work-TX4Dcf",
+          "root": "/tmp/comp-work-TX4Dcf"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 15290,
+          "input": 226,
+          "output": 124,
+          "reasoning": 28,
+          "cache": {
+            "write": 0,
+            "read": 14912
+          }
+        },
+        "modelID": "kilo-auto/free",
+        "providerID": "kilo",
+        "time": {
+          "created": 1792759551978,
+          "completed": 1792759553431
+        },
+        "finish": "tool-calls",
+        "id": "msg_168cbd7ea001XB12HWEtRK8ceu",
+        "sessionID": "ses_e97344427ffeC855o07JHHcJEH"
+      },
+      "parts": [
+        {
+          "snapshot": "8bf7ba019a232fe3241dd89832f0635a8cc05645",
+          "type": "step-start",
+          "time": {
+            "start": 1792759552802
+          },
+          "id": "prt_168cbdb22001cKK6tbLHilizhn",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbd7ea001XB12HWEtRK8ceu"
+        },
+        {
+          "type": "reasoning",
+          "text": "Benchmark both functions over 100000 ints with timeit, repeat a few times.",
+          "time": {
+            "start": 1792759552804,
+            "end": 1792759553211
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": [
+                {
+                  "type": "reasoning.text",
+                  "text": "Benchmark both functions over 100000 ints with timeit, repeat a few times.",
+                  "format": "unknown",
+                  "index": 0
+                }
+              ]
+            }
+          },
+          "id": "prt_168cbdb24001MPXfr8aMAVkVfm",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbd7ea001XB12HWEtRK8ceu"
+        },
+        {
+          "type": "tool",
+          "tool": "bash",
+          "callID": "call-57ba940f-054d-4683-9701-1c23df50db0b",
+          "state": {
+            "status": "completed",
+            "input": {
+              "command": "cd /tmp/comp-work-TX4Dcf && python3 -c \"\nimport timeit, calc\nxs=[i for i in range(100000)]\nslow=timeit.timeit(lambda: calc.slow_sum(xs), number=50)\nfast=timeit.timeit(lambda: calc.fast_sum(xs), number=50)\nprint('slow', slow, 'per', slow/50)\nprint('fast', fast, 'per', fast/50)\nprint('ratio slow/fast', slow/fast)\n\""
+            },
+            "output": "slow 0.11660443199980364 per 0.0023320886399960726\nfast 0.021756920000370883 per 0.00043513840000741766\nratio slow/fast 5.359418152836703\n",
+            "metadata": {
+              "output": "slow 0.11660443199980364 per 0.0023320886399960726\nfast 0.021756920000370883 per 0.00043513840000741766\nratio slow/fast 5.359418152836703\n",
+              "exit": 0,
+              "description": "cd /tmp/comp-work-TX4Dcf && python3 -c \"\nimport timeit, calc\nxs=[i for i in range(100000)]\nslow=timeit.timeit(lambda: calc.slow_sum(xs), number=50)\nfast=timeit.timeit(lambda: calc.fast_sum(xs), number=50)\nprint('slow', slow, 'per', slow/50)\nprint('fast', fast, 'per', fast/50)\nprint('ratio slow/fast', slow/fast)\n\"",
+              "truncated": false,
+              "approval": {
+                "source": "manual"
+              }
+            },
+            "title": "cd /tmp/comp-work-TX4Dcf && python3 -c \"\nimport timeit, calc\nxs=[i for i in range(100000)]\nslow=timeit.timeit(lambda: calc.slow_sum(xs), number=50)\nfast=timeit.timeit(lambda: calc.fast_sum(xs), number=50)\nprint('slow', slow, 'per', slow/50)\nprint('fast', fast, 'per', fast/50)\nprint('ratio slow/fast', slow/fast)\n\"",
+            "time": {
+              "start": 1792759553169,
+              "end": 1792759553362
+            }
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": [
+                {
+                  "type": "reasoning.text",
+                  "text": "Benchmark both functions over 100000 ints with timeit, repeat a few times.",
+                  "format": "unknown",
+                  "index": 0
+                }
+              ]
+            }
+          },
+          "id": "prt_168cbdb71001WM6Rp2NR2ARESw",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbd7ea001XB12HWEtRK8ceu"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "8be099976e56161ea921402016e1d233624e2227",
+          "type": "step-finish",
+          "time": {
+            "start": 1792759552802,
+            "end": 1792759553409,
+            "elapsed": 607
+          },
+          "model": {
+            "providerID": "kilo",
+            "modelID": "reflection/beam"
+          },
+          "vercelID": "lhr1::fra1::n4v7q-1792759552030-11804b539c66",
+          "metrics": {
+            "generation": 250.41186161449752,
+            "source": "computed"
+          },
+          "tokens": {
+            "total": 15290,
+            "input": 226,
+            "output": 124,
+            "reasoning": 28,
+            "cache": {
+              "write": 0,
+              "read": 14912
+            }
+          },
+          "cost": 0,
+          "id": "prt_168cbdd81001uEx0AsFUZcd0VP",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbd7ea001XB12HWEtRK8ceu"
+        },
+        {
+          "type": "patch",
+          "hash": "8bf7ba019a232fe3241dd89832f0635a8cc05645",
+          "files": [
+            "/tmp/comp-work-TX4Dcf/__pycache__/calc.cpython-314.pyc"
+          ],
+          "id": "prt_168cbdd94001bDGRxrx7ksNWNU",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbd7ea001XB12HWEtRK8ceu"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_168cbc9a30018OtudmdOQIEVPB",
+        "role": "assistant",
+        "mode": "code",
+        "agent": "code",
+        "path": {
+          "cwd": "/tmp/comp-work-TX4Dcf",
+          "root": "/tmp/comp-work-TX4Dcf"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 15630,
+          "input": 311,
+          "output": 196,
+          "reasoning": 19,
+          "cache": {
+            "write": 0,
+            "read": 15104
+          }
+        },
+        "modelID": "kilo-auto/free",
+        "providerID": "kilo",
+        "time": {
+          "created": 1792759553438,
+          "completed": 1792759555081
+        },
+        "finish": "tool-calls",
+        "id": "msg_168cbdd9e001Ndr9O9zhIlbfie",
+        "sessionID": "ses_e97344427ffeC855o07JHHcJEH"
+      },
+      "parts": [
+        {
+          "snapshot": "8be099976e56161ea921402016e1d233624e2227",
+          "type": "step-start",
+          "time": {
+            "start": 1792759554286
+          },
+          "id": "prt_168cbe0ee001SNqRn6ACWEirfF",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbdd9e001Ndr9O9zhIlbfie"
+        },
+        {
+          "type": "reasoning",
+          "text": "Write PROOF.md with benchmark results and answer.",
+          "time": {
+            "start": 1792759554288,
+            "end": 1792759555020
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": [
+                {
+                  "type": "reasoning.text",
+                  "text": "Write PROOF.md with benchmark results and answer.",
+                  "format": "unknown",
+                  "index": 0
+                }
+              ]
+            }
+          },
+          "id": "prt_168cbe0f0001UpuOLrcACdccOv",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbdd9e001Ndr9O9zhIlbfie"
+        },
+        {
+          "type": "tool",
+          "tool": "write",
+          "callID": "call-6a584338-da91-4490-b294-75bde56a1a9f",
+          "state": {
+            "status": "completed",
+            "input": {
+              "content": "# Proof: fast_sum vs slow_sum (100000 ints)\n\nBenchmark: `python3 -m timeit`-style runs, 50 iterations over `xs = list(range(100000))`.\n\n| Function | Total (50 runs) | Per call |\n|---|---|---|\n| slow_sum | 0.1166 s | 0.002332 s |\n| fast_sum | 0.02176 s | 0.000435 s |\n\nRatio (slow / fast): ~5.36x.\n\nAnswer: **Yes**, `fast_sum` is faster than `slow_sum` for a list of 100000 ints (~5.4x faster).\n",
+              "filePath": "/tmp/comp-work-TX4Dcf/PROOF.md"
+            },
+            "output": "Wrote file successfully.",
+            "metadata": {
+              "diagnostics": {},
+              "filepath": "/tmp/comp-work-TX4Dcf/PROOF.md",
+              "exists": false,
+              "filediff": {
+                "file": "/tmp/comp-work-TX4Dcf/PROOF.md",
+                "additions": 12,
+                "deletions": 0,
+                "patch": "Index: /tmp/comp-work-TX4Dcf/PROOF.md\n===================================================================\n--- /tmp/comp-work-TX4Dcf/PROOF.md\n+++ /tmp/comp-work-TX4Dcf/PROOF.md\n@@ -0,0 +1,12 @@\n+# Proof: fast_sum vs slow_sum (100000 ints)\n+\n+Benchmark: `python3 -m timeit`-style runs, 50 iterations over `xs = list(range(100000))`.\n+\n+| Function | Total (50 runs) | Per call |\n+|---|---|---|\n+| slow_sum | 0.1166 s | 0.002332 s |\n+| fast_sum | 0.02176 s | 0.000435 s |\n+\n+Ratio (slow / fast): ~5.36x.\n+\n+Answer: **Yes**, `fast_sum` is faster than `slow_sum` for a list of 100000 ints (~5.4x faster).\n"
+              },
+              "truncated": false,
+              "approval": {
+                "source": "agent",
+                "agent": "code",
+                "rule": {
+                  "permission": "*",
+                  "pattern": "*",
+                  "action": "allow"
+                }
+              }
+            },
+            "title": "PROOF.md",
+            "time": {
+              "start": 1792759555000,
+              "end": 1792759555029
+            }
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": [
+                {
+                  "type": "reasoning.text",
+                  "text": "Write PROOF.md with benchmark results and answer.",
+                  "format": "unknown",
+                  "index": 0
+                }
+              ]
+            }
+          },
+          "id": "prt_168cbe158001YYwEDqpO3lpyk1",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbdd9e001Ndr9O9zhIlbfie"
+        },
+        {
+          "reason": "tool-calls",
+          "snapshot": "82ad79b3c5cdae6ecc1a01f121c5b191b9555f29",
+          "type": "step-finish",
+          "time": {
+            "start": 1792759554286,
+            "end": 1792759555056,
+            "elapsed": 770
+          },
+          "model": {
+            "providerID": "kilo",
+            "modelID": "reflection/beam"
+          },
+          "vercelID": "lhr1::fra1::txkb2-1792759553456-c227ab0ba2ed",
+          "metrics": {
+            "generation": 279.2207792207792,
+            "source": "computed"
+          },
+          "tokens": {
+            "total": 15630,
+            "input": 311,
+            "output": 196,
+            "reasoning": 19,
+            "cache": {
+              "write": 0,
+              "read": 15104
+            }
+          },
+          "cost": 0,
+          "id": "prt_168cbe3f1001VIMnh8sju7Rtzw",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbdd9e001Ndr9O9zhIlbfie"
+        },
+        {
+          "type": "patch",
+          "hash": "8be099976e56161ea921402016e1d233624e2227",
+          "files": [
+            "/tmp/comp-work-TX4Dcf/PROOF.md"
+          ],
+          "id": "prt_168cbe406001m1HapHEmy6SAkp",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbdd9e001Ndr9O9zhIlbfie"
+        }
+      ]
+    },
+    {
+      "info": {
+        "parentID": "msg_168cbc9a30018OtudmdOQIEVPB",
+        "role": "assistant",
+        "mode": "code",
+        "agent": "code",
+        "path": {
+          "cwd": "/tmp/comp-work-TX4Dcf",
+          "root": "/tmp/comp-work-TX4Dcf"
+        },
+        "cost": 0,
+        "tokens": {
+          "total": 15665,
+          "input": 286,
+          "output": 14,
+          "reasoning": 5,
+          "cache": {
+            "write": 0,
+            "read": 15360
+          }
+        },
+        "modelID": "kilo-auto/free",
+        "providerID": "kilo",
+        "time": {
+          "created": 1792759555086,
+          "completed": 1792759555996
+        },
+        "finish": "stop",
+        "id": "msg_168cbe40e0017wWeb2255OHC5T",
+        "sessionID": "ses_e97344427ffeC855o07JHHcJEH"
+      },
+      "parts": [
+        {
+          "snapshot": "82ad79b3c5cdae6ecc1a01f121c5b191b9555f29",
+          "type": "step-start",
+          "time": {
+            "start": 1792759555842
+          },
+          "id": "prt_168cbe702001qlm1wxiZWpZDDA",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbe40e0017wWeb2255OHC5T"
+        },
+        {
+          "type": "reasoning",
+          "text": "Done.",
+          "time": {
+            "start": 1792759555844,
+            "end": 1792759555867
+          },
+          "metadata": {
+            "openrouter": {
+              "reasoning_details": [
+                {
+                  "type": "reasoning.text",
+                  "text": "Done.",
+                  "format": "unknown",
+                  "index": 0
+                }
+              ]
+            }
+          },
+          "id": "prt_168cbe704001YOgtSm6T74U60M",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbe40e0017wWeb2255OHC5T"
+        },
+        {
+          "type": "text",
+          "text": "Yes. PROOF.md written.",
+          "time": {
+            "start": 1792759555870,
+            "end": 1792759555941
+          },
+          "id": "prt_168cbe71e001TNykOYaqSnO03V",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbe40e0017wWeb2255OHC5T"
+        },
+        {
+          "reason": "stop",
+          "snapshot": "82ad79b3c5cdae6ecc1a01f121c5b191b9555f29",
+          "type": "step-finish",
+          "time": {
+            "start": 1792759555842,
+            "end": 1792759555975,
+            "elapsed": 133
+          },
+          "model": {
+            "providerID": "kilo",
+            "modelID": "reflection/beam"
+          },
+          "vercelID": "lhr1::fra1::mzq6k-1792759555097-99455799c6b5",
+          "metrics": {
+            "generation": 142.85714285714286,
+            "source": "computed"
+          },
+          "tokens": {
+            "total": 15665,
+            "input": 286,
+            "output": 14,
+            "reasoning": 5,
+            "cache": {
+              "write": 0,
+              "read": 15360
+            }
+          },
+          "cost": 0,
+          "id": "prt_168cbe7880014JRjlYNEtj7Uv4",
+          "sessionID": "ses_e97344427ffeC855o07JHHcJEH",
+          "messageID": "msg_168cbe40e0017wWeb2255OHC5T"
+        }
+      ]
+    }
+  ]
+}

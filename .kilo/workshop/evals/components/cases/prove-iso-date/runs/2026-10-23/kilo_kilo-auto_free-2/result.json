@@ -1,0 +1,15 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 2,
+  "secs": 94,
+  "run_rc": 0,
+  "time": "2026-10-23T12:45:35Z",
+  "component": "prove",
+  "case": "prove-iso-date",
+  "passed": 3,
+  "total": 4,
+  "verdict": "fail",
+  "failed": [
+    "proof shows a command and its output"
+  ]
+}

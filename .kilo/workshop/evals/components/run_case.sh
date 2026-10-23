@@ -48,9 +48,11 @@ sandboxed ${tmo:+$tmo 900} kilo run --auto --log-level ERROR -m "$model" --agent
   --title "comp-$(basename "$case_dir")-$rep" --dir "$work" "$prompt" \
   > "$out/session.txt" 2>&1 || run_rc=$?
 secs=$(( $(date +%s) - start ))
-# shortcut: usage export syntax unverified on this kilo version; best effort,
-# upgrade once `kilo export` output is confirmed to carry tokens/cost.
-(cd "$work" && sandboxed kilo export) > "$out/export.json" 2>&1 || true
+# Bare `kilo export` opens an interactive session picker and hangs (kilo
+# 7.8.15), so export the newest session by id; messages carry tokens and cost.
+sid="$(cd "$work" && sandboxed kilo session list --format json -n 1 </dev/null 2>/dev/null \
+  | python3 -c 'import json,sys; print(json.load(sys.stdin)[0]["id"])' 2>/dev/null || true)"
+(cd "$work" && sandboxed ${tmo:+$tmo 60} kilo export "$sid" </dev/null) > "$out/export.json" 2>/dev/null || true
 
 git -C "$work" add -A >/dev/null 2>&1 || true
 git -C "$work" diff --cached "$(cat "$work/.git/EVAL_BASE")" > "$out/diff.patch" || true

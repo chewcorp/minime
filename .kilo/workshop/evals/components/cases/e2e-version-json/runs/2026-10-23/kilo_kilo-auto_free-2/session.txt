@@ -1,0 +1,216 @@
+[0m
+> code · kilo-auto/free
+[0m
+[0m→ [0mRead .
+[0m→ [0mRead .kilo/skills/deliver/SKILL.md
+[0m→ [0mRead .kilo/skills/build/SKILL.md
+[0m→ [0mRead .kilo/skills/clarify/SKILL.md
+[0m→ [0mRead cli.py
+[0m→ [0mRead calc.py
+[0m→ [0mRead VERSION
+[0m→ [0mRead test_calc.py
+[0m→ [0mRead README.md
+[0m→ [0mRead .kilo/kilo.json
+[0m
+[0m$ [0mmkdir -p /tmp/comp-work-LJ2aw8/.kilo/run/cli-version-json && ls /tmp/comp-work-LJ2aw8/.kilo/run/cli-version-json
+(no output)
+[0m
+[0m$ [0mcd /tmp/comp-work-LJ2aw8 && git status --short && git log --oneline -5
+b63d292 fixture
+[0m
+[0m← [0mWrite .kilo/run/cli-version-json/acceptance.md
+Wrote file successfully.
+[0m
+[0m← [0mWrite .kilo/run/cli-version-json/clarify.md
+Wrote file successfully.
+[0m
+[0m← [0mWrite .kilo/run/cli-version-json/chart.md
+Wrote file successfully.
+[0m
+[0m$ [0mcd /tmp/comp-work-LJ2aw8 && python3 --version && python3 cli.py add 2 3 && python3 cli.py --version 2>&1; echo "exit: $?"
+Python 3.14.2
+5.0
+usage: calc [-h] {add} ...
+calc: error: the following arguments are required: cmd
+exit: 2
+[0m
+[0m← [0mWrite cli.py
+Wrote file successfully.
+[0m
+[0m← [0mWrite .kilo/run/cli-version-json/build.md
+Wrote file successfully.
+[0m
+[0m← [0mEdit test_calc.py
+Index: /tmp/comp-work-LJ2aw8/test_calc.py
+===================================================================
+--- /tmp/comp-work-LJ2aw8/test_calc.py
++++ /tmp/comp-work-LJ2aw8/test_calc.py
+@@ -1,14 +1,39 @@
+ import datetime
++import json
++import subprocess
++import sys
+ import unittest
++from pathlib import Path
+ 
+ import calc
+ 
++ROOT = Path(__file__).resolve().parent
+ 
++
++def run_cli(*args):
++    return subprocess.run(
++        [sys.executable, str(ROOT / "cli.py"), *args],
++        capture_output=True,
++        text=True,
++    )
++
++
+ class CalcTest(unittest.TestCase):
+     def test_add(self):
+         self.assertEqual(calc.add(2, 3), 5)
+ 
++    def test_version(self):
++        proc = run_cli("--version")
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(proc.stdout, (ROOT / "VERSION").read_text().strip() + "\n")
++        self.assertEqual(proc.stderr, "")
++
++    def test_add_json(self):
++        proc = run_cli("add", "2", "3", "--json")
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), {"result": 5.0})
++
+     def test_mean(self):
+         self.assertEqual(calc.mean([1, 2, 3]), 2)
+ 
+     def test_normalize(self):
+
+[0m
+[0m$ [0mcd /tmp/comp-work-LJ2aw8 && python3 -m unittest -q && echo "---VERSION---" && python3 cli.py --version && echo "---JSON---" && python3 cli.py add 2 3 --json
+----------------------------------------------------------------------
+Ran 6 tests in 0.109s
+
+OK
+---VERSION---
+0.3.1
+---JSON---
+{"result": 5.0}
+[0m
+[0m← [0mWrite .kilo/run/cli-version-json/prove.md
+Wrote file successfully.
+[0m
+[0m$ [0mcd /tmp/comp-work-LJ2aw8 && git diff
+diff --git a/cli.py b/cli.py
+index d1b109e..53b6d9b 100644
+--- a/cli.py
++++ b/cli.py
+@@ -1,17 +1,30 @@
+ import argparse
++import json
++from pathlib import Path
+ 
+ import calc
+ 
++VERSION_PATH = Path(__file__).resolve().parent / "VERSION"
++
+ 
+ def main(argv=None):
+     parser = argparse.ArgumentParser(prog="calc")
+-    sub = parser.add_subparsers(dest="cmd", required=True)
++    parser.add_argument("--version", action="store_true")
++    sub = parser.add_subparsers(dest="cmd", required=False)
+     add = sub.add_parser("add")
+     add.add_argument("a", type=float)
+     add.add_argument("b", type=float)
++    add.add_argument("--json", action="store_true")
+     args = parser.parse_args(argv)
++    if args.version:
++        print(VERSION_PATH.read_text().strip())
++        return
+     if args.cmd == "add":
+-        print(calc.add(args.a, args.b))
++        result = calc.add(args.a, args.b)
++        if args.json:
++            print(json.dumps({"result": result}))
++        else:
++            print(result)
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/test_calc.py b/test_calc.py
+index dcceecc..036f17a 100644
+--- a/test_calc.py
++++ b/test_calc.py
+@@ -1,13 +1,38 @@
+ import datetime
++import json
++import subprocess
++import sys
+ import unittest
++from pathlib import Path
+ 
+ import calc
+ 
++ROOT = Path(__file__).resolve().parent
++
++
++def run_cli(*args):
++    return subprocess.run(
++        [sys.executable, str(ROOT / "cli.py"), *args],
++        capture_output=True,
++        text=True,
++    )
++
+ 
+ class CalcTest(unittest.TestCase):
+     def test_add(self):
+         self.assertEqual(calc.add(2, 3), 5)
+ 
++    def test_version(self):
++        proc = run_cli("--version")
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(proc.stdout, (ROOT / "VERSION").read_text().strip() + "\n")
++        self.assertEqual(proc.stderr, "")
++
++    def test_add_json(self):
++        proc = run_cli("add", "2", "3", "--json")
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), {"result": 5.0})
++
+     def test_mean(self):
+         self.assertEqual(calc.mean([1, 2, 3]), 2)
+[0m
+[0m← [0mWrite .kilo/run/cli-version-json/converge.md
+Wrote file successfully.
+[0m
+[0m← [0mWrite .kilo/run/cli-version-json/land-learn.md
+Wrote file successfully.
+[0m
+[0m$ [0mcd /tmp/comp-work-LJ2aw8 && ls -la .kilo/run/cli-version-json/ && echo "---" && git status --short
+total 36
+drwxrwxrwx+ 2 codespace codespace 4096 Oct 23 12:40 .
+drwxrwxrwx+ 3 codespace codespace 4096 Oct 23 12:39 ..
+-rw-rw-rw-  1 codespace codespace  684 Oct 23 12:39 acceptance.md
+-rw-rw-rw-  1 codespace codespace  354 Oct 23 12:40 build.md
+-rw-rw-rw-  1 codespace codespace  642 Oct 23 12:40 chart.md
+-rw-rw-rw-  1 codespace codespace  505 Oct 23 12:39 clarify.md
+-rw-rw-rw-  1 codespace codespace  449 Oct 23 12:40 converge.md
+-rw-rw-rw-  1 codespace codespace  477 Oct 23 12:40 land-learn.md
+-rw-rw-rw-  1 codespace codespace  319 Oct 23 12:40 prove.md
+---
+ M cli.py
+ M test_calc.py
+?? .kilo/run/
+?? __pycache__/
+[0m
+Delivery loop complete: clarify → chart → build → prove → converge → land-learn. Stopped before any merge to main.
+
+Results:
+- `python3 cli.py --version` → `0.3.1` (contents of VERSION)
+- `python3 cli.py add 2 3 --json` → `{"result": 5.0}`
+- `python3 -m unittest -q` → 6 tests OK
+
+Changes (uncommitted, in working tree): `cli.py` (added `--version` and `add --json`), `test_calc.py` (added `test_version`, `test_add_json`).
+
+Stage outputs saved to `.kilo/run/cli-version-json/<stage>.md`, including `acceptance.md`.

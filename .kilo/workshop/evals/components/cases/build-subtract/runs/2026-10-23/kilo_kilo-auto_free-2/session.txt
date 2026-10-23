@@ -1,0 +1,53 @@
+[0m
+> code · kilo-auto/free
+[0m
+[0m→ [0mRead calc.py
+[0m✱ [0mGlob "**/test*.py"[90m 1 match[0m
+[0m→ [0mRead test_calc.py
+[0m
+[0m← [0mEdit calc.py
+Index: /tmp/comp-work-UUNKWQ/calc.py
+===================================================================
+--- /tmp/comp-work-UUNKWQ/calc.py
++++ /tmp/comp-work-UUNKWQ/calc.py
+@@ -4,8 +4,12 @@
+ def add(a, b):
+     return a + b
+ 
+ 
++def subtract(a, b):
++    return a - b
++
++
+ def mean(xs):
+     return sum(xs) / len(xs)
+ 
+ 
+
+[0m
+[0m← [0mEdit test_calc.py
+Index: /tmp/comp-work-UUNKWQ/test_calc.py
+===================================================================
+--- /tmp/comp-work-UUNKWQ/test_calc.py
++++ /tmp/comp-work-UUNKWQ/test_calc.py
+@@ -7,8 +7,11 @@
+ class CalcTest(unittest.TestCase):
+     def test_add(self):
+         self.assertEqual(calc.add(2, 3), 5)
+ 
++    def test_subtract(self):
++        self.assertEqual(calc.subtract(5, 3), 2)
++
+     def test_mean(self):
+         self.assertEqual(calc.mean([1, 2, 3]), 2)
+ 
+     def test_normalize(self):
+
+[0m
+[0m$ [0mpython3 -m unittest -q
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+[0m
+Added `subtract(a, b)` to `calc.py` and a `test_subtract` test. All 5 tests pass.

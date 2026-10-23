@@ -1,0 +1,47 @@
+[0m
+> code · kilo-auto/free
+[0m
+[0m→ [0mRead install.sh
+[0m
+[0m← [0mEdit install.sh
+Index: /tmp/comp-work-CrTQ28/install.sh
+===================================================================
+--- /tmp/comp-work-CrTQ28/install.sh
++++ /tmp/comp-work-CrTQ28/install.sh
+@@ -70,8 +70,15 @@
+   cp "$src_root/kilo.json" "$dest/kilo.json"
+   echo "wrote $dest/kilo.json (pins planner/advisor to kilo-auto/frontier; needs Kilo Gateway)"
+ }
+ 
++# Self-install guard: when the destination is the plugin's own payload dir,
++# copying would be a no-op at best and "same file" errors at worst.
++if [ "$(realpath -m "$dest")" = "$(realpath -m "$src_root")" ]; then
++  echo "install.sh: source and destination are the same ($dest); nothing to do"
++  exit 0
++fi
++
+ # A4: one stderr notice when an existing target is about to be overwritten.
+ if [ -d "$dest" ]; then
+   echo "note: $dest exists; payload paths (agents/, skills/, kilo.json, .gitignore) will be overwritten, unrelated files untouched" >&2
+ fi
+
+[0m
+[0m$ [0mcd /tmp/comp-work-CrTQ28 && python3 -m unittest -q 2>&1 | tail -20; echo "---"; ./install.sh --project; echo "exit=$?"
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK
+---
+install.sh: source and destination are the same (/tmp/comp-work-CrTQ28/.kilo); nothing to do
+exit=0
+[0m
+[0m$ [0mcd /tmp/comp-work-CrTQ28 && tmpdir=$(mktemp -d) && ./install.sh --prefix "$tmpdir/dest" && echo "exit=$?" && ls "$tmpdir/dest"
+wrote /tmp/tmp.NLq8Msr0RA/dest/kilo.json (pins planner/advisor to kilo-auto/frontier; needs Kilo Gateway)
+installed kilo-mms 0.1.0 -> /tmp/tmp.NLq8Msr0RA/dest
+verify: restart kilo, then /status should list agents (planner, researcher, ...) and the deliver skill
+exit=0
+agents
+kilo.json
+skills
+[0m
+Self-install is now a clean no-op; legitimate installs still copy. Tests pass.

@@ -1,0 +1,13 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 2,
+  "secs": 18,
+  "run_rc": 0,
+  "time": "2026-10-23T12:47:26Z",
+  "component": "prove",
+  "case": "prove-skipped-test",
+  "passed": 3,
+  "total": 3,
+  "verdict": "pass",
+  "failed": []
+}

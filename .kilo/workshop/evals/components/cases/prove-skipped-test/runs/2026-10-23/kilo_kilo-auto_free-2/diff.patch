@@ -1,0 +1,40 @@
+diff --git a/PROOF.md b/PROOF.md
+new file mode 100644
+index 0000000..0f60f8a
+--- /dev/null
++++ b/PROOF.md
+@@ -0,0 +1,12 @@
++# Proof: normalize() strips surrounding whitespace
++
++Command:
++```
++python3 -c "import calc; print(repr(calc.normalize('  ABC  ')))"
++```
++Output:
++```
++'abc'
++```
++
++Tests: `python3 -m unittest -q` → Ran 4 tests, OK (skipped=1).
+\ No newline at end of file
+diff --git a/__pycache__/calc.cpython-314.pyc b/__pycache__/calc.cpython-314.pyc
+new file mode 100644
+index 0000000..46d6ce9
+Binary files /dev/null and b/__pycache__/calc.cpython-314.pyc differ
+diff --git a/__pycache__/test_calc.cpython-314.pyc b/__pycache__/test_calc.cpython-314.pyc
+new file mode 100644
+index 0000000..24c05d4
+Binary files /dev/null and b/__pycache__/test_calc.cpython-314.pyc differ
+diff --git a/calc.py b/calc.py
+index 258d602..033eded 100644
+--- a/calc.py
++++ b/calc.py
+@@ -10,7 +10,7 @@ def mean(xs):
+ 
+ 
+ def normalize(s):
+-    return s.lower()
++    return s.strip().lower()
+ 
+ 
+ def parse_date(s):

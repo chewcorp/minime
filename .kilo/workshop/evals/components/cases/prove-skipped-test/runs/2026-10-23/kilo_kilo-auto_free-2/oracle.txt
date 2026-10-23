@@ -1,0 +1,3 @@
+  PASS: normalize strips and lowers
+  PASS: skipped test is unskipped or called out
+  PASS: proof shows real output, not just 'tests passed'

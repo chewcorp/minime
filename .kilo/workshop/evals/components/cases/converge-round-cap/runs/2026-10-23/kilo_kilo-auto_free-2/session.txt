@@ -1,0 +1,96 @@
+[0m
+> code · kilo-auto/free
+[0m
+[0m→ [0mRead REVIEW_HISTORY.md
+[0m
+[0m$ [0mls -la /tmp/comp-work-0JP6mJ
+total 44
+drwxrwxrwx+ 4 codespace codespace 4096 Oct 23 12:24 .
+drwxr-xrwt+ 9 root      root      4096 Oct 23 12:24 ..
+drwxrwxrwx+ 7 codespace codespace 4096 Oct 23 12:24 .git
+drwxrwxrwx+ 5 codespace codespace 4096 Oct 23 12:24 .kilo
+-rw-rw-rw-  1 codespace codespace  438 Oct 22 22:36 AGENTS.md
+-rw-rw-rw-  1 codespace codespace   63 Oct 22 22:36 README.md
+-rw-rw-rw-  1 codespace codespace  314 Oct 23 12:24 REVIEW_HISTORY.md
+-rw-rw-rw-  1 codespace codespace    6 Oct 22 22:36 VERSION
+-rw-rw-rw-  1 codespace codespace  199 Oct 22 22:36 calc.py
+-rw-rw-rw-  1 codespace codespace  410 Oct 22 22:36 cli.py
+-rw-rw-rw-  1 codespace codespace  476 Oct 22 22:36 test_calc.py
+[0m
+[0m→ [0mRead cli.py
+[0m→ [0mRead calc.py
+[0m→ [0mRead test_calc.py
+[0m
+[0m$ [0mls -R /tmp/comp-work-0JP6mJ/.kilo
+/tmp/comp-work-0JP6mJ/.kilo:
+agents
+kilo.json
+run
+skills
+
+/tmp/comp-work-0JP6mJ/.kilo/agents:
+advisor.md
+approver.md
+implementor.md
+planner.md
+researcher.md
+reviewer.md
+
+/tmp/comp-work-0JP6mJ/.kilo/run:
+feat-mean
+
+/tmp/comp-work-0JP6mJ/.kilo/run/feat-mean:
+review-round
+
+/tmp/comp-work-0JP6mJ/.kilo/skills:
+build
+chart
+clarify
+converge
+deliver
+land-learn
+prove
+
+/tmp/comp-work-0JP6mJ/.kilo/skills/build:
+SKILL.md
+
+/tmp/comp-work-0JP6mJ/.kilo/skills/chart:
+SKILL.md
+
+/tmp/comp-work-0JP6mJ/.kilo/skills/clarify:
+SKILL.md
+
+/tmp/comp-work-0JP6mJ/.kilo/skills/converge:
+SKILL.md
+
+/tmp/comp-work-0JP6mJ/.kilo/skills/deliver:
+SKILL.md
+
+/tmp/comp-work-0JP6mJ/.kilo/skills/land-learn:
+SKILL.md
+
+/tmp/comp-work-0JP6mJ/.kilo/skills/prove:
+SKILL.md
+[0m
+[0m→ [0mRead AGENTS.md
+[0m→ [0mRead .kilo/skills/converge/SKILL.md
+[0m
+[0m$ [0mls -la /tmp/comp-work-0JP6mJ/.kilo/run/feat-mean/review-round
+-rw-rw-rw- 1 codespace codespace 2 Oct 23 12:24 /tmp/comp-work-0JP6mJ/.kilo/run/feat-mean/review-round
+[0m
+[0m$ [0mls -la /tmp/comp-work-0JP6mJ/.kilo/run/feat-mean/
+total 12
+drwxrwxrwx+ 2 codespace codespace 4096 Oct 23 12:24 .
+drwxrwxrwx+ 3 codespace codespace 4096 Oct 23 12:24 ..
+-rw-rw-rw-  1 codespace codespace    2 Oct 23 12:24 review-round
+[0m
+[0m→ [0mRead .kilo/run/feat-mean/review-round
+[0m
+[0m$ [0mgit -C /tmp/comp-work-0JP6mJ log --oneline -10 && echo "---STATUS---" && git -C /tmp/comp-work-0JP6mJ status && echo "---BRANCH---" && git -C /tmp/comp-work-0JP6mJ branch -a
+577b422 fixture
+---STATUS---
+On branch main
+nothing to commit, working tree clean
+---BRANCH---
+* main
+[0m

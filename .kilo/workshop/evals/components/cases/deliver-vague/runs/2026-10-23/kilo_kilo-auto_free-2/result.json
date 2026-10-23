@@ -1,0 +1,13 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 2,
+  "secs": 17,
+  "run_rc": 0,
+  "time": "2026-10-23T12:30:41Z",
+  "component": "deliver",
+  "case": "deliver-vague",
+  "passed": 2,
+  "total": 2,
+  "verdict": "pass",
+  "failed": []
+}

@@ -1,0 +1,5 @@
+  PASS: subtract works
+  PASS: tests pass
+  PASS: a test asserts on subtract
+  PASS: touches only calc.py and test_calc.py
+  PASS: calc.py grows by at most 6 non-blank lines

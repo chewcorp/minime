@@ -1,0 +1,29 @@
+[0m
+> code · kilo-auto/free
+[0m
+[0m→ [0mRead install.sh
+[0m
+[0m← [0mEdit install.sh
+Index: /tmp/comp-work-xP1N8j/install.sh
+===================================================================
+--- /tmp/comp-work-xP1N8j/install.sh
++++ /tmp/comp-work-xP1N8j/install.sh
+@@ -59,8 +59,15 @@
+     dest="$prefix"
+     ;;
+ esac
+ 
++# Self-installation is a clean no-op
++src_root_real="$(cd "$src_root" 2>/dev/null && pwd -P)"
++dest_real="$(mkdir -p "$dest" 2>/dev/null && cd "$dest" && pwd -P)"
++if [ -n "$src_root_real" ] && [ -n "$dest_real" ] && [ "$src_root_real" = "$dest_real" ]; then
++  exit 0
++fi
++
+ # Config conflict policy (D5): preserve an existing target kilo.json unless
+ # --force-config is passed.
+ install_config() {
+   if [ -f "$dest/kilo.json" ] && [ -z "$force_config" ]; then
+
+[0m
+Done

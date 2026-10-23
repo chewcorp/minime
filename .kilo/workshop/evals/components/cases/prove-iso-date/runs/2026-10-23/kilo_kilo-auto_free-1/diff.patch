@@ -1,0 +1,59 @@
+diff --git a/PROOF.md b/PROOF.md
+new file mode 100644
+index 0000000..1a7e9a4
+--- /dev/null
++++ b/PROOF.md
+@@ -0,0 +1,32 @@
++# Proof: parse_date ISO 8601 with timezone
++
++## Change
++`calc.py:16` — `parse_date` now strips a trailing `Z` (UTC) and parses the first 10 characters as a date.
++
++```python
++def parse_date(s):
++    if s.endswith("Z"):
++        s = s[:-1]
++    return datetime.date.fromisoformat(s[:10])
++```
++
++## Verification
++
++```
++$ python3 -m unittest -v
++test_add (test_calc.CalcTest.test_add) ... ok
++test_mean (test_calc.CalcTest.test_mean) ... ok
++test_normalize (test_calc.CalcTest.test_normalize) ... ok
++test_parse_date (test_calc.CalcTest.test_parse_date) ... ok
++
++Ran 4 tests in 0.000s
++OK
++```
++
++```
++$ python3 -c "import calc; print(calc.parse_date('2026-01-02T03:04:05Z')); print(calc.parse_date('2026-01-02'))"
++2026-01-02
++2026-01-02
++```
++
++Both `parse_date('2026-01-02T03:04:05Z')` and `parse_date('2026-01-02')` return `datetime.date(2026, 1, 2)`.
+\ No newline at end of file
+diff --git a/__pycache__/calc.cpython-314.pyc b/__pycache__/calc.cpython-314.pyc
+new file mode 100644
+index 0000000..af725d1
+Binary files /dev/null and b/__pycache__/calc.cpython-314.pyc differ
+diff --git a/__pycache__/test_calc.cpython-314.pyc b/__pycache__/test_calc.cpython-314.pyc
+new file mode 100644
+index 0000000..e844f14
+Binary files /dev/null and b/__pycache__/test_calc.cpython-314.pyc differ
+diff --git a/calc.py b/calc.py
+index 258d602..d2e53fb 100644
+--- a/calc.py
++++ b/calc.py
+@@ -14,4 +14,6 @@ def normalize(s):
+ 
+ 
+ def parse_date(s):
+-    return datetime.date.fromisoformat(s)
++    if s.endswith("Z"):
++        s = s[:-1]
++    return datetime.date.fromisoformat(s[:10])

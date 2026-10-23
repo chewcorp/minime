@@ -1,0 +1,16 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 2,
+  "secs": 14,
+  "run_rc": 0,
+  "time": "2026-10-23T12:46:28Z",
+  "component": "prove",
+  "case": "prove-perf-claim",
+  "passed": 4,
+  "total": 6,
+  "verdict": "fail",
+  "failed": [
+    "reports a median",
+    "reports a range"
+  ]
+}

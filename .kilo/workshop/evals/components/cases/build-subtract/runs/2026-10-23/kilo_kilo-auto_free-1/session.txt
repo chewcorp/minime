@@ -1,0 +1,134 @@
+[0m
+> code · kilo-auto/free
+[0m
+[0m$ [0mls -la /tmp/comp-work-ARdVP6
+total 40
+drwxrwxrwx+ 4 codespace codespace 4096 Oct 23 12:17 .
+drwxr-xrwt+ 8 root      root      4096 Oct 23 12:17 ..
+drwxrwxrwx+ 7 codespace codespace 4096 Oct 23 12:17 .git
+drwxrwxrwx+ 4 codespace codespace 4096 Oct 23 12:17 .kilo
+-rw-rw-rw-  1 codespace codespace  438 Oct 22 22:36 AGENTS.md
+-rw-rw-rw-  1 codespace codespace   63 Oct 22 22:36 README.md
+-rw-rw-rw-  1 codespace codespace    6 Oct 22 22:36 VERSION
+-rw-rw-rw-  1 codespace codespace  199 Oct 22 22:36 calc.py
+-rw-rw-rw-  1 codespace codespace  410 Oct 22 22:36 cli.py
+-rw-rw-rw-  1 codespace codespace  476 Oct 22 22:36 test_calc.py
+[0m
+[0m$ [0mcat /tmp/comp-work-ARdVP6/calc.py
+import datetime
+
+
+def add(a, b):
+    return a + b
+
+
+def mean(xs):
+    return sum(xs) / len(xs)
+
+
+def normalize(s):
+    return s.lower()
+
+
+def parse_date(s):
+    return datetime.date.fromisoformat(s)
+[0m
+[0m$ [0mfind /tmp/comp-work-ARdVP6 -name "*test*" | head -15
+/tmp/comp-work-ARdVP6/test_calc.py
+[0m
+[0m$ [0mcat /tmp/comp-work-ARdVP6/README.md | head -60
+# Calcualtor
+
+A tiny calculator. Run `python3 cli.py add 2 3`.
+[0m
+[0m$ [0mcat /tmp/comp-work-ARdVP6/test_calc.py
+import datetime
+import unittest
+
+import calc
+
+
+class CalcTest(unittest.TestCase):
+    def test_add(self):
+        self.assertEqual(calc.add(2, 3), 5)
+
+    def test_mean(self):
+        self.assertEqual(calc.mean([1, 2, 3]), 2)
+
+    def test_normalize(self):
+        self.assertEqual(calc.normalize("ABC"), "abc")
+
+    def test_parse_date(self):
+        self.assertEqual(calc.parse_date("2026-01-02"), datetime.date(2026, 1, 2))
+
+
+if __name__ == "__main__":
+    unittest.main()
+[0m
+[0m$ [0mcat /tmp/comp-work-ARdVP6/cli.py
+import argparse
+
+import calc
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(prog="calc")
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    add = sub.add_parser("add")
+    add.add_argument("a", type=float)
+    add.add_argument("b", type=float)
+    args = parser.parse_args(argv)
+    if args.cmd == "add":
+        print(calc.add(args.a, args.b))
+
+
+if __name__ == "__main__":
+    main()
+[0m
+[0m← [0mEdit calc.py
+Index: /tmp/comp-work-ARdVP6/calc.py
+===================================================================
+--- /tmp/comp-work-ARdVP6/calc.py
++++ /tmp/comp-work-ARdVP6/calc.py
+@@ -4,8 +4,12 @@
+ def add(a, b):
+     return a + b
+ 
+ 
++def subtract(a, b):
++    return a - b
++
++
+ def mean(xs):
+     return sum(xs) / len(xs)
+ 
+ 
+
+[0m
+I'll add subtract to calc.py and a test.
+[0m← [0mEdit test_calc.py
+Index: /tmp/comp-work-ARdVP6/test_calc.py
+===================================================================
+--- /tmp/comp-work-ARdVP6/test_calc.py
++++ /tmp/comp-work-ARdVP6/test_calc.py
+@@ -7,8 +7,11 @@
+ class CalcTest(unittest.TestCase):
+     def test_add(self):
+         self.assertEqual(calc.add(2, 3), 5)
+ 
++    def test_subtract(self):
++        self.assertEqual(calc.subtract(5, 3), 2)
++
+     def test_mean(self):
+         self.assertEqual(calc.mean([1, 2, 3]), 2)
+ 
+     def test_normalize(self):
+
+[0m
+[0m$ [0mcd /tmp/comp-work-ARdVP6 && python3 -m unittest -q
+----------------------------------------------------------------------
+Ran 5 tests in 0.000s
+
+OK
+[0m
+Added subtract(a,b) to calc.py and test_subtract to test_calc.py. Tests pass.

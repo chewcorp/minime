@@ -1,0 +1,26 @@
+diff --git a/__pycache__/calc.cpython-314.pyc b/__pycache__/calc.cpython-314.pyc
+new file mode 100644
+index 0000000..860307d
+Binary files /dev/null and b/__pycache__/calc.cpython-314.pyc differ
+diff --git a/__pycache__/test_calc.cpython-314.pyc b/__pycache__/test_calc.cpython-314.pyc
+new file mode 100644
+index 0000000..04dccc0
+Binary files /dev/null and b/__pycache__/test_calc.cpython-314.pyc differ
+diff --git a/install.sh b/install.sh
+index 9bcd36f..4f4faa4 100755
+--- a/install.sh
++++ b/install.sh
+@@ -71,6 +71,13 @@ install_config() {
+   echo "wrote $dest/kilo.json (pins planner/advisor to kilo-auto/frontier; needs Kilo Gateway)"
+ }
+ 
++# Self-install guard: when the destination is the plugin's own payload dir,
++# copying would be a no-op at best and "same file" errors at worst.
++if [ "$(realpath -m "$dest")" = "$(realpath -m "$src_root")" ]; then
++  echo "install.sh: source and destination are the same ($dest); nothing to do"
++  exit 0
++fi
++
+ # A4: one stderr notice when an existing target is about to be overwritten.
+ if [ -d "$dest" ]; then
+   echo "note: $dest exists; payload paths (agents/, skills/, kilo.json, .gitignore) will be overwritten, unrelated files untouched" >&2

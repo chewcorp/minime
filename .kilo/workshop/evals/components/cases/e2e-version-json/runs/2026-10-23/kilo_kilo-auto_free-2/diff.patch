@@ -1,0 +1,203 @@
+diff --git a/.kilo/run/cli-version-json/acceptance.md b/.kilo/run/cli-version-json/acceptance.md
+new file mode 100644
+index 0000000..a2b535b
+--- /dev/null
++++ b/.kilo/run/cli-version-json/acceptance.md
+@@ -0,0 +1,12 @@
++Acceptance criteria (clarify output)
++Task: cli-version-json
++
++O1: `python3 cli.py --version` prints the exact contents of VERSION (0.3.1) and nothing else.
++- Numeric fit: 0 mismatches between stdout and file bytes (modulo trailing newline), exit code 0.
++- Rationale: version flag must surface the library version without computation.
++
++O2: `python3 cli.py add 2 3 --json` prints `{"result": 5.0}`.
++- Numeric fit: stdout exactly equals `{"result": 5.0}`, exit code 0; `calc.add(2, 3)` yields 5.0.
++- Rationale: JSON output is machine-readable and the result type is float.
++
++Out-of-scope: changing VERSION value, adding other subcommands, packaging/publishing, `--version` on subcommands.
+diff --git a/.kilo/run/cli-version-json/build.md b/.kilo/run/cli-version-json/build.md
+new file mode 100644
+index 0000000..27d795e
+--- /dev/null
++++ b/.kilo/run/cli-version-json/build.md
+@@ -0,0 +1,11 @@
++Build output
++Task: cli-version-json
++
++Change (one concern): add `--version` flag and `--json` flag on `add` to cli.py.
++
++Proof plan (rerunnable):
++1. `python3 cli.py --version` prints exactly VERSION contents ("0.3.1"), exit 0.
++2. `python3 cli.py add 2 3 --json` prints exactly `{"result": 5.0}`, exit 0.
++3. `python3 -m unittest -q` green.
++
++Shortcut: none.
+diff --git a/.kilo/run/cli-version-json/chart.md b/.kilo/run/cli-version-json/chart.md
+new file mode 100644
+index 0000000..a8e5c6e
+--- /dev/null
++++ b/.kilo/run/cli-version-json/chart.md
+@@ -0,0 +1,12 @@
++Chart output
++Task: cli-version-json
++
++Tickets (ordered, blocking edges where implied):
++
++T1: Add `--version` flag printing contents of VERSION. Blocks T3 (CLI must parse version before add). Depends on: none.
++T2: Add `--json` flag to `add` subcommand emitting `{"result": <float>}`. Depends on: none (shares add parser).
++T3: Wire both flags into `cli.py` argument parsing and print paths. Depends on: T1, T2.
++T4: Add/update tests covering `--version` and `add --json`. Depends on: T3.
++T5: Run unittest + lint/typecheck, verify green. Depends on: T4.
++
++Blocking edges: T1→T3, T2→T3, T3→T4, T4→T5. All single-ticket scope; chart complete.
+diff --git a/.kilo/run/cli-version-json/clarify.md b/.kilo/run/cli-version-json/clarify.md
+new file mode 100644
+index 0000000..bfadb9d
+--- /dev/null
++++ b/.kilo/run/cli-version-json/clarify.md
+@@ -0,0 +1,12 @@
++Clarify output
++Task: cli-version-json
++
++Destination: `.kilo/run/cli-version-json/` (acceptance.md written here; clearing prior state - none existed).
++
++Decisions (assumed reasonable defaults, no human wait):
++- `--version` prints VERSION file contents verbatim plus newline, exit 0.
++- `--json` on `add` emits `{"result": <float>}` via json.dumps, exit 0; no other flags change.
++
++Fog: none remaining; request is explicit. Out-of-scope noted in acceptance.md.
++
++No spec, tickets, or code written in this stage.
+diff --git a/.kilo/run/cli-version-json/converge.md b/.kilo/run/cli-version-json/converge.md
+new file mode 100644
+index 0000000..aa45b60
+--- /dev/null
++++ b/.kilo/run/cli-version-json/converge.md
+@@ -0,0 +1,10 @@
++Converge output
++Task: cli-version-json
++
++Review of diff vs repo conventions:
++- Small diff, one concern per change (CLI flags only).
++- Follows existing style: stdlib argparse/json/pathlib, no new deps.
++- Tests added mirroring existing unittest style; no comments added (per convention).
++- No trust-boundary/security changes touched; nothing cut.
++
++Findings: none blocking. Advisory: none. Diff is merge-ready pending explicit commit/merge instruction.
+diff --git a/.kilo/run/cli-version-json/land-learn.md b/.kilo/run/cli-version-json/land-learn.md
+new file mode 100644
+index 0000000..6d89e95
+--- /dev/null
++++ b/.kilo/run/cli-version-json/land-learn.md
+@@ -0,0 +1,7 @@
++Land-learn output
++Task: cli-version-json
++
++Status: changes complete and verified (tests green, both CLI requirements confirmed).
++Handoff: cli.py gains `--version` (prints VERSION contents) and `add --json` (prints {"result": 5.0}); test_calc.py adds test_version and test_add_json.
++
++Stop: NOT committed, NOT merged to main, per instruction to stop before any merge to main and per default no-commit policy. Changes remain in working tree awaiting explicit commit/merge request.
+diff --git a/.kilo/run/cli-version-json/prove.md b/.kilo/run/cli-version-json/prove.md
+new file mode 100644
+index 0000000..d6df7ba
+--- /dev/null
++++ b/.kilo/run/cli-version-json/prove.md
+@@ -0,0 +1,9 @@
++Prove output
++Task: cli-version-json
++
++Verification:
++- `python3 -m unittest -q`: Ran 6 tests, OK.
++- `python3 cli.py --version`: prints `0.3.1` (contents of VERSION), exit 0.
++- `python3 cli.py add 2 3 --json`: prints `{"result": 5.0}`, exit 0.
++
++Artifact re-runnable: tests in test_calc.py plus the two CLI commands above.
+diff --git a/__pycache__/calc.cpython-314.pyc b/__pycache__/calc.cpython-314.pyc
+new file mode 100644
+index 0000000..def7828
+Binary files /dev/null and b/__pycache__/calc.cpython-314.pyc differ
+diff --git a/__pycache__/test_calc.cpython-314.pyc b/__pycache__/test_calc.cpython-314.pyc
+new file mode 100644
+index 0000000..ecdb29d
+Binary files /dev/null and b/__pycache__/test_calc.cpython-314.pyc differ
+diff --git a/cli.py b/cli.py
+index d1b109e..53b6d9b 100644
+--- a/cli.py
++++ b/cli.py
+@@ -1,17 +1,30 @@
+ import argparse
++import json
++from pathlib import Path
+ 
+ import calc
+ 
++VERSION_PATH = Path(__file__).resolve().parent / "VERSION"
++
+ 
+ def main(argv=None):
+     parser = argparse.ArgumentParser(prog="calc")
+-    sub = parser.add_subparsers(dest="cmd", required=True)
++    parser.add_argument("--version", action="store_true")
++    sub = parser.add_subparsers(dest="cmd", required=False)
+     add = sub.add_parser("add")
+     add.add_argument("a", type=float)
+     add.add_argument("b", type=float)
++    add.add_argument("--json", action="store_true")
+     args = parser.parse_args(argv)
++    if args.version:
++        print(VERSION_PATH.read_text().strip())
++        return
+     if args.cmd == "add":
+-        print(calc.add(args.a, args.b))
++        result = calc.add(args.a, args.b)
++        if args.json:
++            print(json.dumps({"result": result}))
++        else:
++            print(result)
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/test_calc.py b/test_calc.py
+index dcceecc..036f17a 100644
+--- a/test_calc.py
++++ b/test_calc.py
+@@ -1,13 +1,38 @@
+ import datetime
++import json
++import subprocess
++import sys
+ import unittest
++from pathlib import Path
+ 
+ import calc
+ 
++ROOT = Path(__file__).resolve().parent
++
++
++def run_cli(*args):
++    return subprocess.run(
++        [sys.executable, str(ROOT / "cli.py"), *args],
++        capture_output=True,
++        text=True,
++    )
++
+ 
+ class CalcTest(unittest.TestCase):
+     def test_add(self):
+         self.assertEqual(calc.add(2, 3), 5)
+ 
++    def test_version(self):
++        proc = run_cli("--version")
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(proc.stdout, (ROOT / "VERSION").read_text().strip() + "\n")
++        self.assertEqual(proc.stderr, "")
++
++    def test_add_json(self):
++        proc = run_cli("add", "2", "3", "--json")
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), {"result": 5.0})
++
+     def test_mean(self):
+         self.assertEqual(calc.mean([1, 2, 3]), 2)
+ 

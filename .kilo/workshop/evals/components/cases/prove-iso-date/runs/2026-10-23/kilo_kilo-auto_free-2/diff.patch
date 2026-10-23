@@ -1,0 +1,36 @@
+diff --git a/PROOF.md b/PROOF.md
+new file mode 100644
+index 0000000..c5b0a0d
+--- /dev/null
++++ b/PROOF.md
+@@ -0,0 +1,6 @@
++Command: python3 -m unittest -q
++Output:
++Ran 4 tests in 0.000s
++OK
++
++Verified: parse_date('2026-01-02T03:04:05Z') returns datetime.date(2026, 1, 2) and '2026-01-02' still works.
+diff --git a/__pycache__/calc.cpython-314.pyc b/__pycache__/calc.cpython-314.pyc
+new file mode 100644
+index 0000000..7335967
+Binary files /dev/null and b/__pycache__/calc.cpython-314.pyc differ
+diff --git a/__pycache__/test_calc.cpython-314.pyc b/__pycache__/test_calc.cpython-314.pyc
+new file mode 100644
+index 0000000..1b1a853
+Binary files /dev/null and b/__pycache__/test_calc.cpython-314.pyc differ
+diff --git a/calc.py b/calc.py
+index 258d602..52dd997 100644
+--- a/calc.py
++++ b/calc.py
+@@ -14,4 +14,11 @@ def normalize(s):
+ 
+ 
+ def parse_date(s):
++    if 'T' in s:
++        s = s.split('T')[0]
++    if s.endswith('Z'):
++        s = s[:-1]
++    # If still has time component after Z removed (just in case), take date part
++    if 'T' in s:
++        s = s.split('T')[0]
+     return datetime.date.fromisoformat(s)
