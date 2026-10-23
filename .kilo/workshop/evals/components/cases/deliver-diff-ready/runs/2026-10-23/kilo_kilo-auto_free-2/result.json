@@ -9,5 +9,9 @@
   "passed": 2,
   "total": 2,
   "verdict": "pass",
-  "failed": []
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/deliver-diff-ready-2026-10-23-kilo_kilo-auto_free-2.tar.gz",
+    "sha256": "b8652f2f106d2a7ddde14c9994de9956350a1c7d064aa12a61493247820621a3"
+  }
 }

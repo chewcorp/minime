@@ -12,5 +12,9 @@
   "failed": [
     "reports a median",
     "reports a range"
-  ]
+  ],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/prove-perf-claim-2026-10-23-kilo_kilo-auto_free-2.tar.gz",
+    "sha256": "ffdbcd227e9e4b1ccb58a23941509f3b9d5faa64dcc291df45b3029f35e0ea5b"
+  }
 }

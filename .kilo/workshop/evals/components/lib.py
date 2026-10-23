@@ -16,6 +16,7 @@ bad(work), and optionally AGENT (default build), REPS (default 2), setup(work)
 import hashlib
 import importlib.util
 import json
+import os
 import re
 import statistics
 import shutil
@@ -133,13 +134,17 @@ def setup(case_dir, work, model):
     kilo = work / ".kilo"
     for part in ("agents", "skills"):
         shutil.copytree(REPO / ".kilo" / part, kilo / part, dirs_exist_ok=True)
+    for part in ("kilo.json", ".gitignore"):
+        shutil.copy2(REPO / ".kilo" / part, kilo / part)
+    variant = os.environ.get("VARIANT")
+    if variant:  # variants/<name>/ mirrors .kilo/ and overlays the payload copy, config included
+        shutil.copytree(HERE / "variants" / variant, kilo, dirs_exist_ok=True)
     # Pin every role to the model under test: the shipped kilo.json escalates
     # planner/advisor to a paid model.
-    config = json.loads((REPO / ".kilo" / "kilo.json").read_text())
+    config = json.loads((kilo / "kilo.json").read_text())
     config["model"] = config["small_model"] = model
     config["agent"] = {role: {"model": model} for role in ROLES}
     (kilo / "kilo.json").write_text(json.dumps(config, indent=2) + "\n")
-    shutil.copy2(REPO / ".kilo" / ".gitignore", kilo / ".gitignore")
     if hasattr(case, "setup"):
         case.setup(work)
     sh(work, "git", "init", "-q", "-b", "main")
@@ -199,7 +204,8 @@ def summary(cases_dir):
     rows = {}
     for result in sorted(Path(cases_dir).glob("*/runs/*/*/result.json")):
         r = json.loads(result.read_text())
-        key = (r.get("component", "?"), r.get("case", result.parents[2].name), r.get("model", "?"))
+        model = r.get("model", "?") + (f" [{r['variant']}]" if r.get("variant") else "")
+        key = (r.get("component", "?"), r.get("case", result.parents[2].name), model)
         rows.setdefault(key, []).append(r)
     print("| component | case | model | pass | checks | median s | root causes |")
     print("|---|---|---|---|---|---|---|")

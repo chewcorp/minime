@@ -1,13 +1,15 @@
 #!/bin/bash
 # Run one component case once on $MODEL in a sandboxed HOME, then score it.
-# Usage: run_case.sh <case-dir> [rep]   Output: <case-dir>/runs/<date>/<model>-<rep>/
+# Usage: [VARIANT=<name>] run_case.sh <case-dir> [rep]   Output: <case-dir>/runs/<date>/<model>[-<variant>]-<rep>/
+# VARIANT overlays variants/<name>/ onto the payload copy (see lib.py setup).
 # Stops with exit 4 if the real ~/.config/kilo changed during the run.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 case_dir="$(cd "${1:?usage: run_case.sh <case-dir> [rep]}" && pwd)"
 rep="${2:-1}"
 model="${MODEL:-kilo/kilo-auto/free}"
-out="$case_dir/runs/$(date -u +%F)/${model//\//_}-$rep"
+variant="${VARIANT:-}"
+out="$case_dir/runs/$(date -u +%F)/${model//\//_}${variant:+-$variant}-$rep"
 work="$(mktemp -d "${TMPDIR:-/tmp}/comp-work-XXXXXX")"
 sandbox="$(mktemp -d "${TMPDIR:-/tmp}/comp-home-XXXXXX")"
 trap 'rm -rf "$work" "$sandbox"' EXIT
@@ -56,8 +58,8 @@ sid="$(cd "$work" && sandboxed kilo session list --format json -n 1 </dev/null 2
 
 git -C "$work" add -A >/dev/null 2>&1 || true
 git -C "$work" diff --cached "$(cat "$work/.git/EVAL_BASE")" > "$out/diff.patch" || true
-printf '{"model":"%s","rep":%s,"secs":%s,"run_rc":%s,"time":"%s"}\n' \
-  "$model" "$rep" "$secs" "$run_rc" "$(date -u +%FT%TZ)" > "$out/result.json"
+printf '{"model":"%s","variant":"%s","rep":%s,"secs":%s,"run_rc":%s,"time":"%s"}\n' \
+  "$model" "$variant" "$rep" "$secs" "$run_rc" "$(date -u +%FT%TZ)" > "$out/result.json"
 verdict=0  # oracles run model-edited code: same HOME/token sandbox as the run
 sandboxed python3 "$here/lib.py" check "$case_dir" "$work" "$out/session.txt" "$out/result.json" \
   > "$out/oracle.txt" 2>&1 || verdict=$?

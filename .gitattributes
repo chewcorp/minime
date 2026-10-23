@@ -1,0 +1,2 @@
+# Collapse eval run records in PR diffs and keep them out of language stats.
+.kilo/workshop/**/runs/** linguist-generated -diff

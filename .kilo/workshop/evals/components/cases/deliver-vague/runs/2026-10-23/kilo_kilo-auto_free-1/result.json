@@ -9,5 +9,9 @@
   "passed": 2,
   "total": 2,
   "verdict": "pass",
-  "failed": []
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/deliver-vague-2026-10-23-kilo_kilo-auto_free-1.tar.gz",
+    "sha256": "49ea99a45e702a86465001070c5feb13ce686082ff31cac95a2464aaa157c978"
+  }
 }

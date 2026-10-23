@@ -9,5 +9,9 @@
   "passed": 5,
   "total": 5,
   "verdict": "pass",
-  "failed": []
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/build-subtract-2026-10-23-kilo_kilo-auto_free-2.tar.gz",
+    "sha256": "e023c25f84378526d5fda389e2f6802b1d3b2e76196dfe53705ce8e3a6b75dd2"
+  }
 }

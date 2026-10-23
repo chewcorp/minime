@@ -9,5 +9,9 @@
   "passed": 3,
   "total": 3,
   "verdict": "pass",
-  "failed": []
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/converge-round-cap-2026-10-23-kilo_kilo-auto_free-1.tar.gz",
+    "sha256": "247c870d1e829de35b8dab31c073f50c2e99cc3cdaf73a51929d3f12d529fb4b"
+  }
 }

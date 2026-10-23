@@ -9,5 +9,9 @@
   "passed": 4,
   "total": 4,
   "verdict": "pass",
-  "failed": []
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/deliver-stay-out-2026-10-23-kilo_kilo-auto_free-2.tar.gz",
+    "sha256": "7eaad34481f2df8a0632d1fa76b3b1112e3ae95d5a5f1458c93a4cc6715a9a4d"
+  }
 }

@@ -9,5 +9,9 @@
   "passed": 3,
   "total": 3,
   "verdict": "pass",
-  "failed": []
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/prove-skipped-test-2026-10-23-kilo_kilo-auto_free-1.tar.gz",
+    "sha256": "0dec1b52ae892e343768e359d683bf7226de35ec83c01db071845142abe0641b"
+  }
 }

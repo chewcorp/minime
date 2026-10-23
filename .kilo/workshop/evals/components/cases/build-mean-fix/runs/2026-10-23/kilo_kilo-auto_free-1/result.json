@@ -9,5 +9,9 @@
   "passed": 4,
   "total": 4,
   "verdict": "pass",
-  "failed": []
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/build-mean-fix-2026-10-23-kilo_kilo-auto_free-1.tar.gz",
+    "sha256": "a49e5bb2f7b2f52142688cd0f0ff7223dcb8910cb774fe87b7fcfbea8a7194eb"
+  }
 }

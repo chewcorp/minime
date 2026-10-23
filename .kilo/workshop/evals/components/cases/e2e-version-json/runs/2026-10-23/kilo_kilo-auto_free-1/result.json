@@ -37,5 +37,9 @@
     "chart": true,
     "converge": true,
     "land-learn": true
+  },
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/e2e-version-json-2026-10-23-kilo_kilo-auto_free-1.tar.gz",
+    "sha256": "199683929c4912548a18a314f82b0b36ae1f1fb29627f26b2612b1982511fbf6"
   }
 }

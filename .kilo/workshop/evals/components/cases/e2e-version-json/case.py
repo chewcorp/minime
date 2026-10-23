@@ -9,7 +9,7 @@ import re
 
 import sys
 
-from lib import git, read, sh, tests_pass
+from lib import NEGATED, blocking_findings, git, read, sh, tests_pass
 
 COMPONENT = "e2e"
 REPS = 3
@@ -62,6 +62,9 @@ def check(c, work, transcript):
         run = sh(work, sys.executable, "-B", "cli.py", *argv)  # the entry point, as the request asks
         ok, out = run.returncode == 0, run.stdout.strip()
         texts = {s: _stage_text(work, s) for s in ("clarify", "chart", "prove", "converge", "land-learn")}
+        # a review that approves the whole diff ("approve", "merge-ready", "no blocking findings") covers every requirement in it
+        approved = bool(re.search(r"\b(approve[ds]?|merge[- ]ready|lgtm)\b", texts["converge"], re.I)
+                        or NEGATED.search(texts["converge"])) and not blocking_findings(texts["converge"])
         stage_ok = {
             "clarify": bool(re.search(key, texts["clarify"], re.I)),
             "chart": bool(re.search(key, texts["chart"], re.I)),
@@ -69,7 +72,7 @@ def check(c, work, transcript):
             # prove.md must cover the requirement; the evidence is a new test or the command run with its output
             "prove": green and bool(re.search(key, texts["prove"], re.I))
                      and (flag in tests or (flag in texts["prove"] and bool(re.search(shown, texts["prove"])))),
-            "converge": bool(re.search(key, texts["converge"], re.I))
+            "converge": approved or bool(re.search(key, texts["converge"], re.I))
                         or any(re.search(rf"\b{i}\b", texts["converge"]) for i in _ids(texts["clarify"], key)),
             "land-learn": flag in branch_diff and bool(texts["land-learn"].strip()),
         }

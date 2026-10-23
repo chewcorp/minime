@@ -9,5 +9,9 @@
   "passed": 4,
   "total": 4,
   "verdict": "pass",
-  "failed": []
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/converge-clean-diff-2026-10-23-kilo_kilo-auto_free-1.tar.gz",
+    "sha256": "c7938006a6dd6be5bbeb816df1c89709e4944d60627afa918fdcd0adc34c1312"
+  }
 }

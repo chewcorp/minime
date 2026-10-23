@@ -9,5 +9,9 @@
   "passed": 4,
   "total": 4,
   "verdict": "pass",
-  "failed": []
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/prove-iso-date-2026-10-23-kilo_kilo-auto_free-1.tar.gz",
+    "sha256": "40af46b9f9fb6b2455ef2e20457a2f527158558811ec52aba1f8e18657b4f9f5"
+  }
 }
