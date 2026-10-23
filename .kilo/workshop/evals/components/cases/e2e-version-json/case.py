@@ -20,9 +20,9 @@ PROMPT = ("Use the kilo-mms delivery loop (the deliver skill) end to end for thi
           "of VERSION; (2) `python3 cli.py add 2 3 --json` prints {\"result\": 5.0}.")
 STAGES = ("clarify", "chart", "build", "prove", "converge", "land-learn")
 REQS = {
-    "R1 --version": (r"version", r"--version", ("--version",), lambda out: out == "0.3.1"),
+    "R1 --version": (r"version", r"--version", ("--version",), lambda out: out == "0.3.1", r"0\.3\.1"),
     "R2 add --json": (r"json", r"--json", ("add", "2", "3", "--json"),
-                      lambda out: _json(out) == {"result": 5.0}),
+                      lambda out: _json(out) == {"result": 5.0}, r'"result":\s*5\.0'),
 }
 
 
@@ -31,6 +31,12 @@ def _json(out):
         return json.loads(out)
     except ValueError:
         return None
+
+
+def _ids(acceptance, key):
+    """Acceptance ids ("O1", "AC2") on the lines naming this requirement, so a review can cite them instead."""
+    return {i for line in acceptance.splitlines() if re.search(key, line, re.I)
+            for i in re.findall(r"\b[A-Z]{1,3}\d+\b", line)}
 
 
 def _stage_text(work, stage):
@@ -52,7 +58,7 @@ def check(c, work, transcript):
     tests = read(work, "test_calc.py") + "".join(p.read_text() for p in work.glob("test_*.py") if p.name != "test_calc.py")
     green = tests_pass(work)
     traces, root_causes = {}, []
-    for req, (key, flag, argv, works) in REQS.items():
+    for req, (key, flag, argv, works, shown) in REQS.items():
         run = sh(work, sys.executable, "-B", "cli.py", *argv)  # the entry point, as the request asks
         ok, out = run.returncode == 0, run.stdout.strip()
         texts = {s: _stage_text(work, s) for s in ("clarify", "chart", "prove", "converge", "land-learn")}
@@ -60,8 +66,11 @@ def check(c, work, transcript):
             "clarify": bool(re.search(key, texts["clarify"], re.I)),
             "chart": bool(re.search(key, texts["chart"], re.I)),
             "build": ok and works(out),
-            "prove": green and flag in tests and bool(re.search(key, texts["prove"], re.I)),
-            "converge": bool(re.search(key, texts["converge"], re.I)),
+            # prove.md must cover the requirement; the evidence is a new test or the command run with its output
+            "prove": green and bool(re.search(key, texts["prove"], re.I))
+                     and (flag in tests or (flag in texts["prove"] and bool(re.search(shown, texts["prove"])))),
+            "converge": bool(re.search(key, texts["converge"], re.I))
+                        or any(re.search(rf"\b{i}\b", texts["converge"]) for i in _ids(texts["clarify"], key)),
             "land-learn": flag in branch_diff and bool(texts["land-learn"].strip()),
         }
         traces[req] = stage_ok

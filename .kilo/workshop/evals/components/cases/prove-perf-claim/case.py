@@ -18,7 +18,7 @@ def setup(work):
 def check(c, work, transcript):
     proof = read(work, "PROOF.md")
     c("PROOF.md written", bool(proof.strip()))
-    c("names a rerunnable command", re.search(r"python3?\s+(-m\s+timeit|\S+\.py|-c)", proof), proof[:80])
+    c("names a rerunnable command", re.search(r"python3?\s+(-m\s+timeit\s+['\"-]|-c\s+['\"]|\S+\.py\b)", proof), proof[:80])
     c("reports a median", re.search(r"\bmedian\b", proof, re.I))
     c("reports a range", re.search(r"\brange\b(?!\()|\b(min|max|spread|p\d\d)\b|±", proof, re.I))
     c("states a verdict", VERDICT.search(proof))
