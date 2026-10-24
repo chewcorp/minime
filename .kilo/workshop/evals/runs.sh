@@ -6,7 +6,7 @@
 # Needs an authenticated gh. Run dirs keep result.json/oracle.txt in git (see .gitignore).
 set -euo pipefail
 tag="${RUNS_RELEASE:-eval-runs}"
-repo="${RUNS_REPO:-xchewtoyx/kilo-mms}"
+repo="${RUNS_REPO:-chewcorp/kilo-mms}"
 raw=(export.json 'session*.txt' diff.patch 'install*.sh')
 mode="${1:?usage: runs.sh pack|fetch <run-dir>...}"; shift
 
