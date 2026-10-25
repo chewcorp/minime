@@ -31,3 +31,15 @@ Versioning: semver lives in `plugin.json`; releases are git tags `v<version>` pl
 - Act in the same turn you announce work. Never end a turn on a promise to do something; do it, then report.
 - Best-effort protection by elimination, not enumeration: deny dangerous capability at the tool boundary; never glob-filter dangerous flags.
 - Agents test installers only against `--prefix` temp dirs — never `--global`/`--force-config` against `$HOME`. Where a boundary can't be enforced at the tool level, don't assign the operation to an agent (see overgating-incident #4).
+
+## Git attribution
+
+Attribute contributors truthfully and additively. Keep existing Co-authored-by trailers and never replace another contributor's trailer.
+
+A tool adds its own trailer only if it contributed to the committed changes, and only through its own tool-specific config.
+
+Don't change the Git author or committer identity just to add co-authorship.
+
+Trailers belong only in commit messages, never in chat, summaries, PR descriptions or review comments.
+
+Don't amend or rewrite commits just to change attribution unless asked.
