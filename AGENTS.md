@@ -43,3 +43,14 @@ Don't change the Git author or committer identity just to add co-authorship.
 Trailers belong only in commit messages, never in chat, summaries, PR descriptions or review comments.
 
 Don't amend or rewrite commits just to change attribution unless asked.
+
+## Cursor Cloud specific instructions
+
+`jq` and Python 3 are on `PATH`. Contract tests:
+
+```bash
+python3 .kilo/workshop/ablations/test_sweeps.py -v
+python3 .kilo/workshop/admission/test_oracles.py -v
+```
+
+The calculator fixture under `.kilo/workshop/evals/components/fixture/` runs with `python3 cli.py add 2 3` and `python3 -m unittest -q`.
