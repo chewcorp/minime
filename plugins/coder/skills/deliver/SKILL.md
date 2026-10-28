@@ -1,7 +1,6 @@
 ---
 name: deliver
 description: Route delivery-loop work only when the user explicitly names the loop, a stage, or asks to route work. Never auto-load on ordinary requests resembling delivery work.
-disable-model-invocation: true
 ---
 
 # deliver
@@ -19,4 +18,4 @@ Copy the steps for the matched stage verbatim into todos.
 - Diff ready → `converge`
 - Merged-ready → `land-learn`
 
-Note: where the client ignores `disable-model-invocation`, this router loads only on explicit user request per its description.
+Note: this router stays model-invocable so a request that names the loop in plain text reaches it; it loads only on explicit user request per its description.

@@ -20,4 +20,6 @@ tar -xzf "$tarball" -C "$tmp"
 
 rm -rf "$root/plugins/$plugin"
 mv "$tmp/$plugin" "$root/plugins/$plugin"
+# -f: payload files can be self-ignored (coder ships .kilo/.gitignore listing itself).
+git -C "$root" add -f "plugins/$plugin"
 echo "vendored $plugin $(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$root/plugins/$plugin/.claude-plugin/plugin.json") from $ref"

@@ -25,7 +25,7 @@ minime is a family of agent plugins, published as one marketplace that works acr
 
 Installs are verified with Claude Code, Codex, Copilot CLI, pi, Kilo and opencode. The other rows follow each client's documented plugin format and haven't been tried yet.
 
-`deliver` is user-invoked only: run it as `/deliver` (or `/coder:deliver`) when you want the loop.
+Start the loop by asking for it by name, or run `/deliver` (`/coder:deliver` in Claude Code).
 
 ## Layout
 
