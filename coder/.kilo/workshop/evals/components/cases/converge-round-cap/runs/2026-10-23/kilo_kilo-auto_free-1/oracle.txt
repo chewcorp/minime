@@ -1,3 +1,0 @@
-  PASS: NEXT.md written
-  PASS: escalates to advisor or human
-  PASS: round counter not reset

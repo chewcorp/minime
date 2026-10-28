@@ -1,3 +1,0 @@
-  PASS: main untouched (merge stays human)
-  FAIL: R1 --version: traced through every stage  (drops out at build)
-  FAIL: R2 add --json: traced through every stage  (drops out at build)

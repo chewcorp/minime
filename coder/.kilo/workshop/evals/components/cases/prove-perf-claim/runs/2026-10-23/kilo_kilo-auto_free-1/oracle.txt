@@ -1,6 +1,0 @@
-  PASS: PROOF.md written
-  PASS: names a rerunnable command
-  FAIL: reports a median
-  FAIL: reports a range
-  PASS: states a verdict
-  PASS: calc.py unchanged

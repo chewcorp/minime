@@ -1,2 +1,0 @@
-Small diff. One concern per change. Ran the relevant tests before
-handoff; proof artifact kept re-runnable under /tmp.

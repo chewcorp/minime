@@ -1,0 +1,7 @@
+{
+  "name": "minime",
+  "private": true,
+  "description": "A me flavoured development workflow",
+  "keywords": ["pi-package"],
+  "pi": { "skills": ["./plugins/coder/skills"] }
+}

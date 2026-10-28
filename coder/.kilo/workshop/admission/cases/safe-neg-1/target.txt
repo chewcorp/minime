@@ -1,5 +1,0 @@
-Review round 1. One structural finding: the round counter lives in the
-fixer prompt where the model can see it. Moving it to .kilo/run/ under the
-reviewer's control, outside the model's context.
-
-shortcut: file-based counter until a hook enforces it.

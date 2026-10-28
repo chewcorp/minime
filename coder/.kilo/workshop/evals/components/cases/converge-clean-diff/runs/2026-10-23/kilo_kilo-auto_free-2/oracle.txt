@@ -1,4 +1,0 @@
-  PASS: REVIEW.md written
-  PASS: no blocking findings invented
-  PASS: at most five nits
-  PASS: edits nothing else

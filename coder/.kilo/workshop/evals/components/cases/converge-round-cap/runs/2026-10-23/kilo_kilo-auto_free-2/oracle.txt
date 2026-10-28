@@ -1,3 +1,0 @@
-  FAIL: NEXT.md written
-  FAIL: escalates to advisor or human
-  PASS: round counter not reset

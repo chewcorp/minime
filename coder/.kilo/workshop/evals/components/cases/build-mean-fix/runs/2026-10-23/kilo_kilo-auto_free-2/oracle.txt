@@ -1,4 +1,0 @@
-  PASS: mean fixed
-  PASS: tests pass
-  PASS: touches only calc.py and test_calc.py
-  PASS: no history-narrating comments added
