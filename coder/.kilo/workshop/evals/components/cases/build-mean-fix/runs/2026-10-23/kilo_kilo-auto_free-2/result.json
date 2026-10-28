@@ -1,0 +1,17 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 2,
+  "secs": 13,
+  "run_rc": 0,
+  "time": "2026-10-23T12:10:47Z",
+  "component": "build",
+  "case": "build-mean-fix",
+  "passed": 4,
+  "total": 4,
+  "verdict": "pass",
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/build-mean-fix-2026-10-23-kilo_kilo-auto_free-2.tar.gz",
+    "sha256": "26114f06b8f0d9839f2603a4585e4740a24635aa8854a8607efc68cfddd0199f"
+  }
+}

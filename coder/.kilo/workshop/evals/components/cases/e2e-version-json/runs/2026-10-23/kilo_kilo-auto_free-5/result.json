@@ -1,0 +1,46 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "variant": "",
+  "rep": 5,
+  "secs": 29,
+  "run_rc": 0,
+  "time": "2026-10-23T14:37:43Z",
+  "component": "e2e",
+  "case": "e2e-version-json",
+  "passed": 1,
+  "total": 3,
+  "verdict": "fail",
+  "failed": [
+    "R1 --version: traced through every stage",
+    "R2 add --json: traced through every stage"
+  ],
+  "root_cause": "land-learn",
+  "trace": {
+    "R1 --version": {
+      "clarify": true,
+      "chart": true,
+      "build": true,
+      "prove": true,
+      "converge": true,
+      "land-learn": false
+    },
+    "R2 add --json": {
+      "clarify": true,
+      "chart": true,
+      "build": true,
+      "prove": true,
+      "converge": true,
+      "land-learn": false
+    }
+  },
+  "stage_artifacts": {
+    "clarify": true,
+    "chart": true,
+    "converge": true,
+    "land-learn": true
+  },
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/e2e-version-json-2026-10-23-kilo_kilo-auto_free-5.tar.gz",
+    "sha256": "b810c39942763199cbd240fb15dd3c3939079e8e50678ba0c182346e23ff60b1"
+  }
+}

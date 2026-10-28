@@ -1,0 +1,19 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 2,
+  "secs": 94,
+  "run_rc": 0,
+  "time": "2026-10-23T12:45:35Z",
+  "component": "prove",
+  "case": "prove-iso-date",
+  "passed": 3,
+  "total": 4,
+  "verdict": "fail",
+  "failed": [
+    "proof shows a command and its output"
+  ],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/prove-iso-date-2026-10-23-kilo_kilo-auto_free-2.tar.gz",
+    "sha256": "9b81fcc9dbbd63be50521b53f6e2240a2867f829c5c5833079fbdd75b8725f8a"
+  }
+}

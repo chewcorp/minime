@@ -1,0 +1,6 @@
+# Release flow (AGENTS.md excerpt, after release.sh was reordered)
+
+The release script validates the payload, bumps plugin.json, commits,
+creates annotated tag v<version>, builds the tarball, creates the GitHub
+release via `gh`, then pushes (release before push, so a failed `gh` call
+leaves nothing published).

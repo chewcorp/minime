@@ -1,0 +1,4 @@
+  PASS: Z timestamp and plain date both parse to the date object
+  PASS: tests pass
+  PASS: proof uses the exact input from the ask
+  PASS: proof shows a command and its output

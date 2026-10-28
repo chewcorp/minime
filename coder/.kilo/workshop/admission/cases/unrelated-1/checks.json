@@ -1,0 +1,10 @@
+{
+  "trailing-whitespace": {
+    "expect": "pass",
+    "pattern": " $"
+  },
+  "tabs-in-prose": {
+    "expect": "pass",
+    "pattern": "\\t"
+  }
+}

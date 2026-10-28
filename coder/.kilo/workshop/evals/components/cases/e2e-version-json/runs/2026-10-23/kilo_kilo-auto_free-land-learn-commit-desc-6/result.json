@@ -1,0 +1,43 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "variant": "land-learn-commit-desc",
+  "rep": 6,
+  "secs": 241,
+  "run_rc": 0,
+  "time": "2026-10-23T16:05:15Z",
+  "component": "e2e",
+  "case": "e2e-version-json",
+  "passed": 3,
+  "total": 3,
+  "verdict": "pass",
+  "failed": [],
+  "root_cause": null,
+  "trace": {
+    "R1 --version": {
+      "clarify": true,
+      "chart": true,
+      "build": true,
+      "prove": true,
+      "converge": true,
+      "land-learn": true
+    },
+    "R2 add --json": {
+      "clarify": true,
+      "chart": true,
+      "build": true,
+      "prove": true,
+      "converge": true,
+      "land-learn": true
+    }
+  },
+  "stage_artifacts": {
+    "clarify": true,
+    "chart": true,
+    "converge": true,
+    "land-learn": true
+  },
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/e2e-version-json-2026-10-23-kilo_kilo-auto_free-land-learn-commit-desc-6.tar.gz",
+    "sha256": "3ea96cc4f1175f86abc22a3922cfbd9f57cef369c26f6aa488a274dc4e2ff9f3"
+  }
+}

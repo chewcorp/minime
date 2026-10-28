@@ -1,0 +1,18 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 1,
+  "secs": 353,
+  "run_rc": 0,
+  "time": "2026-10-23T12:16:51Z",
+  "component": "build",
+  "case": "build-self-copy",
+  "passed": 1,
+  "total": 1,
+  "verdict": "pass",
+  "failed": [],
+  "f8_legs": "16/16",
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/build-self-copy-2026-10-23-kilo_kilo-auto_free-1.tar.gz",
+    "sha256": "7f44099bfbe1c157c066961529aa3709dd4a3f4de5d9d285bb769ce84bf5cde9"
+  }
+}

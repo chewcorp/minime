@@ -1,0 +1,5 @@
+  PASS: REVIEW.md written
+  PASS: names the clamp bug (min against lo, not hi)
+  PASS: marks the clamp bug blocking
+  PASS: at most five nits
+  PASS: edits nothing else

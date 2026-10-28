@@ -1,0 +1,11 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "agent": {
+    "planner": {
+      "model": "kilo-auto/frontier"
+    },
+    "advisor": {
+      "model": "kilo-auto/frontier"
+    }
+  }
+}

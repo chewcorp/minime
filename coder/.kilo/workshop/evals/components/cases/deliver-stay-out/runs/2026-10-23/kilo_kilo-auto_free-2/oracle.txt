@@ -1,0 +1,4 @@
+  PASS: heading fixed
+  PASS: only README.md changed
+  PASS: no loop state written
+  PASS: no loop ceremony in transcript

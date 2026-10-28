@@ -1,0 +1,17 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 1,
+  "secs": 40,
+  "run_rc": 0,
+  "time": "2026-10-23T12:18:10Z",
+  "component": "build",
+  "case": "build-subtract",
+  "passed": 5,
+  "total": 5,
+  "verdict": "pass",
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/build-subtract-2026-10-23-kilo_kilo-auto_free-1.tar.gz",
+    "sha256": "cb5e86005dc03386b96b9a049804e6943b692ce72df256a27c2eb4a0c93c9175"
+  }
+}

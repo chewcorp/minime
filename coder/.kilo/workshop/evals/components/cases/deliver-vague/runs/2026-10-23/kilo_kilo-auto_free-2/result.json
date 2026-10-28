@@ -1,0 +1,17 @@
+{
+  "model": "kilo/kilo-auto/free",
+  "rep": 2,
+  "secs": 17,
+  "run_rc": 0,
+  "time": "2026-10-23T12:30:41Z",
+  "component": "deliver",
+  "case": "deliver-vague",
+  "passed": 2,
+  "total": 2,
+  "verdict": "pass",
+  "failed": [],
+  "artifacts": {
+    "uri": "https://github.com/xchewtoyx/kilo-mms/releases/download/eval-runs/deliver-vague-2026-10-23-kilo_kilo-auto_free-2.tar.gz",
+    "sha256": "5c8274c873baae095dfdca77e36f1f5338bac2f41610cc30f215ba380e0f83ce"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "model": "kilo/ollama-cloud/glm-5.3-flash",
+  "agent": {
+    "planner": {
+      "model": "kilo/openai/gpt-6.1-sol"
+    },
+    "advisor": {
+      "model": "kilo/openai/gpt-6.1-sol"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# install.sh (excerpt) — project-mode install. src_root is the plugin
+# payload directory; dest is the target repo's .kilo.
+src_root=$(cd "$(dirname "$0")/.kilo" && pwd)
+dest="$target_repo/.kilo"
+
+mkdir -p "$dest"
+for d in agents skills; do
+  cp -R "$src_root/$d/." "$dest/$d/"
+done

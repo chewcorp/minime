@@ -1,0 +1,16 @@
+{
+  "order-push-before-release": {
+    "scope": "document",
+    "pattern": "(?m)\\A(?:(?!^[ \\t]*(?:if ![ \\t]+)?gh[ \\t]+release[ \\t]+create\\b)[\\s\\S])*?^[ \\t]*git[ \\t]+push[ \\t]+origin[ \\t]+main[ \\t]+--follow-tags[ \\t]*$[\\s\\S]*?^[ \\t]*(?:if ![ \\t]+)?gh[ \\t]+release[ \\t]+create[ \\t]+",
+    "expect": "fail"
+  },
+  "release-operations-present": {
+    "scope": "document",
+    "pattern": "(?m)\\A(?=[\\s\\S]*^[ \\t]*git[ \\t]+push[ \\t]+origin[ \\t]+main[ \\t]+--follow-tags[ \\t]*$)(?=[\\s\\S]*^[ \\t]*(?:if ![ \\t]+)?gh[ \\t]+release[ \\t]+create[ \\t]+)",
+    "expect": "fail"
+  },
+  "stub-used-as-proof": {
+    "pattern": "stubbed `gh`|stub gh|stubbed gh",
+    "expect": "pass"
+  }
+}

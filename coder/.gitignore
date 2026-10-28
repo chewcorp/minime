@@ -1,0 +1,10 @@
+# Transient per-task loop state (converge round counters, acceptance handoffs).
+# Created by the loop at runtime; never merged.
+.kilo/run/
+dist/
+# Raw eval output goes to release assets (.kilo/workshop/evals/runs.sh); result.json,
+# oracle.txt and metadata stay in git.
+.kilo/workshop/**/runs/**/export.json
+.kilo/workshop/**/runs/**/session*.txt
+.kilo/workshop/**/runs/**/diff.patch
+.kilo/workshop/**/runs/**/install*.sh
