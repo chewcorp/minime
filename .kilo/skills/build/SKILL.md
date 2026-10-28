@@ -11,7 +11,7 @@ One concern per change. Split a function only when it does several unrelated job
 
 State proof plan up front: test, check, or calculation a reviewer can rerun. For behaviour changes the plan is acceptance examples: per criterion, exact calls through the real entry point (CLI, API, UI), written literally as a user types them, with expected output and exit status.
 
-Examples include the edge forms the criterion's words imply and inputs where user input first meets a reused parser or library (argument parsing, string or number parsing); each reused parser gets one example in its own syntax with no padding (for argparse, a value starting with `-`).
+Examples include the edge forms the criterion's words imply and inputs where user input first meets a reused parser or library (argument parsing, string or number parsing); each reused parser gets one example in its own syntax with no padding (for argparse, a value starting with `-` that is not a plain number).
 
 Write them as tests first and keep them verbatim: never add `--`, quoting or spacing to make one pass; fix the code. If no code change can satisfy an example, stop and return it with its output. Examples of new behaviour must fail before the change; ones that already pass stay as regression tests.
 
