@@ -90,6 +90,12 @@ elif [ -d "$(dirname "$dest")" ]; then
   dest="$(CDPATH= cd "$(dirname "$dest")" && pwd -P)/$(basename "$dest")"
 fi
 
+# agents/ and skills/ live at the plugin root, so installing into it would
+# truncate each agent through the sed redirect below.
+if [ "$dest" = "$(CDPATH= cd "$src" && pwd -P)" ]; then
+  echo "refusing to install into the plugin source itself ($dest)" >&2; exit 64
+fi
+
 # Config conflict policy (D5): preserve an existing target kilo.json unless
 # --force-config is passed. When source and destination are the same file
 # (self-install, E3), there is nothing to write even under --force-config:
