@@ -11,4 +11,4 @@ One concern per change. Split a function only when it does several unrelated job
 
 Friction reducers: tidy (strip unneeded docs/comments on touch, keep only non-obvious why); quiet (decide two-way doors alone, batch questions); replan (two-way door → adjust tickets inline, one-line delta, no re-clarify).
 
-Done when tests/lint green (no linter configured → run the language's standard one, e.g. `ruff check`, on changed files and fix what the change introduced), small test for non-trivial logic, proof artifact kept re-runnable. Never add unasked option/config/abstraction. Never cut trust-boundary validation, data-loss handling, security, a11y, or anything asked.
+Done when tests/lint green (no linter configured → if the language's standard one is installed, e.g. `ruff check`, run it on changed files and fix what the change introduced; never install one), small test for non-trivial logic, proof artifact kept re-runnable. Never add unasked option/config/abstraction. Never cut trust-boundary validation, data-loss handling, security, a11y, or anything asked.
