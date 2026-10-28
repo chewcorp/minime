@@ -5,6 +5,9 @@
 set -euo pipefail
 plugin="${1:?usage: vendor.sh <plugin> <tag|tarball>}"
 ref="${2:?usage: vendor.sh <plugin> <tag|tarball>}"
+case "$plugin" in
+  ""|*[!a-z0-9-]*) echo "plugin name must be lowercase letters, digits and dashes: $plugin" >&2; exit 64 ;;
+esac
 root="$(cd "$(dirname "$0")" && pwd)"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
