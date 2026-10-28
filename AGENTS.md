@@ -4,7 +4,7 @@ Local development workflows for this repo, in the shape of rgh-mms (planner, res
 
 ## Kilo agents
 
-`.kilo/agents/` holds thin shims: `planner`, `researcher` (read-only), `implementor`, `reviewer` (read-only), `approver` (read-only, AC table), `advisor` (read-only, escalation brief).
+`.kilo/agents/` holds thin shims: `planner`, `researcher` (read-only), `implementor`, `reviewer` (runs checks, never edits), `approver` (read-only, AC table), `advisor` (read-only, escalation brief).
 
 `.kilo/skills/` holds the delivery loop, routed by `deliver`: `clarify` → `chart` → `build` → `prove` → `converge` → `land-learn`. `.kilo/workshop/` is plugin-dev only, never installed downstream.
 
