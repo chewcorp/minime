@@ -1,0 +1,19 @@
+{
+  "name": "minime",
+  "owner": {
+    "name": "chewcorp"
+  },
+  "metadata": {
+    "description": "A me flavoured development workflow"
+  },
+  "plugins": [
+    {
+      "name": "coder",
+      "source": {
+        "type": "local",
+        "path": "./plugins/coder"
+      },
+      "description": "Staged delivery loop with planner, researcher, implementor, reviewer, approver and advisor subagents."
+    }
+  ]
+}
