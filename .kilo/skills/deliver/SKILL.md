@@ -14,6 +14,7 @@ Copy the steps for the matched stage verbatim into todos.
 - New idea or vague ask → `clarify`
 - Multi-ticket work needing a map → `chart`
 - Single buildable ticket → `build` with `prove` inside
+- Build stopped on an unsatisfiable example → human, with the example and its output
 - Diff ready → `converge`
 - Merged-ready → `land-learn`
 
