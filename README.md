@@ -20,13 +20,12 @@ minime is a family of agent plugins, published as one marketplace that works acr
 | Grok Build | Add `chewcorp/minime` as a marketplace source, then install `coder` from `/marketplace` | skills, agents |
 | Devin | `devin plugins install chewcorp/minime#plugins/coder` | skills, agents |
 | pi | `pi install git:github.com/chewcorp/minime` | skills |
-| Kilo | `git clone https://github.com/chewcorp/minime && minime/plugins/coder/install.sh` (`--project` for one repo) | skills, agents, role models |
-| opencode | `git clone https://github.com/chewcorp/minime && minime/plugins/coder/install.sh --prefix ~/.config/opencode` | skills, agents |
+| opencode | `git clone https://github.com/chewcorp/minime && minime/install.sh` (`--project` for one repo; name plugins to install only some) | skills, agents |
 | Perplexity Computer, others | Upload or copy `plugins/coder/skills/*/SKILL.md` into the client's skills | skills |
 
-For `agents`, swap `coder` for `agents` in the plugin rows (for example `/plugin install agents@minime`, or `devin plugins install chewcorp/minime#plugins/agents`). It has no `install.sh`, so for Kilo, opencode and others, copy `plugins/agents/skills/*` into the client's skills folder.
+For `agents`, swap `coder` for `agents` in the plugin rows (for example `/plugin install agents@minime`, or `devin plugins install chewcorp/minime#plugins/agents`). pi and `install.sh` install every plugin.
 
-Installs are verified with Claude Code, Codex, Copilot CLI, pi, Kilo and opencode. The other rows follow each client's documented plugin format and haven't been tried yet.
+Installs are verified with Claude Code, Codex, Copilot CLI, pi and opencode. The other rows follow each client's documented plugin format and haven't been tried yet.
 
 Start the coder loop by asking for it by name, or run `/deliver` (`/coder:deliver` in Claude Code). Start agents with `/recruit` (`/agents:recruit`).
 
@@ -34,6 +33,7 @@ Start the coder loop by asking for it by name, or run `/deliver` (`/coder:delive
 
 - `.claude-plugin/marketplace.json` is the catalog read by Claude Code, Codex, Copilot CLI and Factory Droid. `.cursor-plugin/marketplace.json` (Cursor) and `.grok-plugin/marketplace.json` (Grok Build) carry the same entries; keep the three in step when adding a plugin.
 - `package.json` lists each plugin's skills for pi.
+- `install.sh` copies plugin skills and agents into opencode, which has no marketplace.
 - `plugins/<plugin>/` is a vendored release. Don't edit it here; change the plugin repo, release, then vendor.
 
 ## Vendoring a release
