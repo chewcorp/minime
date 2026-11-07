@@ -18,7 +18,7 @@ minime is a family of agent plugins, published as one marketplace that works acr
 | Cursor | Add `chewcorp/minime` as a team marketplace, then install `coder` | skills, agents |
 | Factory Droid | `droid plugin marketplace add https://github.com/chewcorp/minime` then `droid plugin install coder@minime` | skills, droids |
 | Grok Build | Add `chewcorp/minime` as a marketplace source, then install `coder` from `/marketplace` | skills, agents |
-| Devin | `devin plugins install chewcorp/minime#plugins/coder` | skills, agents |
+| Devin | `devin plugins install chewcorp/minime#plugins/coder` | skills, agents (CLI and Desktop only) |
 | pi | `pi install git:github.com/chewcorp/minime` | skills |
 | opencode | `git clone https://github.com/chewcorp/minime && minime/install.sh` (`--project` for one repo; name plugins to install only some) | skills, agents |
 | Perplexity Computer, others | Upload or copy `plugins/coder/skills/*/SKILL.md` into the client's skills | skills |
