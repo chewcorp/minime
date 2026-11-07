@@ -1,6 +1,6 @@
 ---
 name: goldfish-review
-description: Use when a recruit artifact (brief, role, routines, a wake chart or an agent package) needs review before the next stage. Parallel goldfish reviewers read only the artifact and its sources, never the conversation; you merge and verify their findings. Called by brief, role, routines and chart.
+description: Use when a recruit artifact (brief, role or routines) needs review before the next stage. Parallel goldfish reviewers read only the artifact and its sources, never the conversation; you merge and verify their findings. Called by brief, role and routines.
 ---
 
 # goldfish-review

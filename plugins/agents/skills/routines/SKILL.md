@@ -5,18 +5,18 @@ description: Use when an agent has an accepted role but its wakes are not writte
 
 # routines
 
-Their working pattern: what wakes them, what they look at, when they speak up, and when they stop. Read `brief.md` and `role.md`. Write `.minime/<agent>/routines.md` with one section per trigger. Each heading line is exactly `## R1`, `## R2`, …; the recruit script reads only those lines. Under each:
+Writes `.minime/<agent>/routines.md`: one bounded wake per trigger. Read `brief.md` and `role.md`. Each heading line is exactly `## R1`, `## R2`, …; the recruit script reads only those lines. Under each:
 
 - **Trigger**: schedule, event or message, and who may send it.
-- **Input**: what it reads, as a delta since a stored cursor, never the whole world (A5). Where the cursor lives and who advances it (after the record, A7).
-- **Decisions**: each judgement the wake makes. Mark the mechanical ones (one right answer) for a script, not prose.
-- **Tools and skills**: every one it names. Each must exist on the target host; a missing one is a recorded stop, not a retry (A2).
-- **Outside actions**: each post, push, PR or message, its idempotency key, and how to read the destination before a resend (D6).
-- **Budgets**: tool calls and tokens per wake, held by the host (A3, A8). Say what happens at the cap: record a partial result and stop.
-- **Done-when**: the observable result that ends the wake well.
-- **Silence**: what a wake with nothing to do records, and that it sends nothing (A6).
+- **Input**: a delta since a stored cursor, never a full re-read (A5). Where the cursor lives; it advances only after the record (A7).
+- **Decisions**: each judgement the wake makes. Mark the mechanical ones (one right answer) for a script, not the prompt.
+- **Tools and skills**: every one it names, each present on the target host. A missing one is a recorded stop, not a retry (A2).
+- **Outside actions**: each post, push, PR or message, its idempotency key built from a stable input id (never wake time), and the destination read before any resend (D6).
+- **Budgets**: tool calls and tokens per wake, and attempts and spend across wakes for any retry or fan-out, held outside the context by host or script (A3, A8). Cite each numeric limit from `brief.md` by value; state the worst-case cost per mode (`observe`, `act`). At the cap: record a partial result and stop.
+- **Done-when**: the observable result that ends the wake.
+- **Silence**: what a no-op wake records; it sends nothing (A6).
 - **Approval gate**: who approves each outside action in an unattended run, chosen now (C6).
 
-Load `goldfish-review` with artifact `routines.md`, intent `brief.md` and `role.md`, question "which wake can repeat an outside action, run unbounded, re-read everything, or end without a record?", blocking rule "an outside action with no key, a budget held only in the prompt, or a wake with no done-when", output `routines-review.md`. Run `python3 "$NEXT" <agent> --pin routines` before loading it, then `--clear routines` once every verified blocker is fixed or declined (see `recruit`).
+Reviewed stage (see `recruit`): artifact `routines.md`; intent `brief.md` and `role.md`; question "which wake can repeat an outside action, run unbounded, re-read everything, or end without a record?"; blocking rule "an outside action with no key, a budget held only in the prompt, or a wake with no done-when"; output `routines-review.md`.
 
 Done when every routine has every field above and `routines-review.json` is clear for the current `routines.md`.

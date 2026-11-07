@@ -161,7 +161,7 @@ Spec == Init /\ [][Next]_vars
 
 \* The rules, in the reader's words.
 NoDuplicateEffect == delivered <= 1     \* an outside action happens at most once
-NoAckOnlyReply    == acks = 0           \* never send a message that only acknowledges
+NoAckOnlyReply    == acks = 0           \* an ack-only input gets no reply
 BoundedWake       == calls <= Cap       \* tool calls per wake stay under the cap (tokens not modelled)
 NoStaleCharterAct == ~staleAct          \* never act on a charter that is not the committed one
 OneActorPerItem   == ~othersAct         \* never act on an item another actor holds

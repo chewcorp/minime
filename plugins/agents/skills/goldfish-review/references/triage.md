@@ -14,7 +14,7 @@ possible. Decisions that change accepted intent return to the owning stage.
 
 For later findings, distinguish:
 
-- Introduced regression: before/after commit evidence shows the repair caused it.
+- Introduced regression: before/after artifact evidence shows the fix caused it.
 - Incomplete remediation: the original cause remains in an affected path.
 - Pre-existing discovery: the defect already existed before the repair.
 - Origin unknown: available evidence does not establish when it appeared.
@@ -24,16 +24,15 @@ check can preserve unwanted behaviour; a broader rule can remove valid paths.
 Record the evidence for the classification without treating every later-pass
 finding as a newly introduced defect.
 
-Origin and disposition are separate. Compare with the PR base as well as the
-previous repair commit. A defect that predates the repair may still have been
-introduced by the PR. An unrelated defect already present at the base is advisory
-and belongs in the follow-up list; it does not consume a repair round. A base
+Origin and disposition are separate. Compare with the upstream pinned at review
+start as well as the previous fix. A defect that predates the fix may still have
+been introduced by this stage. An unrelated defect already present upstream is
+advisory and belongs in the follow-up list; it does not consume a fix round. A base
 defect that prevents an accepted outcome or becomes newly reachable through the
 change can still block. Unknown origin is not a reason to dismiss demonstrated
 impact under the caller's blocking rule.
 
-Keep every declined blocker and its evidence visible in `review.md` and the PR
-handoff. If declining depends on unwritten intent or outside knowledge that the
+Keep every declined blocker and its evidence visible in `<stage>-review.md`. If declining depends on unwritten intent or outside knowledge that the
 reviewer cannot verify, ask the human rather than silently suppressing it.
 
 ## Context references
@@ -42,6 +41,6 @@ These pinned wiki sources provide background; the local rules above remain
 usable without wiki access.
 
 - [Finding vs Remedy](https://github.com/chewcorp/workspace-sdlc-skills/blob/f3f2c1b758171e0eaf757463648acb297e0ae2c8/wiki/concepts/finding-vs-remedy.md): separate defect evidence from repair suitability. Use the qualified disposition rules above rather than automatically downgrading everything pre-existing.
-- [Comprehension Test](https://github.com/chewcorp/workspace-sdlc-skills/blob/f3f2c1b758171e0eaf757463648acb297e0ae2c8/wiki/concepts/comprehension-test.md): for ambiguous specifications, a fresh paraphrase can expose missing links. Concrete conflicting readings warrant clarification; one reader's confusion alone is not an incontestable verdict.
+- [Comprehension Test](https://github.com/chewcorp/workspace-sdlc-skills/blob/f3f2c1b758171e0eaf757463648acb297e0ae2c8/wiki/concepts/comprehension-test.md): for ambiguous specifications, a fresh paraphrase can expose missing links. Conflicting readings warrant clarification; one reader's failed paraphrase is advisory (see `brief`).
 - [Divergent Readings](https://github.com/chewcorp/workspace-sdlc-skills/blob/f3f2c1b758171e0eaf757463648acb297e0ae2c8/wiki/concepts/divergent-readings.md): compare independent interpretations when ambiguity matters. This is an evaluation candidate, not another mandatory dispatch.
 - [Attacker-Gain Test](https://github.com/chewcorp/workspace-sdlc-skills/blob/f3f2c1b758171e0eaf757463648acb297e0ae2c8/wiki/concepts/attacker-gain-test.md): identify exploit preconditions and added capability. Check the actual trust boundary, affected principals and intended security requirements; existing access alone does not dismiss persistence, integrity or cross-boundary impact.

@@ -25,6 +25,9 @@ REVIEWED = ("brief", "role", "routines")
 PLACES = {"host", "script", "prompt"}
 GUARD_ID = re.compile(r"G[1-9][0-9]*")
 ROUTINE = re.compile(r"R[1-9][0-9]*")
+TEMPLATE = Path(__file__).resolve().parents[3] / "templates" / "wake"
+RULES = ("NoDuplicateEffect", "NoAckOnlyReply", "BoundedWake", "NoStaleCharterAct",
+         "OneActorPerItem", "ObserveOnly", "StopWins", "EndsRecorded")
 UPSTREAM = {"brief": (), "role": ("brief.md",), "routines": ("brief.md", "role.md")}
 
 
@@ -89,8 +92,52 @@ def routines(work):
     return re.findall(r"^## (R[1-9][0-9]*)\s*$", text(work / "routines.md"), re.M)
 
 
+def bare(path):
+    """A TLA+ or TLC config file's lines with (* *) and \\* comments removed."""
+    return [line.split("\\*")[0] for line in re.sub(r"\(\*.*?\*\)", " ", text(path), flags=re.S).splitlines()]
+
+
+def definitions(path):
+    """Each standard rule's definition in a .tla file, with indented continuation lines, whitespace stripped."""
+    found, name = {}, None
+    for body in bare(path):
+        m = re.match(r"(\w+)\s*==(.*)", body)
+        if m:
+            name = m.group(1) if m.group(1) in RULES else None
+            if name:
+                found[name] = "\0" if name in found else ""  # a second definition is drift
+            body = m.group(2)
+        elif not body.strip():
+            continue
+        elif not body[:1].isspace():
+            name = None
+        if name:
+            found[name] += "".join(body.split())
+    return found
+
+
+def checked(path):
+    """Names a TLC config lists under INVARIANT or INVARIANTS."""
+    names, listing = set(), False
+    for token in re.findall(r"[A-Za-z_]\w*", "\n".join(bare(path))):
+        if token.isupper():
+            listing = token in ("INVARIANT", "INVARIANTS")
+        elif listing:
+            names.add(token)
+    return names
+
+
+def drifted(folder):
+    """Standard rules the chart redefines or leaves out of gated.cfg; None if the template is unreadable."""
+    want = definitions(TEMPLATE / "Wake.tla")
+    if set(want) != set(RULES):
+        return None
+    have, listed = definitions(folder / "Wake.tla"), checked(folder / "gated.cfg")
+    return {r for r in RULES if have.get(r) != want[r] or r not in listed}
+
+
 def guards(work, routine):
-    """Guard IDs from charts/<routine>/chart.json, or None unless every guard is placed, uniquely named and the check is current."""
+    """Guard IDs from charts/<routine>/chart.json, or None unless every guard is placed, uniquely named, the check is current and every weakened standard rule has a ruling."""
     folder = work / "charts" / routine
     chart = load(folder / "chart.json")
     if chart is None or "No error has been found" not in text(folder / "gated.out"):
@@ -99,6 +146,10 @@ def guards(work, routine):
     if model is None or chart.get("model") != model or chart.get("gated") != sha(folder / "gated.out"):
         return None
     if chart.get("upstream") != upstream(work, routine):
+        return None
+    rulings, drift = chart.get("rulings", {}), drifted(folder)
+    if drift is None or not isinstance(rulings, dict) or not all(
+            isinstance(rulings.get(r), str) and rulings[r].strip() for r in drift):
         return None
     rows = chart.get("guards")
     if not isinstance(rows, list) or not rows or not all(isinstance(g, dict) for g in rows):
