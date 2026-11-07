@@ -1,0 +1,8 @@
+{
+  "name": "agents",
+  "version": "0.1.0",
+  "description": "Agent-building loop: brief, role, routines, checked wake charts, trial, routed by recruit, with goldfish-review and a reviewer subagent.",
+  "author": { "name": "Russell Heilling" },
+  "repository": "https://github.com/chewcorp/minime-agents",
+  "keywords": ["agents", "statecharts", "controls", "workflow"]
+}

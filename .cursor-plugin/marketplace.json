@@ -7,6 +7,11 @@
       "name": "coder",
       "source": "./plugins/coder",
       "description": "Staged delivery loop with planner, researcher, implementor, reviewer, approver and advisor subagents."
+    },
+    {
+      "name": "agents",
+      "source": "./plugins/agents",
+      "description": "Recruit and onboard an agent like a new colleague: brief, role, routines, a TLC-checked wake chart and a trial of every safeguard, routed by recruit."
     }
   ]
 }
