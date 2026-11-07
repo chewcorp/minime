@@ -14,6 +14,6 @@ The job description: what this colleague owns, what they read, who they work alo
 5. **Identity**: its own account or app user on each service it writes to. No borrowed human identity (C3). List every path it uses on each service (read, write, mentions, scheduled pulls) for `trial` (C4).
 6. **Reports to**: the one voice that speaks for it to people, if it is not that voice.
 
-Load `goldfish-review` with artifact `role.md`, intent `brief.md`, question "which state has two writers, which input has no full reader, which actor overlaps without a split?", blocking rule "two writers to one state, an overlap with no split, or a borrowed identity", output `role-review.md`. Then write `role-review.json` as `{"artifact": "<python3 \"$NEXT\" <agent> --hash role.md>", "findings": "<… --hash role-review.md>", "status": "clear"}` once every verified blocker is fixed or declined (see `recruit`).
+Load `goldfish-review` with artifact `role.md`, intent `brief.md`, question "which state has two writers, which input has no full reader, which actor overlaps without a split?", blocking rule "two writers to one state, an overlap with no split, or a borrowed identity", output `role-review.md`. Run `python3 "$NEXT" <agent> --pin role` before loading it, then `--clear role` once every verified blocker is fixed or declined (see `recruit`).
 
 Done when every owned state has one writer, every overlap has a split, the identity is the agent's own, and `role-review.json` is clear for the current `role.md`.

@@ -1,6 +1,6 @@
 # Wake template
 
-The standard wake of one agent routine as a TLA+ model. `chart` copies this folder per routine and fits it.
+The standard wake of one agent routine as a TLA+ model. `chart-duties` copies this folder per routine and fits it.
 
 The agent may take any enabled step. The environment picks the input kind (explicit request, inferred work, ack-only message, an item another actor holds), whether the loaded charter matches the committed one, and may inject one restart, one context compaction and one stop.
 

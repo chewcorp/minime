@@ -5,11 +5,11 @@ description: Use when a recruit artifact (brief, role, routines, a wake chart or
 
 # goldfish-review
 
-A **goldfish** is a fresh `reviewer` agent with no conversation history: it sees only the artifact, the sources it references, and the brief. A review in your own context is not a goldfish review.
+A **goldfish** is a fresh `agent-review` agent with no conversation history: it sees only the artifact, the sources it references, and the brief. A review in your own context is not a goldfish review.
 
 The caller supplies: the artifact path(s), the intent (what the artifact must serve, one level up), a question, the blocking rule, and an output path.
 
-1. **Dispatch.** Start 3 fresh `reviewer` agents in parallel, in one message, using different model families where the client allows. Give each the brief below and nothing else: no summary of the conversation, no earlier rounds, no author reasoning. If the client cannot start a fresh agent, stop and tell the user why.
+1. **Dispatch.** Start 3 fresh `agent-review` agents in parallel, in one message, using different model families where the client allows. Give each the brief below and nothing else: no summary of the conversation, no earlier rounds, no author reasoning. If the client cannot start a fresh agent, stop and tell the user why.
 
    > Review `<artifact>` cold. Read it, `AGENTS.md`, and the files it references or changes; reproduce its recorded checks. Intent: `<intent>`. Judge the artifact against it; do not review the intent itself. Question: `<question>`. Report each finding on one line: `- blocking|advisory — <file:line> — <problem> — <effect> — <remedy>`. Blocking means: `<blocking rule>`. Everything else is advisory. Skip duplicate formatting/lint findings enforced by CI; still assess correctness, assertions and coverage. End with one line: `verdict: approve` or `verdict: changes`.
 

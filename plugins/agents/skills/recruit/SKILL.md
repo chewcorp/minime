@@ -1,11 +1,11 @@
 ---
 name: recruit
-description: Use when the user asks to build, rebuild or govern an agent (a bot, seat or scheduled routine) with the minime agents loop, or names one of its stages (brief, role, routines, chart, trial). Sets up the work folder, then loads the stage the routing script names. For a one-line prompt edit the user did not route here, just make the edit.
+description: Use when the user asks to build, rebuild or govern an agent (a bot, seat or scheduled routine) with the minime agents loop, or names one of its stages (brief, role, routines, chart-duties, trial). Sets up the work folder, then loads the stage the routing script names. For a one-line prompt edit the user did not route here, just make the edit.
 ---
 
 # recruit
 
-Bring on a new agent the way you would a new colleague: agree what the job is for, what they own, when they work, how their day runs, and watch them handle a trial before they start for real. The loop: `brief` → `role` → `routines` → `chart` → `trial` → land. Code the agent needs goes through minime-coder's `deliver`; this loop owns the agent's brief, responsibilities, wakes and controls.
+Bring on a new agent the way you would a new colleague: agree what the job is for, what they own, when they work, how their day runs, and watch them handle a trial before they start for real. The loop: `brief` → `role` → `routines` → `chart-duties` → `trial` → land. Code the agent needs goes through minime-coder's `deliver`; this loop owns the agent's brief, responsibilities, wakes and controls.
 
 ## 1. Set up
 
@@ -23,14 +23,15 @@ Resolve `NEXT` to this skill's `scripts/next.py` (Python 3.9+, Git). On every st
 | `brief` | `brief` |
 | `role` | `role` |
 | `routines` | `routines` |
-| `chart R1 …` | `chart`, for each routine listed |
+| `chart-duties R1 …` | `chart-duties`, for each routine listed |
 | `trial` | `trial` |
 | `land` | ready to start: hand the human the package, `proof.json` and the list of host-missing controls from the charts |
 
 The script reads only JSON records, and each record names the hash of what it vouches for, so editing an artifact after its record voids the record:
 
-- A reviewed stage is done when `<stage>.md` has no `[TK]` and `<stage>-review.json` is `{"artifact": "<hash of <stage>.md>", "findings": "<hash of <stage>-review.md>", "status": "clear"}`, each hash from `python3 "$NEXT" <agent> --hash <file>`. Write it only after every verified blocker in `<stage>-review.md` is fixed or declined with a reason, and never when that file says `review: incomplete`. Never write it to move on.
-- A chart is done when `charts/R<n>/chart.json` matches the current model and `gated.out`, the check found no error, and every guard is placed (see `chart`).
+- A reviewed stage is done when `<stage>.md` has no `[TK]` and `<stage>-review.json` is clear for the current `<stage>.md`, its findings, and what was upstream when the reviewers started (role: the brief; routines: the brief and role). Run `python3 "$NEXT" <agent> --pin <stage>` just before you load `goldfish-review`, and `python3 "$NEXT" <agent> --clear <stage>` only after every verified blocker in `<stage>-review.md` is fixed or declined with a reason. `--clear` refuses without a pin or when that file says `review: incomplete`. Never clear to move on.
+- An edit upstream sends the work back: change the brief and role, routines and every chart reopen, even if their own text did not change (F5).
+- A chart is done when `charts/R<n>/chart.json` matches the current model, `gated.out`, the brief, role and its own routine's section, the check found no error, and every guard is placed (see `chart-duties`). Editing another routine leaves it standing.
 - Proof is done when `proof.json` passes every row and covers every guard both ways at the current digest (see `trial`).
 
 Malformed, stale or missing records count as not done.

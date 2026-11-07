@@ -16,13 +16,13 @@ The job brief: why we are hiring, what good looks like, and what the new colleag
    - **Initiative**: which inferred work it may take up, each rule starting in observe mode.
    - **Decides**: who owns each open choice. Mark unresolved values `[TK]`.
 2. Check the outcomes against each other: a lever counted against its own target is a contradiction (E3).
-3. Load `goldfish-review`:
+3. Run `python3 "$NEXT" <agent> --pin brief`, then load `goldfish-review`:
    - artifact: `.minime/<agent>/brief.md`
    - intent: the human's request, quoted verbatim
    - question: paraphrase what this agent is for and what it may never do; which outcome cannot be measured as written; which two parts contradict?
    - blocking rule: a reviewer cannot paraphrase a section, an outcome has no numeric fit, or two outcomes contradict
    - output: `.minime/<agent>/brief-review.md`
 
-   A comprehension gap cannot be contested: fix the text. Fold verified findings; rerun when an outcome or limit changed. Then write `brief-review.json` as `{"artifact": "<python3 \"$NEXT\" <agent> --hash brief.md>", "findings": "<… --hash brief-review.md>", "status": "clear"}` once every verified blocker is fixed or declined (see `recruit`).
+   A comprehension gap cannot be contested: fix the text. Fold verified findings; rerun when an outcome or limit changed. Then run `--clear brief` once every verified blocker is fixed or declined (see `recruit`).
 
 Done when `brief.md` has no `[TK]`, every outcome has a numeric fit and a gauge, and `brief-review.json` is clear for the current `brief.md`.

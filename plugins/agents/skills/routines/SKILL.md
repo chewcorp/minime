@@ -17,6 +17,6 @@ Their working pattern: what wakes them, what they look at, when they speak up, a
 - **Silence**: what a wake with nothing to do records, and that it sends nothing (A6).
 - **Approval gate**: who approves each outside action in an unattended run, chosen now (C6).
 
-Load `goldfish-review` with artifact `routines.md`, intent `brief.md` and `role.md`, question "which wake can repeat an outside action, run unbounded, re-read everything, or end without a record?", blocking rule "an outside action with no key, a budget held only in the prompt, or a wake with no done-when", output `routines-review.md`. Then write `routines-review.json` as `{"artifact": "<python3 \"$NEXT\" <agent> --hash routines.md>", "findings": "<… --hash routines-review.md>", "status": "clear"}` once every verified blocker is fixed or declined (see `recruit`).
+Load `goldfish-review` with artifact `routines.md`, intent `brief.md` and `role.md`, question "which wake can repeat an outside action, run unbounded, re-read everything, or end without a record?", blocking rule "an outside action with no key, a budget held only in the prompt, or a wake with no done-when", output `routines-review.md`. Run `python3 "$NEXT" <agent> --pin routines` before loading it, then `--clear routines` once every verified blocker is fixed or declined (see `recruit`).
 
 Done when every routine has every field above and `routines-review.json` is clear for the current `routines.md`.

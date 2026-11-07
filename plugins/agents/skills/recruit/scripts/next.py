@@ -3,8 +3,13 @@
 
 `next.py <agent>` prints the stage.
 `next.py <agent> --digest` prints the value proof.json records as "digest".
-`next.py <agent> --hash <path>` prints a hash for a review or chart record: the
-sha256 of a file, or for a chart folder the hash of its .tla and .cfg files.
+`next.py <agent> --hash <path>` prints a hash for a chart record: the sha256 of
+a file, or for a chart folder the hash of its .tla and .cfg files.
+`next.py <agent> --upstream <R<n>>` prints the upstream hashes a chart record pins.
+`next.py <agent> --pin <stage>` records, before reviewers start, the hashes of
+everything upstream of a stage; `--clear <stage>` marks it clear for the stage's
+current text and findings.
+A record goes stale when anything it pinned changes.
 
 State the router reads is JSON. Anything malformed, stale or missing counts as
 not done, and git errors fail closed.
@@ -19,6 +24,8 @@ from pathlib import Path
 REVIEWED = ("brief", "role", "routines")
 PLACES = {"host", "script", "prompt"}
 GUARD_ID = re.compile(r"G[1-9][0-9]*")
+ROUTINE = re.compile(r"R[1-9][0-9]*")
+UPSTREAM = {"brief": (), "role": ("brief.md",), "routines": ("brief.md", "role.md")}
 
 
 def text(path):
@@ -48,16 +55,34 @@ def model_hash(folder):
     return h.hexdigest()
 
 
+def section(work, routine):
+    """The text of `## <routine>` in routines.md, up to the next `## ` heading."""
+    m = re.search(rf"^## {routine}\s*$.*?(?=^## |\Z)", text(work / "routines.md"), re.M | re.S)
+    return m.group(0) if m else None
+
+
+def upstream(work, name):
+    """Hashes of what a stage or chart was built against; a chart pins its own routine's section only."""
+    if name in UPSTREAM:
+        return {f: sha(work / f) for f in UPSTREAM[name]}
+    body = section(work, name)
+    return {"brief.md": sha(work / "brief.md"), "role.md": sha(work / "role.md"),
+            f"routines.md#{name}": hashlib.sha256(body.encode()).hexdigest() if body else None}
+
+
+def reviewable(work, stage):
+    findings = text(work / f"{stage}-review.md")
+    return bool(findings) and not findings.startswith("review: incomplete")
+
+
 def clear(work, stage):
-    """Done when the artifact has no [TK] and its review record is clear for this exact artifact and findings file."""
-    doc, findings = work / f"{stage}.md", work / f"{stage}-review.md"
-    review = load(work / f"{stage}-review.json")
-    if not text(doc) or "[TK]" in text(doc) or review is None:
-        return False
-    if not text(findings) or text(findings).startswith("review: incomplete"):
+    """Done when the artifact has no [TK] and its clear review record pins this artifact, its upstream and its findings."""
+    doc, review = work / f"{stage}.md", load(work / f"{stage}-review.json")
+    if not text(doc) or "[TK]" in text(doc) or review is None or not reviewable(work, stage):
         return False
     return (review.get("status") == "clear" and review.get("artifact") == sha(doc)
-            and review.get("findings") == sha(findings))
+            and review.get("upstream") == upstream(work, stage)
+            and review.get("findings") == sha(work / f"{stage}-review.md"))
 
 
 def routines(work):
@@ -72,6 +97,8 @@ def guards(work, routine):
         return None
     model = model_hash(folder)
     if model is None or chart.get("model") != model or chart.get("gated") != sha(folder / "gated.out"):
+        return None
+    if chart.get("upstream") != upstream(work, routine):
         return None
     rows = chart.get("guards")
     if not isinstance(rows, list) or not rows or not all(isinstance(g, dict) for g in rows):
@@ -129,18 +156,47 @@ def next_stage(work):
         return "routines"
     missing = [r for r in names if guards(work, r) is None]
     if missing:
-        return "chart " + " ".join(missing)
+        return "chart-duties " + " ".join(missing)
     return "land" if proved(work, names) else "trial"
+
+
+def pin(work, stage):
+    doc = work / f"{stage}.md"
+    if not text(doc):
+        sys.exit(f"nothing to review at {doc}")
+    record = {"upstream": upstream(work, stage), "status": "pending"}
+    (work / f"{stage}-review.json").write_text(json.dumps(record), encoding="utf-8")
+
+
+def mark_clear(work, stage):
+    path = work / f"{stage}-review.json"
+    record = load(path)
+    if record is None or record.get("status") != "pending":
+        sys.exit(f"no pending pin at {path}; run --pin {stage} before the reviewers start")
+    if not reviewable(work, stage):
+        sys.exit(f"{stage}-review.md is missing or incomplete")
+    # The artifact is hashed now, so fixes folded in from the findings count; upstream stays as pinned.
+    record.update(status="clear", artifact=sha(work / f"{stage}.md"), findings=sha(work / f"{stage}-review.md"))
+    path.write_text(json.dumps(record), encoding="utf-8")
 
 
 def main():
     args = sys.argv[1:]
-    if not (len(args) == 1 or args[1:] == ["--digest"] or (len(args) == 3 and args[1] == "--hash")):
-        sys.exit("usage: next.py <agent> [--digest | --hash <path>]")
+    flags = {"--hash", "--upstream", "--pin", "--clear"}
+    if not (len(args) == 1 or args[1:] == ["--digest"] or (len(args) == 3 and args[1] in flags)):
+        sys.exit("usage: next.py <agent> [--digest | --hash <path> | --upstream <R<n>> | --pin <stage> | --clear <stage>]")
     work = Path(".minime") / args[0]
     if not work.is_dir():
         sys.exit(f"missing {work}/; run recruit section 1 first")
-    if args[1:] == ["--digest"]:
+    if args[1:2] in (["--pin"], ["--clear"]):
+        if args[2] not in REVIEWED:
+            sys.exit(f"--pin and --clear take one of {', '.join(REVIEWED)}")
+        (pin if args[1] == "--pin" else mark_clear)(work, args[2])
+    elif args[1:2] == ["--upstream"]:
+        if not ROUTINE.fullmatch(args[2]) or section(work, args[2]) is None:
+            sys.exit(f"no routine {args[2]} in routines.md")
+        print(json.dumps(upstream(work, args[2])))
+    elif args[1:] == ["--digest"]:
         print(digest(work) or sys.exit("worktree is dirty or git failed; commit or stash before proving"))
     elif args[1:2] == ["--hash"]:
         target = work / args[2]
