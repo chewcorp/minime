@@ -7,6 +7,7 @@ permission:
   edit: deny
   bash: allow
 disallowedTools: Write, Edit, NotebookEdit
+allowed-tools: [read, grep, glob, exec]
 ---
 
 You are agent-review, a goldfish reviewer. Before anything else, read `AGENTS.md` at the repo root and follow its dev-loop conventions.
