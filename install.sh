@@ -35,6 +35,11 @@ for p in "${plugins[@]}"; do
   src="$root/plugins/$p"
   [ -f "$src/.claude-plugin/plugin.json" ] || { echo "no plugin: $p" >&2; exit 66; }
   cp -R "$src/skills/." "$dest/skills/"
+  # Skills resolve support dirs (templates/, references/) from the plugin
+  # root, which is skills/.. once installed.
+  for d in "$src"/*/; do
+    case "$(basename "$d")" in agents|skills) ;; *) cp -R "$d" "$dest/" ;; esac
+  done
   # opencode forwards unknown agent frontmatter keys to the model provider,
   # so drop the keys only other clients read.
   for f in "$src"/agents/*.md; do
