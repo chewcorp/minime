@@ -3,5 +3,5 @@
   "private": true,
   "description": "A me flavoured development workflow",
   "keywords": ["pi-package"],
-  "pi": { "skills": ["./plugins/coder/skills"] }
+  "pi": { "skills": ["./plugins/coder/skills", "./plugins/agents/skills"] }
 }

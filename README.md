@@ -6,6 +6,7 @@ minime is a family of agent plugins, published as one marketplace that works acr
 | Plugin | What it does |
 |---|---|
 | [`coder`](plugins/coder/) | Staged delivery loop: clarify, chart, build, prove, converge, land-learn, routed by `deliver`, with planner, researcher, implementor, reviewer, approver and advisor subagents. Source: [chewcorp/minime-coder](https://github.com/chewcorp/minime-coder). |
+| [`agents`](plugins/agents/) | Recruit and onboard an agent like a new colleague: brief, role, routines, a TLC-checked chart for every wake, and a trial that shows each safeguard fires, routed by `recruit`, with a reviewer subagent. Source: [chewcorp/minime-agents](https://github.com/chewcorp/minime-agents). |
 
 ## Install
 
@@ -23,9 +24,11 @@ minime is a family of agent plugins, published as one marketplace that works acr
 | opencode | `git clone https://github.com/chewcorp/minime && minime/plugins/coder/install.sh --prefix ~/.config/opencode` | skills, agents |
 | Perplexity Computer, others | Upload or copy `plugins/coder/skills/*/SKILL.md` into the client's skills | skills |
 
+For `agents`, swap `coder` for `agents` in the plugin rows (for example `/plugin install agents@minime`, or `devin plugins install chewcorp/minime#plugins/agents`). It has no `install.sh`, so for Kilo, opencode and others, copy `plugins/agents/skills/*` into the client's skills folder.
+
 Installs are verified with Claude Code, Codex, Copilot CLI, pi, Kilo and opencode. The other rows follow each client's documented plugin format and haven't been tried yet.
 
-Start the loop by asking for it by name, or run `/deliver` (`/coder:deliver` in Claude Code).
+Start the coder loop by asking for it by name, or run `/deliver` (`/coder:deliver` in Claude Code). Start agents with `/recruit` (`/agents:recruit`).
 
 ## Layout
 
@@ -41,3 +44,5 @@ Start the loop by asking for it by name, or run `/deliver` (`/coder:deliver` in 
 ```
 
 Commit the result with the tag in the message and open a PR.
+
+`agents` is vendored automatically: a version bump merged in chewcorp/minime-agents publishes a release, and its release workflow runs `./vendor.sh agents` and pushes the result to `main` here.
