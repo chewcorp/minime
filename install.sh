@@ -44,7 +44,7 @@ for p in "${plugins[@]}"; do
   # so drop the keys only other clients read.
   for f in "$src"/agents/*.md; do
     [ -e "$f" ] || continue
-    sed '/^disallowedTools:/d; /^readonly:/d' "$f" > "$dest/agents/$(basename "$f")"
+    sed '/^disallowedTools:/d; /^readonly:/d; /^allowed-tools:/d' "$f" > "$dest/agents/$(basename "$f")"
   done
   echo "installed $p -> $dest"
 done
