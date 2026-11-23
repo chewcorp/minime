@@ -27,6 +27,8 @@ Resolve `NEXT` to this skill's `scripts/next.py` (Python 3.9+, Git). On every st
 | `trial` | `trial` |
 | `land` | §5 Land |
 
+`skill-librarian` is not a stage this script prints, and this loop does not require it: it has no with/without eval. It judges a proposal as skill, script, hook or nothing.
+
 Every record is JSON naming the hash of what it vouches for; an edit after the record voids it. Malformed, stale or missing records count as not done.
 
 - **Reviewed stage** (`brief`, `role`, `routines`): done when `<stage>.md` has no `[TK]` and `<stage>-review.json` is clear for the current `<stage>.md`, its findings, and the upstream pinned at review start (role: brief; routines: brief and role).
