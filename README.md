@@ -29,6 +29,16 @@ Installs are verified with Claude Code, Codex, Copilot CLI, pi and opencode. The
 
 Start the coder loop by asking for it by name, or run `/deliver` (`/coder:deliver` in Claude Code). Start agents with `/recruit` (`/agents:recruit`).
 
+### Clean up after a coder-only OpenCode upgrade
+
+If you upgraded a coder-only install from v0.2.3 or earlier, the old
+`skills/goldfish-review/` may still sit beside `skills/coder-goldfish-review/`.
+Check the old directory's `SKILL.md` in your install location. Remove that
+directory only if the skill calls `reviewer` (the old coder copy). If it calls
+`agent-review`, keep it: that copy belongs to recruitment. If you want both
+plugins, you can instead reinstall `agents` and `coder` in the same location
+to restore recruitment's copy and install coder under its new name.
+
 ## Layout
 
 - `.claude-plugin/marketplace.json` is the catalog read by Claude Code, Codex, Copilot CLI and Factory Droid. `.cursor-plugin/marketplace.json` (Cursor) and `.grok-plugin/marketplace.json` (Grok Build) carry the same entries; keep the three in step when adding a plugin.
