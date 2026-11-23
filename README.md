@@ -21,7 +21,7 @@ minime is a family of agent plugins, published as one marketplace that works acr
 | Devin | `devin plugins install chewcorp/minime#plugins/coder` | skills, agents (CLI and Desktop only) |
 | pi | `pi install git:github.com/chewcorp/minime` | skills |
 | opencode | `git clone https://github.com/chewcorp/minime && minime/install.sh` (`--project` for one repo; name plugins to install only some) | skills, agents |
-| Perplexity Computer, others | Upload or copy `plugins/coder/skills/*/SKILL.md` into the client's skills | skills |
+| Manual install | Copy the complete directories under `plugins/coder/skills/` into the client's skills, preserving scripts and references. The client must be able to run Git and Python 3.9+ for `deliver`. | skills |
 
 For `agents`, swap `coder` for `agents` in the plugin rows (for example `/plugin install agents@minime`, or `devin plugins install chewcorp/minime#plugins/agents`). pi and `install.sh` install every plugin.
 
