@@ -1,9 +1,9 @@
 ---
-name: goldfish-review
+name: coder-goldfish-review
 description: Use when a delivery-loop artifact (acceptance criteria, tickets, or a diff) needs review before the next stage. Parallel goldfish reviewers read only the artifact and its sources, never the conversation; you merge and verify their findings. Called by clarify, chart and converge.
 ---
 
-# goldfish-review
+# coder-goldfish-review
 
 A **goldfish** is a fresh `reviewer` agent with no conversation history: it sees only the artifact, the sources it references, and the brief. A review in your own context is not a goldfish review.
 
