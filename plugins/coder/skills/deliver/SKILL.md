@@ -17,10 +17,12 @@ Done when `git branch --show-current` prints `<task>` and `.minime/.gitignore` e
 
 ## 2. Route
 
-Before accepted criteria exist, load clarify. After acceptance review (and chart
+Before accepted criteria exist, load clarify. On upgrade, use any
+`.kilo/run/<task>/acceptance.md` as input, not as reviewed acceptance.
+After acceptance review (and chart
 review for multi-ticket work), initialize the [plugin-local gate](references/gates.md).
 Resolve `GATE` to this installed skill's `scripts/gate.py`; it requires Git and
-Python 3.9+. Run `python3 "$GATE" <task> next` on every resume. A nonzero gate exit
+Python 3.9+. Run `python3 "$GATE" <task> next --base <base>` on every resume. A nonzero gate exit
 blocks progression; do not fall back to guessing from file existence.
 
 Load the stage skill named below (one load per skill). Track task-specific deliverables and blockers in todos, not copies of the stage procedure.
@@ -30,9 +32,10 @@ Load the stage skill named below (one load per skill). Track task-specific deliv
 | New idea or vague ask, or no `.minime/<task>/acceptance.md` | `clarify` |
 | Accepted criteria, more than one ticket | `chart` |
 | Gate says `build`: one buildable ticket or the next unblocked unfinished ticket | `build` |
+| Gate says `repair`: resume the admitted repair from `gate.json`, not an unfinished ticket | `converge`, directly at [Fix rounds](../converge/SKILL.md#5-fix-rounds) |
 | `build` stopped on an unsatisfiable example | stop; give the human the example and its output |
 | Gate says `converge`: every ticket built; review/evidence still required | `converge` |
-| Gate says `land-learn`: current-tree review, independent proof and approval pass | `land-learn` |
+| Gate says `land-learn`: current-diff review, independent proof and approval pass | `land-learn` |
 
 For ordering risks or unresolved feasibility questions, use the conditional
 [statechart/prototype investigation](references/investigation.md) before the

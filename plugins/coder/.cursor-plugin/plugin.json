@@ -1,5 +1,5 @@
 {
   "name": "coder",
-  "version": "0.2.3",
-  "description": "Staged delivery loop: clarify, chart, build, prove, converge, land-learn, routed by deliver, with goldfish-review, with planner/researcher/implementor/reviewer/approver/advisor subagents."
+  "version": "0.2.5",
+  "description": "Staged delivery loop: clarify, chart, build, prove, converge, land-learn, routed by deliver, with coder-goldfish-review, with planner/researcher/implementor/reviewer/approver/advisor subagents."
 }

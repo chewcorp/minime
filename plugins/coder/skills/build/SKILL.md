@@ -26,6 +26,8 @@ before dependent production implementation; never promote disposable code.
 
 Done when the work is committed on `<task>` (reviewers read commits, not your working tree), the acceptance tests went red then green, the repo's tests and linter pass (no linter configured: run the language's standard one if installed, such as `ruff check`, on changed files and fix what the change introduced; never install one), non-trivial logic has a small test, and every claim has its `prove` row in `.minime/<task>/proof.md`.
 
+These author rows are provisional: build records them before converge captures the review token. Do not add that token to earlier rows.
+
 Mark the finished ticket with `python3 "$GATE" <task> done T1` (use its actual
 ID; single-ticket work is T1), then run `next`. During an admitted repair, call
 `done` only after the entire repair is committed; it requires a clean tree and
