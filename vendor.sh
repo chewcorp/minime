@@ -19,6 +19,18 @@ trap 'rm -rf "$tmp"' EXIT
 
 if "$verify"; then
   commit="$(git -C "$root" rev-parse --verify --end-of-options "${2:-HEAD}^{commit}")"
+  entry="$(git -C "$root" ls-tree "$commit" -- "plugins/$plugin")"
+  if [ -z "$entry" ]; then
+    echo "removed $plugin; no vendored files to verify"
+    exit 0
+  fi
+  if [ "${PR_REPO+x}" = x ]; then
+    if [ "$PR_REPO" != "$GITHUB_REPOSITORY" ]; then
+      echo "::error::Vendored plugins must be updated by a marketplace branch"
+      exit 1
+    fi
+    : "${GH_TOKEN:?MINIME_RELEASE_READ_TOKEN is required to read private plugin releases}"
+  fi
   version="$(git -C "$root" show "$commit:plugins/$plugin/.claude-plugin/plugin.json" | python3 -c '
 import json, re, sys
 version = json.load(sys.stdin)["version"]

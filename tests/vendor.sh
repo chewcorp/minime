@@ -61,3 +61,19 @@ chmod +x plugins/fixture/example
 expect_rejection "vendored file differs from release: 'plugins/fixture/example'"
 ln -snf .claude-plugin/plugin.json plugins/fixture/link
 expect_rejection "vendored file differs from release: 'plugins/fixture/link'"
+
+rm plugins/fixture/.claude-plugin/plugin.json
+commit_payload
+if output="$(./vendor.sh --verify fixture 2>&1)"; then
+  echo "plugin with a missing manifest passed verification" >&2
+  exit 1
+fi
+[[ "$output" == *"fatal: path 'plugins/fixture/.claude-plugin/plugin.json' does not exist"* ]]
+echo "Partial removal: missing manifest rejected"
+git switch -q --detach "$baseline"
+
+rm -r plugins/fixture
+commit_payload
+removed="$(git rev-parse HEAD)"
+git switch -q --detach "$baseline"
+PR_REPO=fork/minime GITHUB_REPOSITORY=chewcorp/minime GH_TOKEN= ./vendor.sh --verify fixture "$removed"

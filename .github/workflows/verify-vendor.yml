@@ -43,11 +43,6 @@ jobs:
             fi
             plugin="${BASH_REMATCH[1]}"
             if [[ ! -v "verified[$plugin]" ]]; then
-              if [[ "$PR_REPO" != "$GITHUB_REPOSITORY" ]]; then
-                echo "::error::Vendored plugins must be updated by a marketplace branch"
-                exit 1
-              fi
-              : "${GH_TOKEN:?MINIME_RELEASE_READ_TOKEN is required to read private plugin releases}"
               ./vendor.sh --verify "$plugin" "$PR_HEAD"
               verified[$plugin]=1
             fi
