@@ -1,0 +1,37 @@
+name: Verify vendored plugins
+
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  verify-vendor:
+    name: Verify vendored plugins
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - run: bash tests/vendor.sh
+      - name: Compare changed plugins with their release assets
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          GH_TOKEN: ${{ secrets.MINIME_RELEASE_READ_TOKEN }}
+        run: |
+          git diff --no-renames --ignore-submodules=none --name-only -z "$BASE_SHA" HEAD -- plugins > "$RUNNER_TEMP/vendor-paths"
+          declare -A verified=()
+          while IFS= read -r -d '' path; do
+            if [[ ! "$path" =~ ^plugins/([a-z0-9-]+)/ ]]; then
+              echo "::error::Files under plugins/ must belong to a release plugin directory"
+              exit 1
+            fi
+            plugin="${BASH_REMATCH[1]}"
+            if [[ ! -v "verified[$plugin]" ]]; then
+              : "${GH_TOKEN:?MINIME_RELEASE_READ_TOKEN is required to read private plugin releases}"
+              ./vendor.sh --verify "$plugin"
+              verified[$plugin]=1
+            fi
+          done < "$RUNNER_TEMP/vendor-paths"

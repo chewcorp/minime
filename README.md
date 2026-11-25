@@ -45,4 +45,8 @@ Start the coder loop by asking for it by name, or run `/deliver` (`/coder:delive
 
 Commit the result with the tag in the message and open a PR.
 
-`agents` is vendored automatically: a version bump merged in chewcorp/minime-agents publishes a release, and its release workflow runs `./vendor.sh agents` and pushes the result to `main` here.
+`coder` and `agents` are vendored automatically: their release workflows run `./vendor.sh` and open a marketplace PR. Devin Review and Cursor Bugbot skip the vendored files marked in `.gitattributes`; review still applies to the marketplace's own files.
+
+The **Verify vendored plugins** check compares each changed plugin's committed files with the release tarball named by its plugin manifest version. Configure the marketplace Actions secret `MINIME_RELEASE_READ_TOKEN` with read-only Contents access to both source repositories. The release automation opens same-repository PRs; fork PRs touching plugins cannot pass verification without access to the private release assets.
+
+To enforce the check at merge time, require **Verify vendored plugins** in a marketplace repository ruleset. The check also reports success on PRs without plugin changes, so requiring it does not block marketplace-only PRs.
