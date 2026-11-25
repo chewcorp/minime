@@ -1,6 +1,8 @@
 name: Verify vendored plugins
 
-on: pull_request
+on:
+  pull_request_target:
+    branches: [main]
 
 permissions:
   contents: read
@@ -9,19 +11,29 @@ jobs:
   verify-vendor:
     name: Verify vendored plugins
     runs-on: ubuntu-latest
+    environment: minime-release-verify
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          fetch-depth: 2
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
           persist-credentials: false
-      - run: bash tests/vendor.sh
+      - name: Fetch pull request objects without checking them out
+        shell: bash
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags origin "refs/pull/$PR_NUMBER/head"
+          test "$(git rev-parse FETCH_HEAD)" = "$PR_HEAD"
       - name: Compare changed plugins with their release assets
         shell: bash
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+          PR_REPO: ${{ github.event.pull_request.head.repo.full_name }}
           GH_TOKEN: ${{ secrets.MINIME_RELEASE_READ_TOKEN }}
         run: |
-          git diff --no-renames --ignore-submodules=none --name-only -z "$BASE_SHA" HEAD -- plugins > "$RUNNER_TEMP/vendor-paths"
+          git diff --no-renames --ignore-submodules=none --name-only -z "HEAD...$PR_HEAD" -- plugins > "$RUNNER_TEMP/vendor-paths"
           declare -A verified=()
           while IFS= read -r -d '' path; do
             if [[ ! "$path" =~ ^plugins/([a-z0-9-]+)/ ]]; then
@@ -30,8 +42,12 @@ jobs:
             fi
             plugin="${BASH_REMATCH[1]}"
             if [[ ! -v "verified[$plugin]" ]]; then
+              if [[ "$PR_REPO" != "$GITHUB_REPOSITORY" ]]; then
+                echo "::error::Vendored plugins must be updated by a marketplace branch"
+                exit 1
+              fi
               : "${GH_TOKEN:?MINIME_RELEASE_READ_TOKEN is required to read private plugin releases}"
-              ./vendor.sh --verify "$plugin"
+              ./vendor.sh --verify "$plugin" "$PR_HEAD"
               verified[$plugin]=1
             fi
           done < "$RUNNER_TEMP/vendor-paths"

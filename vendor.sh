@@ -2,14 +2,14 @@
 # vendor.sh <plugin> <tag|tarball> — replace plugins/<plugin> with a released
 # payload from chewcorp/minime-<plugin>. A local tarball path (from that repo's
 # ./release.sh --build-only) vendors an unreleased build for testing.
-# vendor.sh --verify <plugin> — compare the committed payload with its release.
+# vendor.sh --verify <plugin> [commit] — compare the committed payload with its release.
 set -euo pipefail
 verify=false
 if [ "${1:-}" = --verify ]; then
   verify=true
   shift
 fi
-plugin="${1:?usage: vendor.sh <plugin> <tag|tarball> | vendor.sh --verify <plugin>}"
+plugin="${1:?usage: vendor.sh <plugin> <tag|tarball> | vendor.sh --verify <plugin> [commit]}"
 case "$plugin" in
   ""|*[!a-z0-9-]*) echo "plugin name must be lowercase letters, digits and dashes: $plugin" >&2; exit 64 ;;
 esac
@@ -18,7 +18,8 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
 if "$verify"; then
-  version="$(git -C "$root" show "HEAD:plugins/$plugin/.claude-plugin/plugin.json" | python3 -c '
+  commit="$(git -C "$root" rev-parse --verify --end-of-options "${2:-HEAD}^{commit}")"
+  version="$(git -C "$root" show "$commit:plugins/$plugin/.claude-plugin/plugin.json" | python3 -c '
 import json, re, sys
 version = json.load(sys.stdin)["version"]
 if not isinstance(version, str) or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", version):
@@ -44,14 +45,14 @@ tar -xzf "$tarball" -C "$tmp"
 [ -f "$tmp/$plugin/.claude-plugin/plugin.json" ] || { echo "no $plugin/.claude-plugin/plugin.json in $tarball" >&2; exit 65; }
 
 if "$verify"; then
-  python3 - "$root" "$plugin" "$tmp/$plugin" <<'PY'
+  python3 - "$root" "$plugin" "$tmp/$plugin" "$commit" <<'PY'
 import os
 from pathlib import Path
 import stat
 import subprocess
 import sys
 
-root, plugin, release = sys.argv[1:]
+root, plugin, release, commit = sys.argv[1:]
 release = Path(release)
 prefix = f"plugins/{plugin}/"
 
@@ -69,14 +70,14 @@ for file in release.rglob("*"):
     elif not stat.S_ISDIR(mode):
         sys.exit(f"unsupported file type in release: {path!r}")
 
-for entry in git("ls-tree", "-rz", "HEAD", "--", prefix).split(b"\0")[:-1]:
+for entry in git("ls-tree", "-rz", commit, "--", prefix).split(b"\0")[:-1]:
     meta, name = entry.split(b"\t", 1)
     mode, kind, oid = meta.split()
     path = os.fsdecode(name)
     if kind != b"blob" or expected.pop(path, None) != (mode, git("cat-file", "blob", oid)):
         sys.exit(f"vendored file differs from release: {path!r}")
 if expected:
-    sys.exit(f"vendored file missing from HEAD: {next(iter(expected))!r}")
+    sys.exit(f"vendored file missing from commit: {next(iter(expected))!r}")
 PY
   echo "verified $plugin $version against its release tarball"
   exit 0
