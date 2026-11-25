@@ -43,7 +43,7 @@ jobs:
             fi
             plugin="${BASH_REMATCH[1]}"
             if [[ ! -v "verified[$plugin]" ]]; then
-              ./vendor.sh --verify "$plugin" "$PR_HEAD"
+              ./vendor.sh --verify "$plugin" "$PR_HEAD" HEAD
               verified[$plugin]=1
             fi
           done < "$RUNNER_TEMP/vendor-paths"
