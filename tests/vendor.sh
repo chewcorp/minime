@@ -27,20 +27,32 @@ commit_payload
 baseline="$(git rev-parse HEAD)"
 ./vendor.sh --verify fixture
 
-expect_rejection() {
-  local output
-  commit_payload
-  if output="$(./vendor.sh --verify fixture 2>&1)"; then
+assert_rejected() {
+  local expected="$1" output
+  shift
+  if output="$(./vendor.sh --verify fixture "$@" 2>&1)"; then
     echo "tampered plugin passed verification" >&2
     exit 1
   fi
-  [[ "$output" == "$1" ]]
+  [[ "$output" == "$expected" ]]
   echo "$output"
+}
+
+expect_rejection() {
+  commit_payload
+  assert_rejected "$1"
   git switch -q --detach "$baseline"
 }
 
 printf 'tampered\n' > plugins/fixture/example
-expect_rejection "vendored file differs from release: 'plugins/fixture/example'"
+commit_payload
+tampered="$(git rev-parse HEAD)"
+assert_rejected "vendored file differs from release: 'plugins/fixture/example'"
+./vendor.sh --verify fixture "$baseline"
+git switch -q --detach "$baseline"
+assert_rejected "vendored file differs from release: 'plugins/fixture/example'" "$tampered"
+echo "Explicit verification uses the selected commit, not HEAD"
+
 printf 'extra\n' > plugins/fixture/extra
 expect_rejection "vendored file differs from release: 'plugins/fixture/extra'"
 rm plugins/fixture/example
