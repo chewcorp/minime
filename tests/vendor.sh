@@ -9,6 +9,7 @@ cp "$source_dir/vendor.sh" .
 mkdir -p plugins/fixture/.claude-plugin
 printf '{"version":"1.2.3"}\n' > plugins/fixture/.claude-plugin/plugin.json
 printf 'released\n' > plugins/fixture/example
+ln -s example plugins/fixture/link
 tar -czf minime-fixture-1.2.3.tar.gz -C plugins fixture
 
 gh() {
@@ -23,12 +24,28 @@ commit_payload() {
 }
 
 commit_payload
+baseline="$(git rev-parse HEAD)"
 ./vendor.sh --verify fixture
+
+expect_rejection() {
+  local output
+  commit_payload
+  if output="$(./vendor.sh --verify fixture 2>&1)"; then
+    echo "tampered plugin passed verification" >&2
+    exit 1
+  fi
+  [[ "$output" == "$1" ]]
+  echo "$output"
+  git switch -q --detach "$baseline"
+}
+
 printf 'tampered\n' > plugins/fixture/example
-commit_payload
-if output="$(./vendor.sh --verify fixture 2>&1)"; then
-  echo "tampered plugin passed verification" >&2
-  exit 1
-fi
-[[ "$output" == "vendored file differs from release: 'plugins/fixture/example'" ]]
-echo "$output"
+expect_rejection "vendored file differs from release: 'plugins/fixture/example'"
+printf 'extra\n' > plugins/fixture/extra
+expect_rejection "vendored file differs from release: 'plugins/fixture/extra'"
+rm plugins/fixture/example
+expect_rejection "vendored file missing from commit: 'plugins/fixture/example'"
+chmod +x plugins/fixture/example
+expect_rejection "vendored file differs from release: 'plugins/fixture/example'"
+ln -snf .claude-plugin/plugin.json plugins/fixture/link
+expect_rejection "vendored file differs from release: 'plugins/fixture/link'"
