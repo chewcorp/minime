@@ -15,7 +15,7 @@ Before any code change, ask your questions or, when told not to wait, write down
    - **Fog**: what is not yet specified. Mark each still-missing value `[TK]` (to come). When the human accepts an uncertainty by name, record the ruling and its explicit assumption in Decisions or exclusion in Out-of-scope, then remove that resolved marker. Unresolved required values remain blocking.
    - **Out-of-scope**.
 3. Open questions are the frontier: questions whose answer would change an outcome or its fit criterion. Run another round while any remain. If an answer needs an experiment, use the bounded [statechart/prototype detour](../deliver/references/investigation.md); unresolved or scope-changing results return here, never silently become production work.
-4. Load the `goldfish-review` skill on the draft:
+4. Load the `coder-goldfish-review` skill on the draft:
    - artifact: `.minime/<task>/acceptance.md`
    - intent: the user's request, quoted verbatim
    - question: which assumption is unstated, which requirement is ambiguous, which fit criterion cannot be measured, what belongs in Out-of-scope?
