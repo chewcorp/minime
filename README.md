@@ -55,7 +55,7 @@ to restore recruitment's copy and install coder under its new name.
 
 Commit the result with the tag in the message and open a PR.
 
-`coder` and `agents` are vendored automatically: their release workflows run `./vendor.sh` and open a marketplace PR. Devin Review and Cursor Bugbot skip the vendored files marked in `.gitattributes`; review still applies to the marketplace's own files.
+`coder` and `agents` are vendored automatically: their release workflows run `./vendor.sh` and open a marketplace PR. [`REVIEW.md`](REVIEW.md) tells Devin Review to skip vendored files and keep reviewing the marketplace's own files. The `.gitattributes` marker remains for review tools that honor it.
 
 The release workflows publish the exact tarball under the marketplace release tag `<plugin>-v<version>` before opening or updating the PR. **Verify vendored plugins** runs trusted code from `main` and compares the PR's committed payload with that public asset. It fails if the asset is missing or differs, and needs no additional secret. Maintainers can also run `./vendor.sh --verify <plugin>` locally with GitHub CLI authentication.
 
