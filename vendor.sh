@@ -70,13 +70,6 @@ PY
     echo "removed $plugin; no vendored files to verify"
     exit 0
   fi
-  if [ "${PR_REPO+x}" = x ]; then
-    if [ "$PR_REPO" != "$GITHUB_REPOSITORY" ]; then
-      echo "::error::Vendored plugins must be updated by a marketplace branch"
-      exit 1
-    fi
-    : "${GH_TOKEN:?MINIME_RELEASE_READ_TOKEN is required to read private plugin releases}"
-  fi
   version="$(git -C "$root" show "$commit:plugins/$plugin/.claude-plugin/plugin.json" | python3 -c '
 import json, re, sys
 version = json.load(sys.stdin)["version"]
@@ -84,9 +77,11 @@ if not isinstance(version, str) or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", v
     sys.exit("invalid release version")
 print(version)
 ')"
-  ref="v$version"
+  repo=chewcorp/minime
+  ref="$plugin-v$version"
   pattern="minime-$plugin-$version.tar.gz"
 else
+  repo="chewcorp/minime-$plugin"
   ref="${2:?usage: vendor.sh <plugin> <tag|tarball>}"
   pattern="minime-$plugin-*.tar.gz"
 fi
@@ -94,7 +89,7 @@ fi
 if ! "$verify" && [ -f "$ref" ]; then
   tarball="$ref"
 else
-  gh release download "$ref" --repo "chewcorp/minime-$plugin" --pattern "$pattern" --dir "$tmp"
+  gh release download "$ref" --repo "$repo" --pattern "$pattern" --dir "$tmp"
   tarballs=("$tmp"/$pattern)
   [ "${#tarballs[@]}" -eq 1 ] && [ -f "${tarballs[0]}" ] || { echo "expected one release tarball for $plugin $ref" >&2; exit 65; }
   tarball="${tarballs[0]}"

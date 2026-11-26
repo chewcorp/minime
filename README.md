@@ -47,8 +47,6 @@ Commit the result with the tag in the message and open a PR.
 
 `coder` and `agents` are vendored automatically: their release workflows run `./vendor.sh` and open a marketplace PR. Devin Review and Cursor Bugbot skip the vendored files marked in `.gitattributes`; review still applies to the marketplace's own files.
 
-The **Verify vendored plugins** check uses the marketplace's `main` workflow and script to compare each changed plugin's PR commit with the release tarball named by its plugin manifest version. To remove a plugin, delete its entire directory and remove its entries from the marketplace catalogs and `package.json`. Adding or updating a payload requires a same-repository PR, as used by the release automation.
+The release workflows publish the exact tarball under the marketplace release tag `<plugin>-v<version>` before opening or updating the PR. **Verify vendored plugins** runs trusted code from `main` and compares the PR's committed payload with that public asset. It fails if the asset is missing or differs, and needs no additional secret. Maintainers can also run `./vendor.sh --verify <plugin>` locally with GitHub CLI authentication.
 
-In the marketplace's [environment settings](https://github.com/chewcorp/minime/settings/environments), create `minime-release-verify` and allow deployments from only the `main` branch. Add the environment secret `MINIME_RELEASE_READ_TOKEN`: a fine-grained token with resource owner `chewcorp`, repository access limited to `minime-coder` and `minime-agents`, and repository permission **Contents: Read-only**.
-
-Once the workflow is on `main` and has reported a check, require **Verify vendored plugins** in a marketplace repository ruleset. It also reports success on PRs without plugin changes, so requiring it does not block marketplace-only PRs.
+To remove a plugin, delete its entire directory and remove its entries from the marketplace catalogs and `package.json`.

@@ -18,7 +18,8 @@ printf '{"pi":{"skills":["./plugins/fixture/skills"]}}\n' > package.json
 git add -- .claude-plugin .cursor-plugin .grok-plugin package.json
 
 gh() {
-  [[ "$*" == "release download v1.2.3 --repo chewcorp/minime-fixture --pattern minime-fixture-1.2.3.tar.gz --dir "* ]]
+  [[ "$*" == "release download fixture-v1.2.3 --repo chewcorp/minime --pattern minime-fixture-1.2.3.tar.gz --dir "* ]]
+  [[ -f minime-fixture-1.2.3.tar.gz ]] || { echo "release asset not found" >&2; return 1; }
   cp minime-fixture-1.2.3.tar.gz "${@: -1}"
 }
 export -f gh
@@ -94,4 +95,6 @@ git switch -q --detach "$baseline"
 assert_rejected "no vendored plugin typo in the selected commit" typo
 assert_rejected "no vendored plugin typo in the base commit" typo "$removed" "$baseline"
 assert_rejected "no vendored plugin fixture in the selected commit" fixture "$removed"
-PR_REPO=fork/minime GITHUB_REPOSITORY=chewcorp/minime GH_TOKEN= ./vendor.sh --verify fixture "$removed" "$baseline"
+./vendor.sh --verify fixture "$removed" "$baseline"
+rm minime-fixture-1.2.3.tar.gz
+assert_rejected "release asset not found" fixture "$baseline"
