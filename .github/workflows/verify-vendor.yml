@@ -12,7 +12,6 @@ jobs:
   verify-vendor:
     name: Verify vendored plugins
     runs-on: ubuntu-latest
-    environment: minime-release-verify
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -31,8 +30,7 @@ jobs:
         shell: bash
         env:
           PR_HEAD: ${{ github.event.pull_request.head.sha }}
-          PR_REPO: ${{ github.event.pull_request.head.repo.full_name }}
-          GH_TOKEN: ${{ secrets.MINIME_RELEASE_READ_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           git diff --no-renames --ignore-submodules=none --name-only -z "HEAD...$PR_HEAD" -- plugins > "$RUNNER_TEMP/vendor-paths"
           declare -A verified=()
