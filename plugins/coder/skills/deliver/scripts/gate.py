@@ -25,9 +25,8 @@ def require(condition, message):
         raise ValueError(message)
 
 
-def git(*args, timeout=None):
-    return subprocess.check_output(["git", *args], text=True, stderr=subprocess.PIPE,
-                                   timeout=timeout).strip()
+def git(*args):
+    return subprocess.check_output(["git", *args], text=True, stderr=subprocess.PIPE).strip()
 
 
 def digest(path):
@@ -115,26 +114,75 @@ def clean_tree():
     return git("rev-parse", "HEAD^{tree}")
 
 
-def probe_origin_head():
-    args = ("git", "ls-remote", "--symref", "origin", "HEAD")
-    if os.name != "posix":
-        return git(*args[1:], timeout=2)
-    with subprocess.Popen(args, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                          start_new_session=True) as probe:
+def _group_killable():
+    return hasattr(os, "killpg") and hasattr(os, "setsid")
+
+
+def _taskkill():
+    # A bare name is resolved from the process working directory before System32.
+    root = os.environ.get("SystemRoot", r"C:\Windows")
+    return root.rstrip("\\/") + "\\System32\\taskkill.exe"
+
+
+def _stop_probe(probe):
+    if _group_killable():
         try:
-            advertised, _ = probe.communicate(timeout=2)
+            os.killpg(probe.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    else:
+        try:
+            subprocess.run([_taskkill(), "/F", "/T", "/PID", str(probe.pid)],
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                           timeout=2, check=False)
+        except (OSError, subprocess.TimeoutExpired):
+            pass
+        try:
+            probe.kill()
+        except OSError:
+            pass
+    # SIGKILL can still be pending when kill() returns. Reap before the
+    # Popen object is discarded, or Python warns that it is still running.
+    try:
+        probe.wait(timeout=1)
+    except subprocess.TimeoutExpired:
+        pass
+
+
+def probe_origin_head():
+    # A captured pipe stays open while a transport child lives. Windows then
+    # blocks in the reader until that child exits, past the deadline.
+    args = ("git", "ls-remote", "--symref", "origin", "HEAD")
+    stdout = tempfile.TemporaryFile()
+    stderr = tempfile.TemporaryFile()
+    probe = None
+    try:
+        popen_kwargs = {"stdout": stdout, "stderr": stderr}
+        if _group_killable():
+            popen_kwargs["start_new_session"] = True
+        probe = subprocess.Popen(args, **popen_kwargs)
+        try:
+            returncode = probe.wait(timeout=2)
         except (subprocess.TimeoutExpired, KeyboardInterrupt):
-            try:
-                os.killpg(probe.pid, signal.SIGKILL)
-            except ProcessLookupError:
-                pass
+            _stop_probe(probe)
             raise
-        if probe.returncode:
-            raise subprocess.CalledProcessError(probe.returncode, args)
-        return advertised.strip()
+        if returncode:
+            raise subprocess.CalledProcessError(returncode, args)
+        stdout.seek(0)
+        return stdout.read().decode("utf-8", "replace").strip()
+    finally:
+        if probe is not None and probe.poll() is None:
+            _stop_probe(probe)
+        # Windows TemporaryFile unlinks its name on close. A transport that
+        # still holds the handle makes that raise, which would hide the timeout.
+        for stream in (stdout, stderr):
+            try:
+                stream.close()
+            except OSError:
+                pass
 
 
-def default_base(tracking=None):
+def default_base(tracking=None, task=None):
     if not tracking and "origin" in git("remote").splitlines():
         try:
             advertised = probe_origin_head()
@@ -147,6 +195,8 @@ def default_base(tracking=None):
             tracking = f"refs/remotes/origin/{match[1]}"
     if tracking and tracking.startswith("refs/remotes/origin/"):
         name = tracking.removeprefix("refs/remotes/origin/")
+        if name == task:
+            raise ValueError("the default branch cannot be a task branch")
         candidates = (tracking, f"refs/heads/{name}")
         error = f"cannot resolve origin's default branch {name}; pass --base"
     else:
@@ -164,7 +214,7 @@ def diff_base_tree(args):
     if args.base is not None:
         base_commit = git("rev-parse", "--verify", "--end-of-options", f"{args.base}^{{commit}}")
     elif args.origin_head:
-        base_commit = default_base(args.origin_head)
+        base_commit = default_base(args.origin_head, args.task)
     elif args.default_base_commit is not None:
         base_commit = args.default_base_commit
     else:
@@ -363,7 +413,7 @@ def main():
                     print(run(args, work))
                 break
             except DefaultBaseNeeded:
-                args.default_base_commit = default_base()
+                args.default_base_commit = default_base(task=args.task)
     except (OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as error:
         print(f"gate: {error}", file=sys.stderr)
         return 1

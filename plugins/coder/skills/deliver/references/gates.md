@@ -74,7 +74,9 @@ The v0.2.3 commands still work without `--base`, using the local tracking ref
 for origin's default branch when available, then the local branch with the
 same name. If a named default cannot be resolved, pass `--base` explicitly.
 Without a cached `origin/HEAD`, the gate looks up the default branch outside
-the task lock, with a two-second timeout. If the lookup fails or times out,
+the task lock, with a two-second timeout. If that default branch is the task
+branch, the lookup is rejected, including when neither `origin/HEAD` nor
+`origin/<branch>` is cached. If the lookup fails or times out,
 pass `--base`; it won't guess local `main` or `master`. With no origin or
 when origin answers without advertising a default, it tries those local branches.
 The lookup cannot show SSH password or passphrase prompts; pass `--base`, or authenticate or fetch first. Once the default branch is fetched, `git remote set-head origin -a` can cache it.
