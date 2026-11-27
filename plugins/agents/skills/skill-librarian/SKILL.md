@@ -19,6 +19,8 @@ retire: <event that would delete the skill, script or hook; none when the verdic
 
 Write one block per scope: a proposal split under Scope gets one complete block for each sentence. `verdict` is one of those four words. A proposal whose only judgement is "run this and paste the output" fits the script row; the hook precedence and the Verify check still apply.
 
+Worked example: [`/progress` in rgh-sme](references/example.md).
+
 ## Decide
 
 | Form | When |
